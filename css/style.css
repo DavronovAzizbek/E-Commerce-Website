@@ -25,7 +25,7 @@ nav{
     height: 80px;
     background-color: #FAFAFA;
     position: fixed;
-    
+    z-index: 999;
 }
 .nav-items{
     width: 1050px;
