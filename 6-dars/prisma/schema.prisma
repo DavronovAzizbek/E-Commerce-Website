@@ -1,0 +1,23 @@
+generator client{
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url = env("DATABASE_URL")
+}
+
+model Restaurant {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String
+  phone     String
+  createdAt DateTime @default(now())
+}
+
+model Menu {
+  id        Int      @id @default(autoincrement())
+  title     String
+  price     Float
+  createdAt DateTime @default(now())
+}
