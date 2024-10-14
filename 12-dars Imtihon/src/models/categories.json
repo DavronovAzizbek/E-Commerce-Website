@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Fantastic genre"
+  },
+
+  {
+    "id": 2,
+    "name": "Dramatic genre"
+  },
+
+  {
+    "id": 3,
+    "name": "Psychological fiction genre"
+  },
+
+  {
+    "id": 4,
+    "name": "Historical genre"
+  },
+
+  {
+    "id": 5,
+    "name": "Politics genre"
+  }
+]
