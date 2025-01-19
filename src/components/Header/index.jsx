@@ -37,6 +37,20 @@ const Header = () => {
           </div>
         </div>
       </div>
+
+      <div className="header">
+        <div className="container flex items-center justify-between">
+          <div className="col1">
+            <Link to={"/"}>
+              <img src="/uzum.png" />
+            </Link>
+          </div>
+
+          <div className="col2"></div>
+
+          <div className="col3"></div>
+        </div>
+      </div>
     </header>
   );
 };
