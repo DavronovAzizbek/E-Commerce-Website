@@ -51,7 +51,9 @@ const Header = () => {
             <Search />
           </div>
 
-          <div className="col3 w-[30%]"></div>
+          <div className="col3 w-[30%] flex items-center">
+            
+          </div>
         </div>
       </div>
     </header>
