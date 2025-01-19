@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Search from "../Search";
 
 const Header = () => {
   return (
@@ -40,15 +41,17 @@ const Header = () => {
 
       <div className="header">
         <div className="container flex items-center justify-between">
-          <div className="col1">
+          <div className="col1 w-[25%]">
             <Link to={"/"}>
               <img src="/uzum.png" />
             </Link>
           </div>
 
-          <div className="col2"></div>
+          <div className="col2 w-[45%]">
+            <Search />
+          </div>
 
-          <div className="col3"></div>
+          <div className="col3 w-[30%]"></div>
         </div>
       </div>
     </header>

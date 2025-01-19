@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
 body {
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
@@ -12,7 +18,8 @@ body {
   margin: auto;
 }
 
-header .top-strip {}
+header .top-strip {
+}
 
 .link:hover {
   color: #ff5252;
