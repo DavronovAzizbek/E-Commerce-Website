@@ -4,6 +4,7 @@
 
 .nav li .submenu {
   visibility: hidden;
+  z-index: 1000;
 }
 .nav li .submenu button {
   font-weight: 400 !important;

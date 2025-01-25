@@ -13,6 +13,7 @@ body {
   font-optical-sizing: auto;
   background: #f5f0f0;
   color: rgba(0, 0, 0, 0.9);
+  overflow-x: hidden;
 }
 
 .container {
@@ -34,4 +35,27 @@ nav ul button {
 
 nav ul button:hover {
   background: none !important;
+}
+
+.sliderHome {
+  overflow: inherit !important;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 100%;
+  width: 45px;
+  height: 45px;
+  min-width: 45px;
+  box-shadow: 0 1px 3px #0000001f, 0 1px 2px #0000003d !important;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 22px !important;
+  color: #000;
 }
