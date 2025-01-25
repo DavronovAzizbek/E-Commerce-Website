@@ -1,4 +1,3 @@
-import React from "react";
 import "../Search/style.css";
 import Button from "@mui/material/Button";
 import { IoSearch } from "react-icons/io5";
