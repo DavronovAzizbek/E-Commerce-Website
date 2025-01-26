@@ -71,6 +71,19 @@ nav ul button:hover {
   color: #000;
 }
 
+.smlBtn .swiper-button-prev,
+.smlBtn .swiper-button-next {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  top: 55% !important;
+}
+.smlBtn .swiper-button-prev:after,
+.smlBtn .swiper-button-next:after {
+  font-size: 10px !important;
+  color: #000;
+}
+
 .homeCatSlider {
   overflow: inherit !important;
 }
