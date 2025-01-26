@@ -25,7 +25,7 @@ const Navigation = () => {
               onClick={openCategoryPanel}
             >
               <RiMenu2Fill className="text-[18px]" />
-              Kategoriyalar boyicha xarid qiling
+              Shop by category
               <LiaAngleDownSolid className="text-[13px] ml-auto font-bold" />
             </Button>
           </div>
@@ -158,7 +158,7 @@ const Navigation = () => {
                     className="!link transition !font-[500] !text-[rgba(0,0,0,0.8)]
                 hover:!text-[#ff5252]"
                   >
-                    Oyoq Kiyimlar
+                    Footwear
                   </Button>
                 </Link>
               </li>
@@ -168,7 +168,7 @@ const Navigation = () => {
                     className="!link transition !font-[500] !text-[rgba(0,0,0,0.8)]
                 hover:!text-[#ff5252]"
                   >
-                    Oziq-ovqat
+                    Groceries
                   </Button>
                 </Link>
               </li>
@@ -198,7 +198,7 @@ const Navigation = () => {
                     className="!link transition !font-[500] !text-[rgba(0,0,0,0.8)]
                 hover:!text-[#ff5252]"
                   >
-                    Zargarlik buyumlari
+                    Jewelry
                   </Button>
                 </Link>
               </li>
