@@ -14,6 +14,7 @@ import "swiper/css/navigation";
 
 import { Navigation } from "swiper/modules";
 import BlogItem from "../../components/BlogItem";
+import Footer from "../../components/Footer";
 
 const Home = () => {
   const [value, setValue] = React.useState(0);
@@ -160,12 +161,7 @@ const Home = () => {
         </div>
       </section>
 
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
+      <Footer />
     </>
   );
 };
