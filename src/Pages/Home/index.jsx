@@ -13,6 +13,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import { Navigation } from "swiper/modules";
+import BlogItem from "../../components/BlogItem";
 
 const Home = () => {
   const [value, setValue] = React.useState(0);
@@ -101,16 +102,60 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-5 pt-0 bg-white blogSection">
-        <div className="py-5">
+      <section className="py-5 pb-8 pt-0 bg-white blogSection">
+        <div className="container">
+          <h2 className="text-[20px] font-[600] mb-4">From The Blog</h2>
           <Swiper
-            slidesPerView={3}
-            spaceBetween={10}
+            slidesPerView={4}
+            spaceBetween={30}
             navigation={true}
             modules={[Navigation]}
             className="blogSlider"
           >
-            <SwiperSlide></SwiperSlide>
+            <SwiperSlide>
+              <BlogItem
+                image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/psblog/b/9/1105_813/b-blog-7.jpg"
+                date="3 February, 2025"
+                title="Nullam ullamcorper ornare molestie"
+                description="Suspendisse posuere, diam in bibendum lobortis, turpis ipsum aliquam..."
+              />
+            </SwiperSlide>
+
+            <SwiperSlide>
+              <BlogItem
+                image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/psblog/b/8/1105_813/b-blog-6.jpg"
+                date="4 February, 2025"
+                title="Turpis at eleifend Aenean porta"
+                description="Turpis at eleifend ps mi elit Aenean porta ac sed faucibus.Nunc urna..."
+              />
+            </SwiperSlide>
+
+            <SwiperSlide>
+              <BlogItem
+                image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/psblog/b/7/1105_813/b-blog-5.jpg"
+                date="5 February, 2025"
+                title="Morbi condimentum molestie Nam"
+                description="Sed mauris Pellentesque elit Aliquam at lacus interdum nascetur elit..."
+              />
+            </SwiperSlide>
+
+            <SwiperSlide>
+              <BlogItem
+                image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/psblog/b/6/1105_813/b-blog-4.jpg"
+                date="6 February, 2025"
+                title="Curabitur at elit Vestibulum"
+                description="Mi vitae magnis Fusce laoreet nibh felis porttitor laoreet Vestibulum..."
+              />
+            </SwiperSlide>
+
+            <SwiperSlide>
+              <BlogItem
+                image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/psblog/b/5/1105_813/b-blog-3.jpg"
+                date="7 February, 2025"
+                title="Urna pretium elit mauris cursus"
+                description="Mi vitae magnis Fusce laoreet nibh felis porttitor laoreet Vestibulum..."
+              />
+            </SwiperSlide>
           </Swiper>
         </div>
       </section>
