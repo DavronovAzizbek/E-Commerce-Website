@@ -5,9 +5,14 @@ import AdsBannerSlider from "../../components/AdsBannerSlider";
 
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
 import React from "react";
 import ProductsSlider from "../../components/ProductsSlider";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+
+import { Navigation } from "swiper/modules";
 
 const Home = () => {
   const [value, setValue] = React.useState(0);
@@ -55,7 +60,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-white">
+      <section className="py-4 pt-2 bg-white">
         <div className="container">
           <div className="freeShipping w-[80%] m-auto py-4 p-4 border-2 border-[#ff5252] flex items-center justify-between rounded-md mb-7">
             <div className="col1 flex items-center gap-4">
@@ -75,6 +80,38 @@ const Home = () => {
           </div>
 
           <AdsBannerSlider items={4} />
+        </div>
+      </section>
+
+      <section className="py-5 pt-0 bg-white">
+        <div className="container">
+          <h2 className="text-[20px] font-[600]">Latest Products</h2>
+          <ProductsSlider items={6} />
+
+          <AdsBannerSlider items={3} />
+        </div>
+      </section>
+
+      <section className="py-5 pt-0 bg-white">
+        <div className="container">
+          <h2 className="text-[20px] font-[600]">Featured Products</h2>
+          <ProductsSlider items={6} />
+
+          <AdsBannerSlider items={3} />
+        </div>
+      </section>
+
+      <section className="py-5 pt-0 bg-white blogSection">
+        <div className="py-5">
+          <Swiper
+            slidesPerView={3}
+            spaceBetween={10}
+            navigation={true}
+            modules={[Navigation]}
+            className="blogSlider"
+          >
+            <SwiperSlide></SwiperSlide>
+          </Swiper>
         </div>
       </section>
 

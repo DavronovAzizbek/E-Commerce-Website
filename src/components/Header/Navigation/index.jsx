@@ -17,7 +17,7 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className="py-2">
+      <nav>
         <div className="container flex items-center justify-end gap-8">
           <div className="col_1 w-[25%]">
             <Button
@@ -36,7 +36,7 @@ const Navigation = () => {
                 <Link to="/" className="link transition text-[14px] font-[500]">
                   <Button
                     className="!link transition !font-[500] !text-[rgba(0,0,0,0.8)]
-                hover:!text-[#ff5252]"
+                hover:!text-[#ff5252] !py-4"
                   >
                     Uy
                   </Button>
@@ -46,7 +46,7 @@ const Navigation = () => {
                 <Link to="/" className="link transition text-[14px] font-[500]">
                   <Button
                     className="!link transition !font-[500] !text-[rgba(0,0,0,0.8)]
-                hover:!text-[#ff5252]"
+                hover:!text-[#ff5252] !py-4"
                   >
                     Fashion
                   </Button>
@@ -136,7 +136,7 @@ const Navigation = () => {
                 <Link to="/" className="link transition text-[14px] font-[500]">
                   <Button
                     className="!link transition !font-[500] !text-[rgba(0,0,0,0.8)]
-                hover:!text-[#ff5252]"
+                hover:!text-[#ff5252] !py-4"
                   >
                     Elektronika
                   </Button>
@@ -146,7 +146,7 @@ const Navigation = () => {
                 <Link to="/" className="link transition text-[14px] font-[500]">
                   <Button
                     className="!link transition !font-[500] !text-[rgba(0,0,0,0.8)]
-                hover:!text-[#ff5252]"
+                hover:!text-[#ff5252] !py-4"
                   >
                     Sumkalar
                   </Button>
@@ -156,7 +156,7 @@ const Navigation = () => {
                 <Link to="/" className="link transition text-[14px] font-[500]">
                   <Button
                     className="!link transition !font-[500] !text-[rgba(0,0,0,0.8)]
-                hover:!text-[#ff5252]"
+                hover:!text-[#ff5252] !py-4"
                   >
                     Footwear
                   </Button>
@@ -166,7 +166,7 @@ const Navigation = () => {
                 <Link to="/" className="link transition text-[14px] font-[500]">
                   <Button
                     className="!link transition !font-[500] !text-[rgba(0,0,0,0.8)]
-                hover:!text-[#ff5252]"
+                hover:!text-[#ff5252] !py-4"
                   >
                     Groceries
                   </Button>
@@ -176,7 +176,7 @@ const Navigation = () => {
                 <Link to="/" className="link transition text-[14px] font-[500]">
                   <Button
                     className="!link transition !font-[500] !text-[rgba(0,0,0,0.8)]
-                hover:!text-[#ff5252]"
+                hover:!text-[#ff5252] !py-4"
                   >
                     Gozallik
                   </Button>
@@ -186,7 +186,7 @@ const Navigation = () => {
                 <Link to="/" className="link transition text-[14px] font-[500]">
                   <Button
                     className="!link transition !font-[500] !text-[rgba(0,0,0,0.8)]
-                hover:!text-[#ff5252]"
+                hover:!text-[#ff5252] !py-4"
                   >
                     Salomatlik
                   </Button>
@@ -196,7 +196,7 @@ const Navigation = () => {
                 <Link to="/" className="link transition text-[14px] font-[500]">
                   <Button
                     className="!link transition !font-[500] !text-[rgba(0,0,0,0.8)]
-                hover:!text-[#ff5252]"
+                hover:!text-[#ff5252] !py-4"
                   >
                     Jewelry
                   </Button>
