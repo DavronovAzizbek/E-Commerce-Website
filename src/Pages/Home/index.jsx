@@ -51,7 +51,7 @@ const Home = () => {
             </div>
           </div>
 
-          <ProductsSlider items={5} />
+          <ProductsSlider items={6} />
         </div>
       </section>
 

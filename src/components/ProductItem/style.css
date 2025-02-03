@@ -1,0 +1,14 @@
+.productItem .title {
+  line-height: 18px;
+}
+.productItem .actions button:hover svg {
+  color: #fff !important;
+}
+.productItem .actions button svg {
+  pointer-events: none !important;
+}
+
+.discount.bg-green-500 {
+  background-color: #28a745;
+  color: white;
+}
