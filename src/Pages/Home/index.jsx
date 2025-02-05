@@ -1,4 +1,3 @@
-import HomeSlider from "../../components/HomeSlider";
 import HomeCatSlider from "../../components/HomeCatSlider";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import AdsBannerSlider from "../../components/AdsBannerSlider";
