@@ -1,0 +1,29 @@
+.bannerBoxV2 {
+  height: 240px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bannerBoxV2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.bannerBoxV2 .info {
+  position: relative;
+  z-index: 10;
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.bannerBoxV2 a {
+  text-decoration: underline !important;
+}

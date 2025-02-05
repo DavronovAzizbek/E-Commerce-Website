@@ -1,6 +1,7 @@
 import HomeCatSlider from "../../components/HomeCatSlider";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import AdsBannerSlider from "../../components/AdsBannerSlider";
+import HomeSlider from "../../components/HomeSlider";
 
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -15,6 +16,7 @@ import { Navigation } from "swiper/modules";
 import BlogItem from "../../components/BlogItem";
 import Footer from "../../components/Footer";
 import HomeBannerV2 from "../../components/HomeSliderV2";
+import BannerBoxV2 from "../../components/BannerBoxV2";
 
 const Home = () => {
   const [value, setValue] = React.useState(0);
@@ -25,10 +27,25 @@ const Home = () => {
 
   return (
     <>
+      <HomeSlider />
+
       <section className="py-6">
-        <div className="container flex items-center">
+        <div className="container flex gap-5">
           <div className="part1 w-full max-w-screen-lg">
             <HomeBannerV2 />
+          </div>
+
+          <div className="part2 w-[30%] flex items-center gap-5 justify-between flex-col">
+            <BannerBoxV2
+              info="left"
+              image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/cms/sub-banner-1.jpg"
+              title="Samsung Gear VR Camera"
+            />
+            <BannerBoxV2
+              info="right"
+              image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/cms/sub-banner-2.jpg"
+              title="Marcel Dining Room Chair"
+            />
           </div>
         </div>
       </section>
