@@ -15,7 +15,6 @@ import "swiper/css/navigation";
 
 import { Navigation } from "swiper/modules";
 import BlogItem from "../../components/BlogItem";
-import Footer from "../../components/Footer";
 import HomeBannerV2 from "../../components/HomeSliderV2";
 import BannerBoxV2 from "../../components/BannerBoxV2";
 
@@ -185,8 +184,6 @@ const Home = () => {
           </Swiper>
         </div>
       </section>
-
-      <Footer />
     </>
   );
 };

@@ -1,7 +1,9 @@
 const ProductListing = () => {
-    return (
-        <div>index</div>
-    )
-}
+  return (
+    <section className="py-8">
+      <div className="container"></div>
+    </section>
+  );
+};
 
 export default ProductListing;
