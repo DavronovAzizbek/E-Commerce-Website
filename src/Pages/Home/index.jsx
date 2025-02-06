@@ -1,6 +1,7 @@
 import HomeCatSlider from "../../components/HomeCatSlider";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import AdsBannerSlider from "../../components/AdsBannerSlider";
+import AdsBannerSliderV2 from "../../components/AdsBannerSliderV2";
 import HomeSlider from "../../components/HomeSlider";
 
 import Tabs from "@mui/material/Tabs";
@@ -105,7 +106,7 @@ const Home = () => {
             <p className="font-bold text-[25px]">- Faqat $200*</p>
           </div>
 
-          <AdsBannerSlider items={4} />
+          <AdsBannerSliderV2 items={4} />
         </div>
       </section>
 
