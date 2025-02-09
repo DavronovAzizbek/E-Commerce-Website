@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import { FaRegHeart } from "react-icons/fa";
 import { IoGitCompareOutline } from "react-icons/io5";
 import { MdZoomOutMap } from "react-icons/md";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 const ProductItem = ({
   // eslint-disable-next-line react/prop-types
@@ -23,8 +24,8 @@ const ProductItem = ({
   badge,
 }) => {
   return (
-    <div className="productItem shadow-lg rounded-md overflow-hidden border-1 border-[rgba(0,0,0,0.1)] group">
-      <div className="imgWrapper w-[100%] overflow-hidden rounded-md relative">
+    <div className="productItem shadow-lg rounded-md overflow-hidden border-1 border-[rgba(0,0,0,0.1)] group flex items-center">
+      <div className="imgWrapper w-[18%] overflow-hidden rounded-md relative">
         <Link to="/">
           <div className="img h-[220px] overflow-hidden">
             <img src={image1} className="w-full" alt="Product Image 1" />
@@ -70,17 +71,23 @@ const ProductItem = ({
         </div>
       </div>
 
-      <div className="info p-3 py-5">
-        <h6 className="text-[13px]">
+      <div className="info p-3 py-5 px-8 w-[75%]">
+        <h6 className="text-[15px]">
           <Link to="/" className="link transition-all">
             {category}
           </Link>
         </h6>
-        <h3 className="text-[13px] title mt-1 font-[500] mb-1 text-[#000]">
+        <h3 className="text-[18px] title mt-2 font-[500] mb-1 text-[#000]">
           <Link to="/" className="link transition-all">
             {title}
           </Link>
         </h3>
+
+        <p className="text-[14px] mb-3">
+          We denounce with righteous indignation and dislike men who are so
+          beguiled and demoralized by the charms of pleasure of the moment, so
+          blinded by desire that they cannot.
+        </p>
 
         <Rating name="size-small" defaultValue={4} size="small" readOnly />
 
@@ -91,6 +98,13 @@ const ProductItem = ({
           <span className="price text-primary text-[15px] font-[600]">
             ${price}
           </span>
+        </div>
+
+        <div className="mt-3">
+          <Button className="btn-org flex gap-2">
+            <MdOutlineShoppingCart className="text-[20px]" />
+            Add to Cart
+          </Button>
         </div>
       </div>
     </div>

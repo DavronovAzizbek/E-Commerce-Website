@@ -9,6 +9,8 @@ import { LuMenu } from "react-icons/lu";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import React, { useState } from "react";
+import ProductItemListView from "../../components/ProductItemListView";
+import Pagination from "@mui/material/Pagination";
 
 const ProductListing = () => {
   const [itemView, setItemView] = useState("grid");
@@ -22,7 +24,7 @@ const ProductListing = () => {
   };
 
   return (
-    <section className="py-5">
+    <section className="py-5 pb-0">
       <div className="container">
         <Breadcrumbs aria-label="breadcrumb">
           <Link
@@ -52,15 +54,19 @@ const ProductListing = () => {
 
           <div className="rightContent w-[80%] py-3">
             <div className="bg-[#f1f1f1] p-2 w-full mb-4 rounded-md flex items-center justify-between">
-              <div className="col1 flex items-center">
+              <div className="col1 flex items-center itemViewActions">
                 <Button
-                  className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !text-[#000]"
+                  className={`!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !text-[#000] ${
+                    itemView === "list" && "active"
+                  } `}
                   onClick={() => setItemView("list")}
                 >
                   <LuMenu className="text-[rgba(0,0,0,0.7)]" />
                 </Button>
                 <Button
-                  className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !text-[#000]"
+                  className={`!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !text-[#000] ${
+                    itemView === "grid" && "active"
+                  } `}
                   onClick={() => setItemView("grid")}
                 >
                   <IoGridSharp className="text-[rgba(0,0,0,0.7)]" />
@@ -136,7 +142,13 @@ const ProductListing = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div
+              className={`grid ${
+                itemView === "grid"
+                  ? "grid-cols-4 md:grid-cols-4"
+                  : "grid-cols-1 md:grid-cols-1"
+              } gap-4`}
+            >
               {itemView === "grid" ? (
                 <>
                   <ProductItem
@@ -213,8 +225,85 @@ const ProductListing = () => {
                   />
                 </>
               ) : (
-                ""
+                <>
+                  <ProductItemListView
+                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/35-large_default/brown-bear-printed-sweater.jpg"
+                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/32-medium_default/brown-bear-printed-sweater.jpg"
+                    category="Initech space"
+                    title="Apple Smart Watch / Midnight Aluminum"
+                    oldPrice="58.00"
+                    price="51.04"
+                    badge="-12%"
+                  />
+                  <ProductItemListView
+                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/49-large_default/today-is-a-good-day-framed-poster.jpg"
+                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/53-medium_default/today-is-a-good-day-framed-poster.jpg"
+                    category="Pro Tech Gear"
+                    title="Convenient Bags For Students And Adults Too"
+                    oldPrice="100.00"
+                    price="94.00"
+                    badge="NEW"
+                  />
+                  <ProductItemListView
+                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/70-large_default/mug-today-is-a-good-day.jpg"
+                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/71-medium_default/mug-today-is-a-good-day.jpg"
+                    category="Soylent Green"
+                    title="Mens Cotton Casual Short Sleeve T-Shirts"
+                    oldPrice="90.00"
+                    price="86.00"
+                    badge="NEW"
+                  />
+                  <ProductItemListView
+                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/133-large_default/customizable-mug.jpg"
+                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/130-medium_default/customizable-mug.jpg"
+                    category="Soylent Green"
+                    title="Plastic Bamboo Dustpan & Brush Black"
+                    oldPrice="57.00"
+                    price="52.44"
+                    badge="-8%"
+                  />
+                  <ProductItemListView
+                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/104-large_default/brown-bear-vector-graphics.jpg"
+                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/105-medium_default/brown-bear-vector-graphics.jpg"
+                    category="Looney Tunes"
+                    title="Beautiful And Affordable Bags For Women"
+                    oldPrice="92.00"
+                    price="82.00"
+                    badge="NEW"
+                  />
+                  <ProductItemListView
+                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/120-large_default/brown-bear-notebook.jpg"
+                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/119-medium_default/brown-bear-notebook.jpg"
+                    category="The Simpsons"
+                    title="Smart Speaker & Google Assistant, Light Grey"
+                    oldPrice="60.00"
+                    price="54.00"
+                    badge="NEW"
+                  />
+                  <ProductItemListView
+                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/103-large_default/pack-mug-framed-poster.jpg"
+                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/97-medium_default/pack-mug-framed-poster.jpg"
+                    category="Pro Tech Gear"
+                    title="GENELEC Compact two-way Active Speaker"
+                    oldPrice="58.00"
+                    price="54.00"
+                    badge="NEW"
+                  />
+                  <ProductItemListView
+                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/91-large_default/mountain-fox-vector-graphics.jpg"
+                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/93-medium_default/mountain-fox-vector-graphics.jpg"
+                    category="Initech space"
+                    title="Pendant Light Lamps for Home Decor"
+                    oldPrice="82.00"
+                    price="76.00"
+                    badge="NEW"
+                  />
+                </>
               )}
+            </div>
+
+            <div className="flex items-center justify-center mt-10">
+              <Pagination count={10} showFirstButton showLastButton />
             </div>
           </div>
         </div>

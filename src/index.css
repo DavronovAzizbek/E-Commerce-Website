@@ -39,6 +39,9 @@ body {
   font-size: 16px;
   padding: 7px 20px !important;
 }
+.btn-org:hover {
+  background: #171717 !important;
+}
 
 .link:hover {
   color: #ff5252;
@@ -201,4 +204,13 @@ footer form input::placeholder {
 
 .ReactCollapse--collapse {
   transition: height 400ms;
+}
+
+.itemViewActions button.active svg {
+  color: #ff5252 !important;
+  opacity: 1;
+}
+.Mui-selected.MuiPaginationItem-page {
+  background: #ff5252 !important;
+  color: #fff !important;
 }
