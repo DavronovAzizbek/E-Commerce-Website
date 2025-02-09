@@ -22,6 +22,8 @@ const ProductItem = ({
   price,
   // eslint-disable-next-line react/prop-types
   badge,
+  // eslint-disable-next-line react/prop-types
+  text,
 }) => {
   return (
     <div className="productItem shadow-lg rounded-md overflow-hidden border-1 border-[rgba(0,0,0,0.1)] group flex items-center">
@@ -83,11 +85,7 @@ const ProductItem = ({
           </Link>
         </h3>
 
-        <p className="text-[14px] mb-3">
-          We denounce with righteous indignation and dislike men who are so
-          beguiled and demoralized by the charms of pleasure of the moment, so
-          blinded by desire that they cannot.
-        </p>
+        <p className="text-[14px] mb-3">{text}</p>
 
         <Rating name="size-small" defaultValue={4} size="small" readOnly />
 
