@@ -3,16 +3,13 @@ import { LiaShippingFastSolid } from "react-icons/lia";
 import AdsBannerSlider from "../../components/AdsBannerSlider";
 import AdsBannerSliderV2 from "../../components/AdsBannerSliderV2";
 import HomeSlider from "../../components/HomeSlider";
-
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import React from "react";
 import ProductsSlider from "../../components/ProductsSlider";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-
 import { Navigation } from "swiper/modules";
 import BlogItem from "../../components/BlogItem";
 import HomeBannerV2 from "../../components/HomeSliderV2";
