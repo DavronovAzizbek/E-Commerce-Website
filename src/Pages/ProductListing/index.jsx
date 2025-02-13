@@ -234,7 +234,7 @@ const ProductListing = () => {
                     oldPrice="58.00"
                     price="51.04"
                     badge="-12%"
-                    text=""
+                    text="The sublimation textile printing process provides an exceptional color rendering and a color, guaranteed overtime praesentium voluptatum deleniti atque corrupti quos dolores."
                   />
                   <ProductItemListView
                     image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/49-large_default/today-is-a-good-day-framed-poster.jpg"
@@ -244,7 +244,7 @@ const ProductListing = () => {
                     oldPrice="100.00"
                     price="94.00"
                     badge="NEW"
-                    text=""
+                    text="Established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less."
                   />
                   <ProductItemListView
                     image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/70-large_default/mug-today-is-a-good-day.jpg"
@@ -254,7 +254,7 @@ const ProductListing = () => {
                     oldPrice="90.00"
                     price="86.00"
                     badge="NEW"
-                    text=""
+                    text="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi."
                   />
                   <ProductItemListView
                     image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/133-large_default/customizable-mug.jpg"
@@ -264,7 +264,7 @@ const ProductListing = () => {
                     oldPrice="57.00"
                     price="52.44"
                     badge="-8%"
-                    text=""
+                    text="Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their."
                   />
                   <ProductItemListView
                     image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/104-large_default/brown-bear-vector-graphics.jpg"
@@ -274,7 +274,7 @@ const ProductListing = () => {
                     oldPrice="92.00"
                     price="82.00"
                     badge="NEW"
-                    text=""
+                    text="The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable that."
                   />
                   <ProductItemListView
                     image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/120-large_default/brown-bear-notebook.jpg"
@@ -284,7 +284,7 @@ const ProductListing = () => {
                     oldPrice="60.00"
                     price="54.00"
                     badge="NEW"
-                    text=""
+                    text="The sublimation textile printing process provides an exceptional color rendering and a color, guaranteed overtime praesentium voluptatum deleniti atque corrupti quos dolores."
                   />
                   <ProductItemListView
                     image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/103-large_default/pack-mug-framed-poster.jpg"
@@ -294,7 +294,7 @@ const ProductListing = () => {
                     oldPrice="58.00"
                     price="54.00"
                     badge="NEW"
-                    text=""
+                    text="Equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple."
                   />
                   <ProductItemListView
                     image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/91-large_default/mountain-fox-vector-graphics.jpg"
@@ -304,7 +304,7 @@ const ProductListing = () => {
                     oldPrice="82.00"
                     price="76.00"
                     badge="NEW"
-                    text=""
+                    text="We denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire that they cannot foresee."
                   />
                 </>
               )}
