@@ -4,6 +4,10 @@ import ProductZoom from "../../components/ProductZoom";
 import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import QtyBox from "../../components/QtyBox";
+import { MdOutlineShoppingCart } from "react-icons/md";
+import { FaRegHeart } from "react-icons/fa";
+import { IoGitCompareOutline } from "react-icons/io5";
 
 const ProductDetails = () => {
   const [productActionIndex, setProductActionIndex] = useState(null);
@@ -42,12 +46,12 @@ const ProductDetails = () => {
       </div>
 
       <section className="bg-white py-5">
-        <div className="container flex gap-8">
+        <div className="container flex gap-8 items-center">
           <div className="productZoomContainer w-[40%]">
             <ProductZoom />
           </div>
 
-          <div className="productContent w-[60%]">
+          <div className="productContent w-[60%] pr-10">
             <h1 className="text-[24px] font-[600] mb-2">
               Cropped Satin Bomber Jacket
             </h1>
@@ -126,6 +130,32 @@ const ProductDetails = () => {
                   XL
                 </Button>
               </div>
+            </div>
+
+            <p className="text-[14px] mt-4 mb-2">
+              Free Shipping (Est. Delivery Time 2-3 Days)
+            </p>
+            <div className="flex items-center  gap-4">
+              <div className="qtyBoxWrapper w-[70px]">
+                <QtyBox />
+              </div>
+
+              <Button className="btn-org flex gap-2">
+                <MdOutlineShoppingCart className="text-[22px]" />
+                Add to Cart
+              </Button>
+            </div>
+
+            <div className="flex items-center gap-4 mt-4">
+              <span className="flex items-center gap-2 text-[15px] link cursor-pointer font-[500]">
+                <FaRegHeart className="text-[18px]" />
+                Add to Wishlist
+              </span>
+
+              <span className="flex items-center gap-2 text-[15px] link cursor-pointer font-[500]">
+                <IoGitCompareOutline className="text-[18px]" />
+                Add to Compare
+              </span>
             </div>
           </div>
         </div>
