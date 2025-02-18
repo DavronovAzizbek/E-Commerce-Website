@@ -74,7 +74,7 @@ const ProductItem = ({
       </div>
 
       <div className="info p-3 py-5 px-8 w-[75%]">
-        <h6 className="text-[15px]">
+        <h6 className="text-[15px] !font-[400]">
           <Link to="/" className="link transition-all">
             {category}
           </Link>
