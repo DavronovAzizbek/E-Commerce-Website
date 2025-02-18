@@ -16,23 +16,22 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ProductZoom from "./components/ProductZoom";
+import ProductDetailsComponent from "./components/ProductDetails";
 
 const MyContext = createContext();
 
 function App() {
-  const [openProductDetailsModal, setOpenProductDetailsModal] = useState(true);
+  const [openProductDetailsModal, setOpenProductDetailsModal] = useState(false);
   const [maxWidth, setMaxWidth] = useState("lg");
   const [fullWidth, setFullWidth] = useState(true);
-
-  const handleClickOpenProductDetailsModal = () => {
-    setOpenProductDetailsModal(true);
-  };
 
   const handleCloseProductDetailsModal = () => {
     setOpenProductDetailsModal(false);
   };
 
-  const values = {};
+  const values = {
+    setOpenProductDetailsModal,
+  };
 
   return (
     <>
@@ -68,13 +67,17 @@ function App() {
         <DialogContent>
           <div className="flex items-center w-full productDetailsModalContainer relative">
             <Button
-              className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !text-[#000] !absolute top-[0px] right-[0px]"
+              className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !text-[#000] !absolute top-[15px] right-[15px] !bg-[#f1f1f1]"
               onClick={handleCloseProductDetailsModal}
             >
-              <IoCloseSharp />
+              <IoCloseSharp className="text-[20px]" />
             </Button>
-            <div className="col1 w-[40%]">
+            <div className="col1 w-[40%] px-3">
               <ProductZoom />
+            </div>
+
+            <div className="col2 w-[60%] py-8 px-8 pr-16 productContent">
+              <ProductDetailsComponent />
             </div>
           </div>
         </DialogContent>
@@ -84,3 +87,5 @@ function App() {
 }
 
 export default App;
+
+export { MyContext };
