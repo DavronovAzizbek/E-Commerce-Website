@@ -8,6 +8,7 @@ import ProductDetails from "./Pages/ProductDetails";
 import { createContext } from "react";
 import { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
+
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -83,5 +84,4 @@ function App() {
 }
 
 export default App;
-
 export { MyContext };
