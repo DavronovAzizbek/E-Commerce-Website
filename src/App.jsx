@@ -8,13 +8,9 @@ import ProductDetails from "./Pages/ProductDetails";
 import { createContext } from "react";
 import { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
-
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import ProductZoom from "./components/ProductZoom";
 import ProductDetailsComponent from "./components/ProductDetails";
 
