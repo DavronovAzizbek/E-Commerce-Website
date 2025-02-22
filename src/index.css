@@ -59,6 +59,11 @@ h6 {
   background: #171717 !important;
 }
 
+.btn-lg {
+  font-size: 18px;
+  padding: 10px 20px !important;
+}
+
 .link:hover {
   color: #ff5252;
 }
