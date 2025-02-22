@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
 import Home from "./Pages/Home";
@@ -15,7 +15,6 @@ import ProductZoom from "./components/ProductZoom";
 import ProductDetailsComponent from "./components/ProductDetails";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
-import Drawer from "@mui/material/Drawer";
 
 const MyContext = createContext();
 
@@ -37,6 +36,8 @@ function App() {
   const values = {
     setOpenProductDetailsModal,
     setOpenCartPanel,
+    toggleCartPanel,
+    openCartPanel,
   };
 
   return (
@@ -90,42 +91,6 @@ function App() {
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Cart Panel */}
-      <Drawer
-        open={openCartPanel}
-        onClose={toggleCartPanel(false)}
-        anchor={"right"}
-        className="cartPanel"
-      >
-        <div className="flex items-center justify-between py-3 px-4 gap-3 border-b border-[rgba(0,0,0,0.1)]">
-          <h4>Shopping Cart (1)</h4>
-          <IoCloseSharp
-            className="text-[20px] cursor-pointer"
-            onClick={toggleCartPanel(false)}
-          />
-        </div>
-
-        <div className="scroll w-full max-h-[300px] overflow-y-scroll overflow-x-hidden py-3 px-4">
-          <div className="cartItem w-full flex items-center gap-4">
-            <div className="img w-[30%]">
-              <img
-                src="https://demos.codezeel.com/prestashop/PRS21/PRS210502/49-large_default/today-is-a-good-day-framed-poster.jpg"
-                alt=""
-                className="w-full"
-              />
-            </div>
-
-            <div className="info w-[70%]">
-              <h4 className="text-[16px] font-[500]">
-                <Link to="/product/1234" className="link">
-                  Cropped Satin Bomber Jacket
-                </Link>
-              </h4>
-            </div>
-          </div>
-        </div>
-      </Drawer>
     </>
   );
 }
