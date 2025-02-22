@@ -104,7 +104,7 @@ const HomeCatSlider = () => {
             <Link to="/">
               <div className="item py-7 px-3 bg-white rounded-sm text-center flex items-center justify-center flex-col">
                 <img
-                  src="https://dreamcontroller.com/cdn/shop/products/Xbox_SX_Front_11fbe445-0dd0-4aae-b7c3-07bf3f54e2ac.jpg?v=1680736288&width=2048"
+                  src="https://cdn1.ozone.ru/s3/multimedia-p/6890664733.jpg"
                   className="w-[60px] transition-all"
                 />
                 <h3 className="text-[15px] font-[500] mt-3">Xbox Controller</h3>

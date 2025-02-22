@@ -22,7 +22,7 @@ const HomeSlider = () => {
           <SwiperSlide>
             <div className="item rounded-[20px] overflow-hidden">
               <img
-                src="https://images.uzum.uz/cpg5ce3mdtjnp738eaig/main_page_banner.jpg"
+                src="https://icms-image.slatic.net/images/ims-web/42edcaae-9039-457a-b4c8-a76aaa439427.jpg"
                 alt="Banner slide"
                 className="w-full"
               />
@@ -31,7 +31,7 @@ const HomeSlider = () => {
           <SwiperSlide>
             <div className="item rounded-[20px] overflow-hidden">
               <img
-                src="https://images.uzum.uz/cqsrq17frr8a72r87mug/main_page_banner.jpg"
+                src="https://icms-image.slatic.net/images/ims-web/ffd41c69-179e-4cb1-97bf-a98584565c88.jpg"
                 alt="Banner slide"
                 className="w-full"
               />
