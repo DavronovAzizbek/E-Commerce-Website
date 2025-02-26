@@ -302,3 +302,17 @@ input[type="number"]::-webkit-outer-spin-button {
 #size-menu .MuiButtonBase-root {
   font-size: 12px !important;
 }
+
+.otpBox input {
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
+  outline: none !important;
+  border-radius: 4px;
+}
+.otpBox input:focus {
+  border: 1px solid rgba(0, 0, 0, 0.7) !important;
+}
+
+.otpPage .container {
+  height: 90vh;
+  display: flex;
+}
