@@ -3,11 +3,23 @@ import Button from "@mui/material/Button";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
+  const [formFields, setFormsFields] = useState({
+    email: "",
+    password: "",
+  });
+
+  const histoty = useNavigate();
+
+  const forgotPassword = () => {
+    if (formFields.email !== "") {
+    }
+    histoty.push("/verify");
+  };
 
   return (
     <section className="section py-10">
@@ -25,6 +37,7 @@ const Login = () => {
                 label="Email Id *"
                 variant="outlined"
                 className="w-full"
+                name="name"
               />
             </div>
 
@@ -35,6 +48,7 @@ const Login = () => {
                 label="Password *"
                 variant="outlined"
                 className="w-full"
+                name="password"
               />
               <Button
                 className="!absolute top-[10px] right-[10px] z-50 !w-[35px] !h-[35px] !min-w-[35px] !rounded-full !text-black"
@@ -50,7 +64,10 @@ const Login = () => {
               </Button>
             </div>
 
-            <a className="link cursor-pointer text-[14px] font-[600]">
+            <a
+              className="link cursor-pointer text-[14px] font-[600]"
+              onClick={forgotPassword}
+            >
               Forgot Password ?
             </a>
 
