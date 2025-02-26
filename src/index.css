@@ -298,3 +298,7 @@ input[type="number"]::-webkit-outer-spin-button {
   width: 400px;
   overflow: hidden;
 }
+
+#size-menu .MuiButtonBase-root {
+  font-size: 12px !important;
+}
