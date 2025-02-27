@@ -59,6 +59,20 @@ h6 {
   background: #171717 !important;
 }
 
+.btn-org .btn-border {
+  background: none !important;
+  color: #ff5252 !important;
+  border: 1px solid #ff5252 !important;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 7px 20px !important;
+}
+.btn-org.btn-border:hover {
+  background: #171717 !important;
+  color: #fff !important;
+  border: 1px solid #171717 !important;
+}
+
 .btn-lg {
   font-size: 18px;
   padding: 10px 20px !important;
@@ -326,4 +340,31 @@ input[type="number"]::-webkit-outer-spin-button {
 
 #account-menu .MuiPaper-root {
   width: 200px !important;
+}
+
+.myAccountTabs li a {
+  position: relative;
+  display: block;
+}
+.myAccountTabs li a:before {
+  content: "";
+  width: 3px;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  background: #ff5252;
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.myAccountTabs li a.active::before {
+  height: 100%;
+  opacity: 1;
+  top: 0px;
+}
+
+.myAccountTabs li a.active button svg {
+  color: #ff5252 !important;
+  opacity: 1 !important;
 }
