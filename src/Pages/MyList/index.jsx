@@ -1,5 +1,3 @@
-import Button from "@mui/material/Button";
-import { BsFillBagCheckFill } from "react-icons/bs";
 import MyListItems from "./myListItems";
 import AccountSidebar from "../../components/AccountSidebar";
 
@@ -16,7 +14,7 @@ const MyList = () => {
             <div className="py-2 px-3 border-b border-[rgba(0,0,0,0.1)]">
               <h2>My List</h2>
               <p className="mt-0">
-                There are <span className="font-bold text-primary">2</span>{" "}
+                There are <span className="font-bold text-primary">2</span>
                 products in your My List
               </p>
             </div>

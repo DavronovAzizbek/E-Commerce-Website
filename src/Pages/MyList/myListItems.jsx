@@ -1,9 +1,5 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoCloseSharp } from "react-icons/io5";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { GoTriangleDown } from "react-icons/go";
 import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 
