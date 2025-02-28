@@ -1,8 +1,21 @@
 import AccountSidebar from "../../components/AccountSidebar";
 import Button from "@mui/material/Button";
 import { FaAngleDown } from "react-icons/fa6";
+import Badge from "../../components/Badge";
+import { useState } from "react";
+import { FaAngleUp } from "react-icons/fa6";
 
 const Orders = () => {
+  const [isOpenOrderdProduct, setIsOpenOrderdProduct] = useState(null);
+
+  const isShowOrderdProduct = (index) => {
+    if (isOpenOrderdProduct === index) {
+      setIsOpenOrderdProduct(null);
+    } else {
+      setIsOpenOrderdProduct(index);
+    }
+  };
+
   return (
     <section className="py-10 w-full">
       <div className="container flex gap-5">
@@ -24,9 +37,7 @@ const Orders = () => {
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-white dark:text-gray-400">
                     <tr>
                       <th scope="col" className="px-6 py-3">
-                        <Button className="!w-[35px] !h-[35px] !min-w-[35px] !rounded-full !bg-[#f1f1f1]">
-                          <FaAngleDown className="text-[16px] text-[rgba(0,0,0,0.7)]" />
-                        </Button>
+                        &nbsp;
                       </th>
                       <th scope="col" className="px-6 py-3 whitespace-nowrap">
                         Order Id
@@ -65,7 +76,18 @@ const Orders = () => {
                   </thead>
                   <tbody>
                     <tr className="bg-white border-b dark:bg-white dark:border-gray-200">
-                      <td className="px-6 py-4 font-[500]">&nbsp;</td>
+                      <td className="px-6 py-4 font-[500]">
+                        <Button
+                          className="!w-[35px] !h-[35px] !min-w-[35px] !rounded-full !bg-[#f1f1f1]"
+                          onClick={() => isShowOrderdProduct(0)}
+                        >
+                          {isOpenOrderdProduct === 0 ? (
+                            <FaAngleUp className="text-[16px] text-[rgba(0,0,0,0.7)]" />
+                          ) : (
+                            <FaAngleDown className="text-[16px] text-[rgba(0,0,0,0.7)]" />
+                          )}
+                        </Button>
+                      </td>
                       <td className="px-6 py-4 font-[500]">
                         <span className="text-primary">
                           6751449914dab0b78a342b261
@@ -75,7 +97,7 @@ const Orders = () => {
                         <span className="text-primary">pay_PTP0qEXFhrtpy8</span>
                       </td>
                       <td className="px-6 py-4 font-[500] whitespace-nowrap">
-                        RINKU VERMA
+                        John Doe
                       </td>
                       <td className="px-6 py-4 font-[500]">09643990046 </td>
                       <td className="px-6 py-4 font-[500]">
@@ -94,11 +116,114 @@ const Orders = () => {
                           66e120733d4b2dc4a19335ab{" "}
                         </span>
                       </td>
-                      <td className="px-6 py-4 font-[500]">Pending</td>
+                      <td className="px-6 py-4 font-[500]">
+                        <Badge status="pending" />
+                      </td>
                       <td className="px-6 py-4 font-[500] whitespace-nowrap">
                         2024-12-04
                       </td>
                     </tr>
+
+                    {isOpenOrderdProduct === 0 && (
+                      <tr>
+                        <td className="pl-20" colSpan="6">
+                          <div className="relative overflow-x-auto">
+                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-white dark:text-gray-400">
+                                <tr>
+                                  <th
+                                    scope="col"
+                                    className="px-6 py-3 whitespace-nowrap"
+                                  >
+                                    Product Id
+                                  </th>
+                                  <th
+                                    scope="col"
+                                    className="px-6 py-3 whitespace-nowrap"
+                                  >
+                                    Product Title
+                                  </th>
+                                  <th
+                                    scope="col"
+                                    className="px-6 py-3 whitespace-nowrap"
+                                  >
+                                    Image
+                                  </th>
+                                  <th
+                                    scope="col"
+                                    className="px-6 py-3 whitespace-nowrap"
+                                  >
+                                    Quantity
+                                  </th>
+                                  <th
+                                    scope="col"
+                                    className="px-6 py-3 whitespace-nowrap"
+                                  >
+                                    Price
+                                  </th>
+                                  <th
+                                    scope="col"
+                                    className="px-6 py-3 whitespace-nowrap"
+                                  >
+                                    SubTotal
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr className="bg-white border-b dark:bg-white dark:border-gray-200">
+                                  <td className="px-6 py-4 font-[500]">
+                                    <span className="text-gray-600">
+                                      6751449914dab0b78a342b261
+                                    </span>
+                                  </td>
+                                  <td className="px-6 py-4 font-[500]">
+                                    A-Line Kurti With Sharara & Du...
+                                  </td>
+                                  <td className="px-6 py-4 font-[500] whitespace-nowrap">
+                                    <img
+                                      src="https://demos.codezeel.com/prestashop/PRS21/PRS210502/71-medium_default/mug-today-is-a-good-day.jpg"
+                                      alt=""
+                                      className="w-[40px] h-[40px] object-cover rounded-md"
+                                    />
+                                  </td>
+                                  <td className="px-6 py-4 font-[500]">2</td>
+                                  <td className="px-6 py-4 font-[500]">1300</td>
+                                  <td className="px-6 py-4 font-[500]">1300</td>
+                                </tr>
+
+                                <tr className="bg-white border-b dark:bg-white dark:border-gray-200">
+                                  <td className="px-6 py-4 font-[500]">
+                                    <span className="text-gray-600">
+                                      6751449914dab0b78a342b261
+                                    </span>
+                                  </td>
+                                  <td className="px-6 py-4 font-[500]">
+                                    A-Line Kurti With Sharara & Du...
+                                  </td>
+                                  <td className="px-6 py-4 font-[500] whitespace-nowrap">
+                                    <img
+                                      src="https://demos.codezeel.com/prestashop/PRS21/PRS210502/71-medium_default/mug-today-is-a-good-day.jpg"
+                                      alt=""
+                                      className="w-[40px] h-[40px] object-cover rounded-md"
+                                    />
+                                  </td>
+                                  <td className="px-6 py-4 font-[500]">2</td>
+                                  <td className="px-6 py-4 font-[500]">1300</td>
+                                  <td className="px-6 py-4 font-[500]">1300</td>
+                                </tr>
+
+                                <tr>
+                                  <td
+                                    className="bg-[#f1f1f1]"
+                                    colSpan="12"
+                                  ></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
