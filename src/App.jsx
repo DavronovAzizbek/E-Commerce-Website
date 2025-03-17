@@ -30,7 +30,8 @@ function App() {
   const [openProductDetailsModal, setOpenProductDetailsModal] = useState(false);
   const [maxWidth, setMaxWidth] = useState("lg");
   const [fullWidth, setFullWidth] = useState(true);
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const [openCartPanel, setOpenCartPanel] = useState(false);
 
@@ -42,11 +43,11 @@ function App() {
     setOpenCartPanel(newOpen);
   };
 
-  const openAlertBox = (status, msg) => {
-    if (status === "success") {
+  const alertBox = (type, msg) => {
+    if (type === "success") {
       toast.success(msg);
     }
-    if (status === "error") {
+    if (type === "error") {
       toast.error(msg);
     }
   };
@@ -56,9 +57,9 @@ function App() {
     setOpenCartPanel,
     toggleCartPanel,
     openCartPanel,
-    openAlertBox,
     isLogin,
     setIsLogin,
+    alertBox,
   };
 
   return (
@@ -96,8 +97,6 @@ function App() {
         </MyContext.Provider>
       </BrowserRouter>
 
-      <Toaster />
-
       <Dialog
         open={openProductDetailsModal}
         fullWidth={fullWidth}
@@ -125,6 +124,8 @@ function App() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <Toaster />
     </>
   );
 }

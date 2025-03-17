@@ -376,3 +376,8 @@ input[type="number"]::-webkit-outer-spin-button {
   color: #ff5252 !important;
   opacity: 1 !important;
 }
+
+button .MuiCircularProgress-root {
+  width: 30px !important;
+  height: 30px !important;
+}
