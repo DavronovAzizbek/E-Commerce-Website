@@ -5,7 +5,7 @@ import Home from "./Pages/Home";
 import ProductListing from "./Pages/ProductListing";
 import Footer from "./components/Footer";
 import ProductDetails from "./Pages/ProductDetails";
-import { createContext } from "react";
+import { createContext, useEffect } from "react";
 import { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import Button from "@mui/material/Button";
@@ -23,6 +23,7 @@ import Checkout from "./Pages/Checkout";
 import MyAccount from "./Pages/MyAccount";
 import MyList from "./Pages/MyList";
 import Orders from "./Pages/Orders";
+import { fetchDataFromApi } from "./utils/api";
 
 const MyContext = createContext();
 
@@ -31,7 +32,7 @@ function App() {
   const [maxWidth, setMaxWidth] = useState("lg");
   const [fullWidth, setFullWidth] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const [userData, setUserData] = useState(null);
 
   const [openCartPanel, setOpenCartPanel] = useState(false);
 
@@ -42,6 +43,20 @@ function App() {
   const toggleCartPanel = (newOpen) => () => {
     setOpenCartPanel(newOpen);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+
+    if (token !== undefined && token !== null && token !== "") {
+      setIsLogin(true);
+
+      fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res) => {
+        setUserData(res.data);
+      });
+    } else {
+      setIsLogin(false);
+    }
+  }, [isLogin]);
 
   const alertBox = (type, msg) => {
     if (type === "success") {
@@ -60,6 +75,8 @@ function App() {
     isLogin,
     setIsLogin,
     alertBox,
+    setUserData,
+    userData,
   };
 
   return (

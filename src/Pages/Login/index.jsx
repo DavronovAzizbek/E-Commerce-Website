@@ -6,8 +6,11 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { MyContext } from "../../App";
+import CircularProgress from "@mui/material/CircularProgress";
+import { postData } from "../../utils/api";
 
 const Login = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const [formFields, setFormsFields] = useState({
     email: "",
@@ -15,11 +18,62 @@ const Login = () => {
   });
 
   const context = useContext(MyContext);
-  const histoty = useNavigate();
+  const history = useNavigate();
 
   const forgotPassword = () => {
     context.openAlertBox("success", "OTP Send");
-    histoty("/verify");
+    history("/verify");
+  };
+
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    setFormsFields(() => {
+      return {
+        ...formFields,
+        [name]: value,
+      };
+    });
+  };
+
+  const valideValue = Object.values(formFields).every((el) => el);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    if (formFields.email === "") {
+      context.alertBox("error", "Please enter email id");
+      return false;
+    }
+
+    if (formFields.password === "") {
+      context.alertBox("error", "Please enter password");
+      return false;
+    }
+
+    postData("/api/user/login", formFields, { withCredentials: true }).then(
+      (res) => {
+        if (res?.error !== true) {
+          setIsLoading(false);
+          context.alertBox("success", res?.message);
+          setFormsFields({
+            email: "",
+            password: "",
+          });
+
+          localStorage.setItem("accessToken", res?.data?.accessToken);
+          localStorage.setItem("refreshToken", res?.data?.refreshToken);
+
+          context.setIsLogin(true);
+
+          history("/");
+        } else {
+          context.alertBox("error", res?.message);
+          setIsLoading(false);
+        }
+      }
+    );
   };
 
   return (
@@ -30,15 +84,18 @@ const Login = () => {
             Login to your account
           </h3>
 
-          <form className="w-full mt-5">
+          <form className="w-full mt-5" onSubmit={handleSubmit}>
             <div className="form-group w-full mb-5">
               <TextField
                 type="email"
                 id="email"
+                name="email"
+                value={formFields.email}
+                disabled={isLoading === true ? true : false}
                 label="Email Id *"
                 variant="outlined"
                 className="w-full"
-                name="name"
+                onChange={onChangeInput}
               />
             </div>
 
@@ -50,6 +107,9 @@ const Login = () => {
                 variant="outlined"
                 className="w-full"
                 name="password"
+                value={formFields.password}
+                disabled={isLoading === true ? true : false}
+                onChange={onChangeInput}
               />
               <Button
                 className="!absolute top-[10px] right-[10px] z-50 !w-[35px] !h-[35px] !min-w-[35px] !rounded-full !text-black"
@@ -73,7 +133,17 @@ const Login = () => {
             </a>
 
             <div className="flex items-center w-full mt-3 mb-3">
-              <Button className="btn-org btn-lg w-full">Login</Button>
+              <Button
+                type="submit"
+                disabled={!valideValue}
+                className="btn-org btn-lg w-full flex gap-3"
+              >
+                {isLoading === true ? (
+                  <CircularProgress color="inherit" />
+                ) : (
+                  "Login"
+                )}
+              </Button>
             </div>
 
             <p className="text-center">
