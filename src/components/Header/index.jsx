@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Search from "../Search";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
@@ -34,6 +34,7 @@ const Header = () => {
   const open = Boolean(anchorEl);
 
   const context = useContext(MyContext);
+  const history = useNavigate();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,6 +55,7 @@ const Header = () => {
         context.setIsLogin(false);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        history("/");
       }
     });
   };

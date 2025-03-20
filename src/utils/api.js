@@ -28,12 +28,48 @@ export const postData = async (url, formData) => {
 
 export const fetchDataFromApi = async (url) => {
   try {
-    const { data } = await axios.get(apiUrl + url, {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "application/json",
-    });
+    const params = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(apiUrl + url, params);
     return data;
   } catch (error) {
     return error;
   }
+};
+
+export const uploadImage = async (url, updatedData) => {
+  const params = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  };
+
+  var response;
+  await axios.put(apiUrl + url, updatedData, params).then((res) => {
+    response = res;
+  });
+
+  return response;
+};
+
+export const editData = async (url, updatedData) => {
+  const params = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      "Content-Type": "application/json",
+    },
+  };
+
+  var response;
+  await axios.put(apiUrl + url, updatedData, params).then((res) => {
+    response = res;
+  });
+
+  return response;
 };

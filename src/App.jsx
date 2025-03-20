@@ -50,8 +50,18 @@ function App() {
     if (token !== undefined && token !== null && token !== "") {
       setIsLogin(true);
 
-      fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res) => {
+      fetchDataFromApi(`/api/user/user-details`).then((res) => {
         setUserData(res.data);
+        if (res?.response?.data?.error === true) {
+          if (res?.response?.data?.message === "You have not login") {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+
+            alertBox("error", "Your session is closed please login again");
+
+            setIsLogin(false);
+          }
+        }
       });
     } else {
       setIsLogin(false);
