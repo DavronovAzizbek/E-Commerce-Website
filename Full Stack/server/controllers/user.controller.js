@@ -367,7 +367,13 @@ export async function updateUserDetails(request, response) {
       message: "User update successfully",
       error: false,
       success: true,
-      user: updateUser,
+      user: {
+        name: updateUser?.name,
+        _id: updateUser?._id,
+        email: updateUser?.email,
+        mobile: updateUser?.mobile,
+        avatar: updateUser?.avatar,
+      },
     });
   } catch (error) {
     return response.status(500).json({
@@ -481,9 +487,11 @@ export async function verifyForgotPasswordOtp(request, response) {
 
 export async function resetPassword(request, response) {
   try {
-    const { email, newPassword, confirmPassword } = request.body;
+    const { email, oldPassword, newPassword, confirmPassword } = request.body;
     if (!email || !newPassword || !confirmPassword) {
       return response.status(400).json({
+        error: true,
+        success: false,
         message: "Provide required fields email, newPassword, confirmPassword",
       });
     }
@@ -492,6 +500,15 @@ export async function resetPassword(request, response) {
     if (!user) {
       return response.status(400).json({
         message: "Email is not available",
+        error: true,
+        success: false,
+      });
+    }
+
+    const checkPassword = await bcryptjs.compare(oldPassword, user.password);
+    if (!checkPassword) {
+      return response.status(400).json({
+        message: "Your old password is wrong",
         error: true,
         success: false,
       });
