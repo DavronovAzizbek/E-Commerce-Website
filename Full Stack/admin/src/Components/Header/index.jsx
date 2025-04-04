@@ -9,6 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import Divider from "@mui/material/Divider";
 import { FaRegUser } from "react-icons/fa6";
+import { IoMdLogOut } from "react-icons/io";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -32,14 +33,14 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full h-[50px] pl-52 pr-7 bg-[#f1f1f1] flex items-center justify-between">
+    <header className="w-full h-[auto] py-2 pl-64 shadow-md pr-7 bg-[#fff]  flex items-center justify-between">
       <div className="part1">
         <Button className="!w-[40px] !h-[40px] !rounded-full !min-w-[40px] !text-[rgba(0,0,0,0.8)]">
           <RiMenu2Line className="text-[18px] text-[rgba(0,0,0,0.8)]" />
         </Button>
       </div>
 
-      <div className="part2 w-[40%] flex items-center justify-end gap-4">
+      <div className="part2 w-[40%] flex items-center justify-end gap-5">
         <IconButton aria-label="cart">
           <StyledBadge badgeContent={4} color="secondary">
             <FaRegBell />
@@ -117,25 +118,16 @@ const Header = () => {
               onClick={handleCloseMyAcc}
               className="flex items-center gap-3"
             >
-              <FaRegUser /> <span className="text-[14px]">Profile</span>
+              <FaRegUser className="text-[16px]" />{" "}
+              <span className="text-[14px]">Profile</span>
             </MenuItem>
+
             <MenuItem
               onClick={handleCloseMyAcc}
               className="flex items-center gap-3"
             >
-              <FaRegUser /> <span className="text-[14px]">Profile</span>
-            </MenuItem>
-            <MenuItem
-              onClick={handleCloseMyAcc}
-              className="flex items-center gap-3"
-            >
-              <FaRegUser /> <span className="text-[14px]">Profile</span>
-            </MenuItem>
-            <MenuItem
-              onClick={handleCloseMyAcc}
-              className="flex items-center gap-3"
-            >
-              <FaRegUser /> <span className="text-[14px]">Profile</span>
+              <IoMdLogOut className="text-[18px]" />{" "}
+              <span className="text-[14px]">Sign Out</span>
             </MenuItem>
           </Menu>
         </div>
