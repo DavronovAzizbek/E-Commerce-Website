@@ -18,6 +18,9 @@ body {
   background: #ccc !important;
 }
 
+.btn {
+  padding: 8px 20px !important;
+}
 .btn-blue {
   background: #3872fa !important;
   color: #fff !important;
@@ -25,4 +28,12 @@ body {
 }
 .btn-blue:hover {
   background: #3067e5 !important;
+}
+.btn-sm {
+  padding: 6px 20px !important;
+  font-size: 13px !important;
+}
+
+th.MuiTableCell-root {
+  @apply bg-[#f1f1f1] py-1;
 }
