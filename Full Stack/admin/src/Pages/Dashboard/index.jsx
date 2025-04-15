@@ -4,14 +4,14 @@ import Button from "@mui/material/Button";
 import { FaAngleDown } from "react-icons/fa6";
 import Badge from "../../Components/Badge";
 import { FaAngleUp } from "react-icons/fa6";
-import { useState } from "react";
+import { useState, PureComponent } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { Link } from "react-router-dom";
 import Progress from "../../Components/ProgressBar";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaRegEye } from "react-icons/fa6";
 import { GoTrash } from "react-icons/go";
-import Tooltip from "@mui/material/Tooltip";
+// import Tooltip from "@mui/material/Tooltip";
 import Pagination from "@mui/material/Pagination";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -22,6 +22,16 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -49,6 +59,80 @@ const Dashboard = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [categoryFilterVal, setcategoryFilterVal] = useState("");
+  const [chart1Data, setChart1Data] = useState([
+    {
+      name: "JAN",
+      TotalSales: 4000,
+      TotalUsers: 2400,
+      amt: 2400,
+    },
+    {
+      name: "FEB",
+      TotalSales: 3000,
+      TotalUsers: 1398,
+      amt: 2210,
+    },
+    {
+      name: "MARCH",
+      TotalSales: 2000,
+      TotalUsers: 9800,
+      amt: 2290,
+    },
+    {
+      name: "APRIL",
+      TotalSales: 2780,
+      TotalUsers: 3908,
+      amt: 2000,
+    },
+    {
+      name: "MAY",
+      TotalSales: 1890,
+      TotalUsers: 4800,
+      amt: 2181,
+    },
+    {
+      name: "JUNE",
+      TotalSales: 2390,
+      TotalUsers: 3800,
+      amt: 2500,
+    },
+    {
+      name: "JULY",
+      TotalSales: 3490,
+      TotalUsers: 4300,
+      amt: 2100,
+    },
+    {
+      name: "AUG",
+      TotalSales: 3490,
+      TotalUsers: 2400,
+      amt: 2100,
+    },
+    {
+      name: "SEP",
+      TotalSales: 3490,
+      TotalUsers: 4900,
+      amt: 2100,
+    },
+    {
+      name: "OCT",
+      TotalSales: 3490,
+      TotalUsers: 6520,
+      amt: 2100,
+    },
+    {
+      name: "NOV",
+      TotalSales: 3490,
+      TotalUsers: 2300,
+      amt: 2100,
+    },
+    {
+      name: "DEC",
+      TotalSales: 3490,
+      TotalUsers: 1300,
+      amt: 2100,
+    },
+  ]);
 
   const handleChangeCatFilter = (event) => {
     setcategoryFilterVal(event.target.value);
@@ -561,23 +645,17 @@ const Dashboard = () => {
 
                 <td className="px-6 py-2">
                   <div className="flex items-center gap-1">
-                    <Tooltip title="Edit Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="View Product Details" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="Remove Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
                   </div>
                 </td>
               </tr>
@@ -638,23 +716,17 @@ const Dashboard = () => {
 
                 <td className="px-6 py-2">
                   <div className="flex items-center gap-1">
-                    <Tooltip title="Edit Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="View Product Details" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="Remove Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
                   </div>
                 </td>
               </tr>
@@ -715,23 +787,17 @@ const Dashboard = () => {
 
                 <td className="px-6 py-2">
                   <div className="flex items-center gap-1">
-                    <Tooltip title="Edit Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="View Product Details" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="Remove Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
                   </div>
                 </td>
               </tr>
@@ -792,23 +858,17 @@ const Dashboard = () => {
 
                 <td className="px-6 py-2">
                   <div className="flex items-center gap-1">
-                    <Tooltip title="Edit Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="View Product Details" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="Remove Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
                   </div>
                 </td>
               </tr>
@@ -869,23 +929,17 @@ const Dashboard = () => {
 
                 <td className="px-6 py-2">
                   <div className="flex items-center gap-1">
-                    <Tooltip title="Edit Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="View Product Details" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="Remove Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
                   </div>
                 </td>
               </tr>
@@ -946,23 +1000,17 @@ const Dashboard = () => {
 
                 <td className="px-6 py-2">
                   <div className="flex items-center gap-1">
-                    <Tooltip title="Edit Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="View Product Details" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="Remove Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
                   </div>
                 </td>
               </tr>
@@ -1085,23 +1133,17 @@ const Dashboard = () => {
                 </TableCell>
                 <TableCell style={{ minWidth: columns.minWidth }}>
                   <div className="flex items-center gap-1">
-                    <Tooltip title="Edit Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="View Product Details" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="Remove Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
                   </div>
                 </TableCell>
               </TableRow>
@@ -1156,236 +1198,17 @@ const Dashboard = () => {
                 </TableCell>
                 <TableCell style={{ minWidth: columns.minWidth }}>
                   <div className="flex items-center gap-1">
-                    <Tooltip title="Edit Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="View Product Details" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
 
-                    <Tooltip title="Remove Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
-                  </div>
-                </TableCell>
-              </TableRow>
-
-              <TableRow>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <Checkbox {...label} size="small" />
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <div className="flex items-center gap-4 w-[300px]">
-                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
-                      <Link to="/product/12345" data-discover="true">
-                        <img
-                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
-                          alt=""
-                          className="w-full group-hover:scale-105 transition-all"
-                        />
-                      </Link>
-                    </div>
-                    <div className="info w-[75%]">
-                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
-                        <a href="/product/12345" data-discover="true">
-                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
-                          set for Women
-                        </a>
-                      </h3>
-                      <span className="text-[12px]">Books</span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  Electronics
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  Women
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <div className="flex gap-1 flex-col">
-                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
-                      $58.00
-                    </span>
-                    <span className="price text-primary text-[14px] font-[600]">
-                      $58.00
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <p className="text-[14px] w-[100px]">
-                    <span className="font-[600]">234</span> sale
-                  </p>
-                  <Progress value={40} type="success" />
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <div className="flex items-center gap-1">
-                    <Tooltip title="Edit Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
-
-                    <Tooltip title="View Product Details" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
-
-                    <Tooltip title="Remove Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
-                  </div>
-                </TableCell>
-              </TableRow>
-
-              <TableRow>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <Checkbox {...label} size="small" />
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <div className="flex items-center gap-4 w-[300px]">
-                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
-                      <Link to="/product/12345" data-discover="true">
-                        <img
-                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
-                          alt=""
-                          className="w-full group-hover:scale-105 transition-all"
-                        />
-                      </Link>
-                    </div>
-                    <div className="info w-[75%]">
-                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
-                        <a href="/product/12345" data-discover="true">
-                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
-                          set for Women
-                        </a>
-                      </h3>
-                      <span className="text-[12px]">Books</span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  Electronics
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  Women
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <div className="flex gap-1 flex-col">
-                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
-                      $58.00
-                    </span>
-                    <span className="price text-primary text-[14px] font-[600]">
-                      $58.00
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <p className="text-[14px] w-[100px]">
-                    <span className="font-[600]">234</span> sale
-                  </p>
-                  <Progress value={40} type="success" />
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <div className="flex items-center gap-1">
-                    <Tooltip title="Edit Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
-
-                    <Tooltip title="View Product Details" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
-
-                    <Tooltip title="Remove Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
-                  </div>
-                </TableCell>
-              </TableRow>
-
-              <TableRow>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <Checkbox {...label} size="small" />
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <div className="flex items-center gap-4 w-[300px]">
-                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
-                      <Link to="/product/12345" data-discover="true">
-                        <img
-                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
-                          alt=""
-                          className="w-full group-hover:scale-105 transition-all"
-                        />
-                      </Link>
-                    </div>
-                    <div className="info w-[75%]">
-                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
-                        <a href="/product/12345" data-discover="true">
-                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
-                          set for Women
-                        </a>
-                      </h3>
-                      <span className="text-[12px]">Books</span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  Electronics
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  Women
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <div className="flex gap-1 flex-col">
-                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
-                      $58.00
-                    </span>
-                    <span className="price text-primary text-[14px] font-[600]">
-                      $58.00
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <p className="text-[14px] w-[100px]">
-                    <span className="font-[600]">234</span> sale
-                  </p>
-                  <Progress value={40} type="success" />
-                </TableCell>
-                <TableCell style={{ minWidth: columns.minWidth }}>
-                  <div className="flex items-center gap-1">
-                    <Tooltip title="Edit Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
-
-                    <Tooltip title="View Product Details" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
-
-                    <Tooltip title="Remove Product" placement="top">
-                      <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                        <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                      </Button>
-                    </Tooltip>
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
                   </div>
                 </TableCell>
               </TableRow>
@@ -1401,6 +1224,54 @@ const Dashboard = () => {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
+      </div>
+
+      <div className="card my-4 shadow-md sm:rounded-lg bg-white">
+        <div className="flex items-center justify-between px-5 py-5 pb-0">
+          <h2 className="text-[18px] font-[600]">Total Users & Total Sales</h2>
+        </div>
+
+        <div className="flex items-center gap-5 px-5 py-5 pt-1">
+          <span className="flex items-center gap-1 text-[15px]">
+            <span className="block w-[8px] h-[8px] rounded-full bg-green-600"></span>
+            Total Users
+          </span>
+
+          <span className="flex items-center gap-1 text-[15px]">
+            <span className="block w-[8px] h-[8px] rounded-full bg-primary"></span>
+            Total Sales
+          </span>
+        </div>
+        <LineChart
+          width={1000}
+          height={500}
+          data={chart1Data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" stroke="none" />
+          <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+          <YAxis tick={{ fontSize: 12 }} />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="TotalSales"
+            stroke="#8884d8"
+            strokeWidth={3}
+            activeDot={{ r: 8 }}
+          />
+          <Line
+            type="monotone"
+            dataKey="TotalUsers"
+            stroke="#82ca9d"
+            strokeWidth={3}
+          />
+        </LineChart>
       </div>
     </>
   );
