@@ -4,14 +4,13 @@ import Button from "@mui/material/Button";
 import { FaAngleDown } from "react-icons/fa6";
 import Badge from "../../Components/Badge";
 import { FaAngleUp } from "react-icons/fa6";
-import { useState, PureComponent } from "react";
+import { useState, PureComponent, useContext } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { Link } from "react-router-dom";
 import Progress from "../../Components/ProgressBar";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaRegEye } from "react-icons/fa6";
 import { GoTrash } from "react-icons/go";
-// import Tooltip from "@mui/material/Tooltip";
 import Pagination from "@mui/material/Pagination";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -22,6 +21,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { MyContext } from "../../App";
 import {
   LineChart,
   Line,
@@ -59,7 +59,7 @@ const Dashboard = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [categoryFilterVal, setcategoryFilterVal] = useState("");
-  const [chart1Data, setChart1Data] = useState([
+  const [chart1Data] = useState([
     {
       name: "JAN",
       TotalSales: 4000,
@@ -134,6 +134,8 @@ const Dashboard = () => {
     },
   ]);
 
+  const context = useContext(MyContext);
+
   const handleChangeCatFilter = (event) => {
     setcategoryFilterVal(event.target.value);
   };
@@ -160,7 +162,15 @@ const Dashboard = () => {
             once.
           </p>
           <br />
-          <Button className="btn-blue !capitalize">
+          <Button
+            className="btn-blue !capitalize"
+            onClick={() =>
+              context.setIsOpenFullScreenPanel({
+                open: true,
+                model: "Add Product",
+              })
+            }
+          >
             <FaPlus />
             Add Product
           </Button>
@@ -553,7 +563,15 @@ const Dashboard = () => {
             <Button className="btn !bg-green-600 !text-white btn-sm">
               Export
             </Button>
-            <Button className="btn-blue  !text-white btn-sm">
+            <Button
+              className="btn-blue  !text-white btn-sm"
+              onClick={() =>
+                context.setIsOpenFullScreenPanel({
+                  open: true,
+                  model: "Add Product",
+                })
+              }
+            >
               Add Product
             </Button>
           </div>
@@ -1056,7 +1074,15 @@ const Dashboard = () => {
             <Button className="btn !bg-green-600 !text-white btn-sm">
               Export
             </Button>
-            <Button className="btn-blue  !text-white btn-sm">
+            <Button
+              className="btn-blue  !text-white btn-sm"
+              onClick={() =>
+                context.setIsOpenFullScreenPanel({
+                  open: true,
+                  model: "Add Product",
+                })
+              }
+            >
               Add Product
             </Button>
           </div>
