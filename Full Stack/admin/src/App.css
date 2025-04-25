@@ -73,3 +73,22 @@ input[type="number"]::-webkit-outer-spin-button {
 .MuiDialog-paper {
   background: #f9fafb !important;
 }
+
+.otpBox input {
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
+  outline: none !important;
+  border-radius: 4px;
+}
+
+.otpBox input:focus {
+  border: 1px solid rgba(0, 0, 0, 0.7) !important;
+}
+
+.otpPage .container {
+  height: 90vh;
+  display: flex;
+}
+
+.MuiTableBody-root tr:nth-child(even) {
+  @apply bg-gray-50;
+}

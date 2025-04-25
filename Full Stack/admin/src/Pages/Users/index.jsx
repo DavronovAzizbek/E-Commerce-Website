@@ -14,6 +14,7 @@ import SearchBox from "../../Components/SearchBox";
 import { MyContext } from "../../App";
 import { MdOutlineMarkEmailRead } from "react-icons/md";
 import { MdLocalPhone } from "react-icons/md";
+import { SlCalender } from "react-icons/sl";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -22,6 +23,7 @@ const columns = [
   { id: "userName", label: "USER NAME", minWidth: 100 },
   { id: "userEmail", label: "USER EMAIL", minWidth: 150 },
   { id: "userPh", label: "USER PHONE NO", minWidth: 130 },
+  { id: "createdDate", label: "CREATED", minWidth: 130 },
 ];
 
 const Users = () => {
@@ -85,7 +87,7 @@ const Users = () => {
                 </TableCell>
                 <TableCell style={{ minWidth: columns.minWidth }}>
                   <div className="flex items-center gap-4 w-[70px]">
-                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
+                    <div className="img w-[45px] h-[45px] rounded-md overflow-hidden group">
                       <Link to="/product/12345" data-discover="true">
                         <img
                           src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dXNlciUyMHBlcnNvbmF8ZW58MHx8MHx8fDA%3D"
@@ -99,14 +101,222 @@ const Users = () => {
                 <TableCell style={{ minWidth: columns.minWidth }}>
                   Joker Kumar
                 </TableCell>
+
                 <TableCell style={{ minWidth: columns.minWidth }}>
                   <span className="flex items-center gap-2">
                     <MdOutlineMarkEmailRead /> joker@gmail.com
                   </span>
                 </TableCell>
+
                 <TableCell style={{ minWidth: columns.minWidth }}>
                   <span className="flex items-center gap-2">
                     <MdLocalPhone /> +998 123 456 789
+                  </span>
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <SlCalender /> 26-04-2025
+                  </span>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <Checkbox {...label} size="small" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-4 w-[70px]">
+                    <div className="img w-[45px] h-[45px] rounded-md overflow-hidden group">
+                      <Link to="/product/12345" data-discover="true">
+                        <img
+                          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dXNlciUyMHBlcnNvbmF8ZW58MHx8MHx8fDA%3D"
+                          alt=""
+                          className="w-full group-hover:scale-105 transition-all"
+                        />
+                      </Link>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Joker Kumar
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <MdOutlineMarkEmailRead /> joker@gmail.com
+                  </span>
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <MdLocalPhone /> +998 123 456 789
+                  </span>
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <SlCalender /> 26-04-2025
+                  </span>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <Checkbox {...label} size="small" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-4 w-[70px]">
+                    <div className="img w-[45px] h-[45px] rounded-md overflow-hidden group">
+                      <Link to="/product/12345" data-discover="true">
+                        <img
+                          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dXNlciUyMHBlcnNvbmF8ZW58MHx8MHx8fDA%3D"
+                          alt=""
+                          className="w-full group-hover:scale-105 transition-all"
+                        />
+                      </Link>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Joker Kumar
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <MdOutlineMarkEmailRead /> joker@gmail.com
+                  </span>
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <MdLocalPhone /> +998 123 456 789
+                  </span>
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <SlCalender /> 26-04-2025
+                  </span>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <Checkbox {...label} size="small" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-4 w-[70px]">
+                    <div className="img w-[45px] h-[45px] rounded-md overflow-hidden group">
+                      <Link to="/product/12345" data-discover="true">
+                        <img
+                          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dXNlciUyMHBlcnNvbmF8ZW58MHx8MHx8fDA%3D"
+                          alt=""
+                          className="w-full group-hover:scale-105 transition-all"
+                        />
+                      </Link>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Joker Kumar
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <MdOutlineMarkEmailRead /> joker@gmail.com
+                  </span>
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <MdLocalPhone /> +998 123 456 789
+                  </span>
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <SlCalender /> 26-04-2025
+                  </span>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <Checkbox {...label} size="small" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-4 w-[70px]">
+                    <div className="img w-[45px] h-[45px] rounded-md overflow-hidden group">
+                      <Link to="/product/12345" data-discover="true">
+                        <img
+                          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dXNlciUyMHBlcnNvbmF8ZW58MHx8MHx8fDA%3D"
+                          alt=""
+                          className="w-full group-hover:scale-105 transition-all"
+                        />
+                      </Link>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Joker Kumar
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <MdOutlineMarkEmailRead /> joker@gmail.com
+                  </span>
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <MdLocalPhone /> +998 123 456 789
+                  </span>
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <SlCalender /> 26-04-2025
+                  </span>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <Checkbox {...label} size="small" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-4 w-[70px]">
+                    <div className="img w-[45px] h-[45px] rounded-md overflow-hidden group">
+                      <Link to="/product/12345" data-discover="true">
+                        <img
+                          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dXNlciUyMHBlcnNvbmF8ZW58MHx8MHx8fDA%3D"
+                          alt=""
+                          className="w-full group-hover:scale-105 transition-all"
+                        />
+                      </Link>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Joker Kumar
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <MdOutlineMarkEmailRead /> joker@gmail.com
+                  </span>
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <MdLocalPhone /> +998 123 456 789
+                  </span>
+                </TableCell>
+
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <span className="flex items-center gap-2">
+                    <SlCalender /> 26-04-2025
                   </span>
                 </TableCell>
               </TableRow>
