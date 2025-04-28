@@ -381,3 +381,18 @@ button .MuiCircularProgress-root {
   width: 30px !important;
   height: 30px !important;
 }
+
+.react-international-phone-input {
+  width: 100% !important;
+}
+.react-international-phone-country-selector-button {
+  width: 55px !important;
+}
+.react-international-phone-input-container {
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.MuiDialog-paper {
+  width: 700px !important;
+  max-width: 700px !important;
+}

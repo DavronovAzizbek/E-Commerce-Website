@@ -8,6 +8,8 @@ import { useState } from "react";
 import { editData, postData } from "../../utils/api";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Collapse } from "react-collapse";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 
 const MyAccount = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +17,7 @@ const MyAccount = () => {
   const [userId, setUserId] = useState("");
   const [isChangePasswordFormShow, setisChangePasswordFormShow] =
     useState(false);
+  const [phone, setPhone] = useState("");
 
   const [formFields, setFormsFields] = useState({
     name: "",
@@ -48,6 +51,9 @@ const MyAccount = () => {
         email: context?.userData?.email,
         mobile: context?.userData?.mobile,
       });
+
+      const ph = `"${context?.userData?.mobile}"`;
+      setPhone(ph);
 
       setChangePassword({
         email: context?.userData?.email,
@@ -201,15 +207,16 @@ const MyAccount = () => {
 
               <div className="flex items-center mt-4 gap-5">
                 <div className="w-[50%]">
-                  <TextField
-                    label="Phone Number"
-                    variant="outlined"
-                    size="small"
-                    className="w-full"
-                    name="mobile"
-                    value={formFields.mobile}
+                  <PhoneInput
+                    defaultCountry="in"
+                    value={phone}
                     disabled={isLoading === true ? true : false}
-                    onChange={onChangeInput}
+                    onChange={(phone) => {
+                      setPhone(phone);
+                      setFormsFields({
+                        mobile: phone,
+                      });
+                    }}
                   />
                 </div>
               </div>

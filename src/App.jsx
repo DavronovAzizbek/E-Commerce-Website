@@ -24,6 +24,7 @@ import MyAccount from "./Pages/MyAccount";
 import MyList from "./Pages/MyList";
 import Orders from "./Pages/Orders";
 import { fetchDataFromApi } from "./utils/api";
+import Address from "./Pages/MyAccount/address";
 
 const MyContext = createContext();
 
@@ -119,6 +120,7 @@ function App() {
             <Route path={"/my-account"} exact={true} element={<MyAccount />} />
             <Route path={"/my-list"} exact={true} element={<MyList />} />
             <Route path={"/my-orders"} exact={true} element={<Orders />} />
+            <Route path={"/address"} exact={true} element={<Address />} />
           </Routes>
           <Footer />
         </MyContext.Provider>

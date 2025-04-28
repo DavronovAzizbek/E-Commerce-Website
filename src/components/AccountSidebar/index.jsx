@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from "react";
 import { MyContext } from "../../App";
 import CircularProgress from "@mui/material/CircularProgress";
 import { uploadImage } from "../../utils/api";
+import { LuMapPin } from "react-icons/lu";
 
 const AccountSidebar = () => {
   const [previews, setPreviews] = useState([]);
@@ -115,6 +116,15 @@ const AccountSidebar = () => {
             <Button className="w-full !text-left !py-2 !px-5 !justify-start !capitalize !text-[rgba(0,0,0,0.8)] !rounded-md flex items-center gap-2">
               <FaRegUser className="text-[15px]" />
               My Profile
+            </Button>
+          </NavLink>
+        </li>
+
+        <li className="w-full">
+          <NavLink to="/address" exact={true} activeClassName="isActive">
+            <Button className="w-full !text-left !py-2 !px-5 !justify-start !capitalize !text-[rgba(0,0,0,0.8)] !rounded-md flex items-center gap-2">
+              <LuMapPin className="text-[18px]" />
+              Address
             </Button>
           </NavLink>
         </li>
