@@ -26,6 +26,7 @@ import Orders from "./Pages/Orders";
 import ForgotPassword from "./Pages/ForgotPassword";
 import VerifyAccount from "./Pages/VerifyAccount";
 import ChangePassword from "./Pages/ChangePassword";
+import EditCategory from "./Pages/Category/editCategory";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -38,7 +39,7 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
     open: false,
-    model: "",
+    id: "",
   });
 
   const router = createBrowserRouter([
@@ -332,6 +333,7 @@ function App() {
           {isOpenFullScreenPanel?.model === "Add New Sub Category" && (
             <AddSubCategory />
           )}
+          {isOpenFullScreenPanel?.model === "Edit Category" && <EditCategory />}
         </Dialog>
       </MyContext.Provider>
     </>

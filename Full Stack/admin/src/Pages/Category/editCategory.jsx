@@ -4,12 +4,12 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { IoMdClose } from "react-icons/io";
 import Button from "@mui/material/Button";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { deleteImages } from "../../utils/api";
 import { MyContext } from "../../App";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const AddCategory = () => {
+const EditCategory = () => {
   const [formFields, setFormFields] = useState({
     name: "",
     images: [],
@@ -20,6 +20,10 @@ const AddCategory = () => {
 
   const context = useContext(MyContext);
 
+  useEffect(() => {
+    const id = context?.isOpenFullScreenPanel?.id;
+  }, []);
+
   const onChangeInput = (e) => {
     const { name, value } = e.target;
     setFormFields(() => {
@@ -28,6 +32,7 @@ const AddCategory = () => {
         [name]: value,
       };
     });
+    formFields.images = previews;
   };
 
   const setPreviewsFun = (previewsArr) => {
@@ -140,4 +145,4 @@ const AddCategory = () => {
   );
 };
 
-export default AddCategory;
+export default EditCategory;

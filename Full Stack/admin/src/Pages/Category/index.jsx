@@ -6,16 +6,16 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import { useContext, useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { Link } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaRegEye } from "react-icons/fa6";
 import { GoTrash } from "react-icons/go";
-import SearchBox from "../../Components/SearchBox";
 import { MyContext } from "../../App";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+import { deleteData } from "../../utils/api";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -29,6 +29,7 @@ const CategoryList = () => {
   const [categoryFilterVal, setcategoryFilterVal] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [catData, setCatData] = useState([]);
 
   const context = useContext(MyContext);
 
@@ -43,6 +44,12 @@ const CategoryList = () => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+  };
+
+  const deleteCat = (id) => {
+    deleteData(`/api/category/${id}`).then((res) => {
+      console.log(res);
+    });
   };
 
   return (
@@ -92,42 +99,56 @@ const CategoryList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell>
-                  <Checkbox {...label} size="small" />
-                </TableCell>
-                <TableCell width={100}>
-                  <div className="flex items-center gap-4 w-[80px]">
-                    <div className="img w-full  rounded-md overflow-hidden group">
-                      <Link to="/product/12345" data-discover="true">
-                        <img
-                          src="https://ecme-react.themenate.net/img/products/product-11.jpg"
-                          alt=""
-                          className="w-full group-hover:scale-105 transition-all"
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                </TableCell>
+              {catData?.length !== 0 &&
+                catData?.map((item, index) => {
+                  return (
+                    <TableRow>
+                      <TableCell>
+                        <Checkbox {...label} size="small" />
+                      </TableCell>
+                      <TableCell width={100}>
+                        <div className="flex items-center gap-4 w-[80px]">
+                          <div className="img w-full  rounded-md overflow-hidden group">
+                            <Link to="/product/12345" data-discover="true">
+                              <LazyLoadImage
+                                alt={"image"}
+                                effect="blur"
+                                className="w-full group-hover:scale-105 transition-all"
+                                src={item.images[0]}
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </TableCell>
 
-                <TableCell width={100}>Fashion</TableCell>
+                      <TableCell width={100}>{item?.name}</TableCell>
 
-                <TableCell width={100}>
-                  <div className="flex items-center gap-1">
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
+                      <TableCell width={100}>
+                        <div className="flex items-center gap-1">
+                          <Button
+                            className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]"
+                            onClick={() =>
+                              context.setIsOpenFullScreenPanel({
+                                open: true,
+                                model: "Edit Category",
+                                id: item?._id,
+                              })
+                            }
+                          >
+                            <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                          </Button>
 
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
+                          <Button
+                            className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]"
+                            onClick={() => deleteCat(item?._id)}
+                          >
+                            <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </TableContainer>
