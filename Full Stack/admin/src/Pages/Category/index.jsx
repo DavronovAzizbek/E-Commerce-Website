@@ -29,7 +29,6 @@ const CategoryList = () => {
   const [categoryFilterVal, setcategoryFilterVal] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [catData, setCatData] = useState([]);
 
   const context = useContext(MyContext);
 
@@ -99,10 +98,10 @@ const CategoryList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {catData?.length !== 0 &&
-                catData?.map((item, index) => {
+              {context?.catData?.length !== 0 &&
+                context?.catData?.map((item, index) => {
                   return (
-                    <TableRow>
+                    <TableRow key={index}>
                       <TableCell>
                         <Checkbox {...label} size="small" />
                       </TableCell>

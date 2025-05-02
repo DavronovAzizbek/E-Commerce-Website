@@ -37,6 +37,7 @@ const MyContext = createContext();
 function App() {
   const [isSidebarOpen, setisSidebarOpen] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
+  const [catData, setCatData] = useState([]);
   const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
     open: false,
     id: "",
@@ -286,6 +287,8 @@ function App() {
     setIsLogin,
     isOpenFullScreenPanel,
     setIsOpenFullScreenPanel,
+    catData,
+    setCatData,
   };
 
   return (
