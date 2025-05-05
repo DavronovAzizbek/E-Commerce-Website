@@ -12,7 +12,7 @@ import { MyContext } from "../../App";
 import { deleteImages } from "../../utils/api";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const AddProduct = () => {
+const EditProduct = () => {
   const [formFields, setFormFields] = useState({
     name: "",
     description: "",
@@ -472,4 +472,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;

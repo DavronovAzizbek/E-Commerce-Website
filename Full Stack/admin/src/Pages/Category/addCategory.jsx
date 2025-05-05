@@ -43,7 +43,7 @@ const AddCategory = () => {
       setPreviews([]);
       setTimeout(() => {
         setPreviews(imageArr);
-        formFields.images = previewsArr;
+        formFields.images = imageArr;
       }, 100);
     });
   };
@@ -124,7 +124,7 @@ const AddCategory = () => {
 
         <br />
         <div className="w-[250px]">
-          <Button type="button" className="btn-blue btn-lg w-full flex gap-2">
+          <Button type="submit" className="btn-blue btn-lg w-full flex gap-2">
             {isLoading === true ? (
               <CircularProgress color="inherit" />
             ) : (

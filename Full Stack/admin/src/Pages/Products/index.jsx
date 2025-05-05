@@ -18,6 +18,7 @@ import { FaRegEye } from "react-icons/fa6";
 import { GoTrash } from "react-icons/go";
 import SearchBox from "../../Components/SearchBox";
 import { MyContext } from "../../App";
+import { deleteData } from "../../utils/api";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -44,6 +45,12 @@ const Products = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const deleteProduct = (id) => {
+    deleteData(`/api/product/${id}`).then((res) => {
+      context.alertBox("success", "Product deleted");
+    });
   };
 
   const handleChangePage = (event, newPage) => {
@@ -759,7 +766,15 @@ const Products = () => {
                 </TableCell>
                 <TableCell style={{ minWidth: columns.minWidth }}>
                   <div className="flex items-center gap-1">
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                    <Button
+                      className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]"
+                      onClick={() =>
+                        context.setIsOpenFullScreenPanel({
+                          open: true,
+                          model: "Edit Product",
+                        })
+                      }
+                    >
                       <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
                     </Button>
 
@@ -767,7 +782,10 @@ const Products = () => {
                       <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
                     </Button>
 
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                    <Button
+                      className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]"
+                      onClick={() => deleteProduct(product?._id)}
+                    >
                       <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
                     </Button>
                   </div>
