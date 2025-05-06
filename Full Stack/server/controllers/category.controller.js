@@ -209,7 +209,11 @@ export async function removeImageFromCloudinary(request, response) {
     );
 
     if (res) {
-      response.status(200).send(res);
+      return response.status(200).json({
+        error: false,
+        success: true,
+        message: "Image deleted successfully",
+      });
     }
   }
 }

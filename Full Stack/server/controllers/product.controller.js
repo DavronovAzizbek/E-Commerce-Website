@@ -55,6 +55,7 @@ export async function createProduct(request, response) {
       price: request.body.price,
       oldPrice: request.body.oldPrice,
       catName: request.body.catName,
+      category: request.body.category,
       catId: request.body.catId,
       subCatId: request.body.subCatId,
       subCat: request.body.subCat,
@@ -641,6 +642,53 @@ export async function deleteProduct(request, response) {
     error: false,
     message: "Product Deleted",
   });
+}
+
+export async function deleteMultipleProduct(request, response) {
+  const { ids } = request.body;
+
+  if (!ids || !Array.isArray(ids)) {
+    return response.status(400).json({
+      error: true,
+      success: false,
+      message: "Invalid input",
+    });
+  }
+
+  for (let i = 0; i < ids?.length; i++) {
+    const product = await ProductModel.findById(ids[i]);
+
+    const images = product.images;
+    let img = "";
+
+    for (img of images) {
+      const imgUrl = img;
+      const urlArr = imgUrl.split("/");
+      const image = urlArr[urlArr.length - 1];
+
+      const imageName = image.split(".")[0];
+
+      if (imageName) {
+        cloudinary.uploader.destroy(imageName, (error, result) => {});
+      }
+    }
+  }
+
+  try {
+    await ProductModel.deleteMany({ _id: { $in: ids } });
+
+    return response.status(200).json({
+      message: "Product delete successfully",
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return response.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
 }
 
 export async function getProduct(request, response) {
