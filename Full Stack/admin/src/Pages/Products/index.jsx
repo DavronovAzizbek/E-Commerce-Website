@@ -84,11 +84,56 @@ const Products = () => {
       </div>
 
       <div className="card my-4 pt-5 shadow-md sm:rounded-lg bg-white">
-        <div className="flex items-center w-full px-5 justify-between">
-          <div className="col w-[20%]">
+        <div className="flex items-center w-full px-5 justify-between gap-4">
+          <div className="col w-[15%]">
             <h4 className="font-[600] text-[13px] mb-2">Category By</h4>
             <Select
               className="w-full"
+              style={{ zoom: "80%" }}
+              size="small"
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={categoryFilterVal}
+              onChange={handleChangeCatFilter}
+              label="Category"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={10}>Men</MenuItem>
+              <MenuItem value={20}>Women</MenuItem>
+              <MenuItem value={30}>Kids</MenuItem>
+            </Select>
+          </div>
+
+          <div className="col w-[15%]">
+            <h4 className="font-[600] text-[13px] mb-2">Sub Category By</h4>
+            <Select
+              className="w-full"
+              style={{ zoom: "80%" }}
+              size="small"
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={categoryFilterVal}
+              onChange={handleChangeCatFilter}
+              label="Category"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={10}>Men</MenuItem>
+              <MenuItem value={20}>Women</MenuItem>
+              <MenuItem value={30}>Kids</MenuItem>
+            </Select>
+          </div>
+
+          <div className="col w-[18%]">
+            <h4 className="font-[600] text-[13px] mb-2">
+              Third Level Category By
+            </h4>
+            <Select
+              className="w-full"
+              style={{ zoom: "80%" }}
               size="small"
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"

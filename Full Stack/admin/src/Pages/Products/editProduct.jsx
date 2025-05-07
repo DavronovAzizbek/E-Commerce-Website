@@ -415,9 +415,8 @@ const EditProduct = () => {
                 Product Rating
               </h3>
               <Rating
-                name="half-rating"
-                defaultValue={1}
-                precision={0.5}
+                name="rating"
+                value={formFields.rating}
                 onChange={onChangeRating}
               />
             </div>

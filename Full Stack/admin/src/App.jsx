@@ -15,6 +15,7 @@ import Orders from "./Pages/Orders";
 import ForgotPassword from "./Pages/ForgotPassword";
 import VerifyAccount from "./Pages/VerifyAccount";
 import ChangePassword from "./Pages/ChangePassword";
+import ProductDetails from "./Pages/Products/productDetails";
 
 const MyContext = createContext();
 
@@ -256,6 +257,33 @@ function App() {
                 } transition-all`}
               >
                 <Orders />
+              </div>
+            </div>
+          </section>
+        </>
+      ),
+    },
+    {
+      path: "/product/:id",
+      exact: true,
+      element: (
+        <>
+          <section className="main">
+            <Header />
+            <div className="contentMain flex">
+              <div
+                className={`overflow-hidden sidebarWrapper ${
+                  isSidebarOpen === true ? "w-[18%]" : "w-[0px] opacity-0"
+                } transition-all`}
+              >
+                <Sidebar />
+              </div>
+              <div
+                className={`contentRight py-4 px-5 ${
+                  isSidebarOpen === false ? "w-[100%]" : "w-[82%]"
+                } transition-all`}
+              >
+                <ProductDetails />
               </div>
             </div>
           </section>
