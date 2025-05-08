@@ -20,6 +20,7 @@ import SearchBox from "../../Components/SearchBox";
 import { MyContext } from "../../App";
 import { deleteData } from "../../utils/api";
 
+
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const columns = [
