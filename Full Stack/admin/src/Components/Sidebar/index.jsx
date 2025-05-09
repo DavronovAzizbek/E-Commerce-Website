@@ -27,7 +27,7 @@ const Sidebar = () => {
   return (
     <>
       <div
-        className={`sidebar fixed top-0 left-0 bg-[#fff]  h-full border-r border-[rgba(0,0,0,0.1)] py-2 px-4 w-[${
+        className={`sidebar fixed top-0 left-0 z-[50] bg-[#fff]  h-full border-r border-[rgba(0,0,0,0.1)] py-2 px-4 w-[${
           context.isSidebarOpen === true ? "18%" : "0px"
         }]`}
       >
@@ -141,6 +141,24 @@ const Sidebar = () => {
                     <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[13px] !font-[500] !pl-9 flex gap-3">
                       <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
                       Add Product Rams
+                    </Button>
+                  </Link>
+                </li>
+
+                <li className="w-full">
+                  <Link to="/product/addWeight">
+                    <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[13px] !font-[500] !pl-9 flex gap-3">
+                      <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
+                      Add Product Weight
+                    </Button>
+                  </Link>
+                </li>
+
+                <li className="w-full">
+                  <Link to="/product/addSize">
+                    <Button className="!text-[rgba(0,0,0,0.7)] !capitalize !justify-start !w-full !text-[13px] !font-[500] !pl-9 flex gap-3">
+                      <span className="block w-[5px] h-[5px] rounded-full bg-[rgba(0,0,0,0.2)]"></span>
+                      Add Product Size
                     </Button>
                   </Link>
                 </li>

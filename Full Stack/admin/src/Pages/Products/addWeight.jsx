@@ -7,7 +7,7 @@ import { MyContext } from "../../App";
 import { deleteData } from "../../utils/api";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const AddRams = () => {
+const AddWeight = () => {
   const [name, setName] = useState();
   const [data] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,7 @@ const AddRams = () => {
   };
 
   const deleteItem = (id) => {
-    deleteData(`/api/product/productRams/${id}`).then(() => {
+    deleteData(`/api/product/productWeight/${id}`).then(() => {
       context.alertBox("success", "Item deleted");
     });
   };
@@ -34,14 +34,14 @@ const AddRams = () => {
   return (
     <>
       <div className="flex items-center justify-between px-2 py-0 mt-3">
-        <h2 className="text-[18px] font-[600]">Add Product Rams</h2>
+        <h2 className="text-[18px] font-[600]">Add Product Weight</h2>
       </div>
 
       <div className="card my-4 pt-5 shadow-md sm:rounded-lg bg-white w-[65%]">
         <form className="form py-3 p-6" onSubmit={handleSubmit}>
           <div className="col mb-4">
             <h3 className="text-[14px] font-[500] mb-1 text-black">
-              Product Ram
+              Product Weight
             </h3>
             <input
               type="text"
@@ -76,7 +76,7 @@ const AddRams = () => {
                     className="px-6 py-3 whitespace-nowrap"
                     width="60%"
                   >
-                    Product Ram
+                    Product Weight
                   </th>
                   <th
                     scope="col"
@@ -121,4 +121,4 @@ const AddRams = () => {
   );
 };
 
-export default AddRams;
+export default AddWeight;

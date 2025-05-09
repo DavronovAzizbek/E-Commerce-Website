@@ -4,14 +4,13 @@ import Button from "@mui/material/Button";
 import { FaAngleDown } from "react-icons/fa6";
 import Badge from "../../Components/Badge";
 import { FaAngleUp } from "react-icons/fa6";
-import { useState, PureComponent, useContext } from "react";
+import { useState, useContext } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { Link } from "react-router-dom";
 import Progress from "../../Components/ProgressBar";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaRegEye } from "react-icons/fa6";
 import { GoTrash } from "react-icons/go";
-import Pagination from "@mui/material/Pagination";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -21,6 +20,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import SearchBox from "../../Components/SearchBox";
 import { MyContext } from "../../App";
 import {
   LineChart,
@@ -32,6 +32,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { deleteData } from "../../utils/api";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -46,14 +47,6 @@ const columns = [
 
 const Dashboard = () => {
   const [isOpenOrderdProduct, setIsOpenOrderdProduct] = useState(null);
-
-  const isShowOrderdProduct = (index) => {
-    if (isOpenOrderdProduct === index) {
-      setIsOpenOrderdProduct(null);
-    } else {
-      setIsOpenOrderdProduct(index);
-    }
-  };
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -136,6 +129,14 @@ const Dashboard = () => {
 
   const context = useContext(MyContext);
 
+  const isShowOrderdProduct = (index) => {
+    if (isOpenOrderdProduct === index) {
+      setIsOpenOrderdProduct(null);
+    } else {
+      setIsOpenOrderdProduct(index);
+    }
+  };
+
   const handleChangeCatFilter = (event) => {
     setcategoryFilterVal(event.target.value);
   };
@@ -147,6 +148,12 @@ const Dashboard = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const deleteProduct = (id) => {
+    deleteData(`/api/product/${id}`).then(() => {
+      context.alertBox("success", "Product deleted");
+    });
   };
 
   return (
@@ -530,19 +537,13 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="card my-4 shadow-md sm:rounded-lg bg-white">
-        <div className="flex items-center justify-between px-5 py-5">
-          <h2 className="text-[18px] font-[600]">
-            Products{" "}
-            <span className="font-[400] text-[14px]">(Tailwind Css Table)</span>
-          </h2>
-        </div>
-
-        <div className="flex items-center w-full pl-5 justify-between pr-5">
-          <div className="col w-[20%]">
+      <div className="card my-4 pt-5 shadow-md sm:rounded-lg bg-white">
+        <div className="flex items-center w-full px-5 justify-between gap-4">
+          <div className="col w-[15%]">
             <h4 className="font-[600] text-[13px] mb-2">Category By</h4>
             <Select
               className="w-full"
+              style={{ zoom: "80%" }}
               size="small"
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
@@ -559,501 +560,11 @@ const Dashboard = () => {
             </Select>
           </div>
 
-          <div className="col w-[25%] ml-auto flex items-center gap-3">
-            <Button className="btn !bg-green-600 !text-white btn-sm">
-              Export
-            </Button>
-            <Button
-              className="btn-blue  !text-white btn-sm"
-              onClick={() =>
-                context.setIsOpenFullScreenPanel({
-                  open: true,
-                  model: "Add Product",
-                })
-              }
-            >
-              Add Product
-            </Button>
-          </div>
-        </div>
-
-        <div className="relative overflow-x-auto mt-5 pb-5">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-white dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-6 pr-0 py-3" width="10%">
-                  <div className="w-[60px]">
-                    <Checkbox {...label} size="small" />
-                  </div>
-                </th>
-                <th scope="col" className="px-0 py-3 whitespace-nowrap">
-                  Product
-                </th>
-                <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                  Category
-                </th>
-                <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                  Sub Category
-                </th>
-                <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                  Price
-                </th>
-                <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                  Sales
-                </th>
-                <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-gray-200 dark:border-gray-300">
-                <td className="px-6 pr-0 py-2">
-                  <div className="w-[60px]">
-                    <Checkbox {...label} size="small" />
-                  </div>
-                </td>
-
-                <td className="px-0 py-2">
-                  <div className="flex items-center gap-4 w-[300px]">
-                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
-                      <Link to="/product/12345">
-                        <img
-                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
-                          alt=""
-                          className="w-full group-hover:scale-105 transition-all"
-                        ></img>
-                      </Link>
-                    </div>
-
-                    <div className="info w-[75%]">
-                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
-                        <Link to="/product/12345">
-                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
-                          set for Women
-                        </Link>
-                      </h3>
-
-                      <span className="text-[12px]">Books</span>
-                    </div>
-                  </div>
-                </td>
-
-                <td className="px-6 py-2">Electronics</td>
-
-                <td className="px-6 py-2">Women</td>
-
-                <td className="px-6 py-2">
-                  <div className="flex gap-1 flex-col">
-                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
-                      $58.00
-                    </span>
-                    <span className="price text-primary text-[14px] font-[600]">
-                      $45.00
-                    </span>
-                  </div>
-                </td>
-
-                <td className="px-6 py-2">
-                  <p className="text-[14px] w-[100px]">
-                    <span className="font-[600]">234</span> sale
-                  </p>
-                  <Progress value={40} type="warning" />
-                </td>
-
-                <td className="px-6 py-2">
-                  <div className="flex items-center gap-1">
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-
-              <tr className="border-b border-gray-200 dark:border-gray-300">
-                <td className="px-6 pr-0 py-2">
-                  <div className="w-[60px]">
-                    <Checkbox {...label} size="small" />
-                  </div>
-                </td>
-
-                <td className="px-0 py-2">
-                  <div className="flex items-center gap-4 w-[300px]">
-                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
-                      <Link to="/product/12345">
-                        <img
-                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
-                          alt=""
-                          className="w-full group-hover:scale-105 transition-all"
-                        ></img>
-                      </Link>
-                    </div>
-
-                    <div className="info w-[75%]">
-                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
-                        <Link to="/product/12345">
-                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
-                          set for Women
-                        </Link>
-                      </h3>
-
-                      <span className="text-[12px]">Books</span>
-                    </div>
-                  </div>
-                </td>
-
-                <td className="px-6 py-2">Electronics</td>
-
-                <td className="px-6 py-2">Women</td>
-
-                <td className="px-6 py-2">
-                  <div className="flex gap-1 flex-col">
-                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
-                      $58.00
-                    </span>
-                    <span className="price text-primary text-[14px] font-[600]">
-                      $45.00
-                    </span>
-                  </div>
-                </td>
-
-                <td className="px-6 py-2">
-                  <p className="text-[14px] w-[100px]">
-                    <span className="font-[600]">234</span> sale
-                  </p>
-                  <Progress value={40} type="warning" />
-                </td>
-
-                <td className="px-6 py-2">
-                  <div className="flex items-center gap-1">
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-
-              <tr className="border-b border-gray-200 dark:border-gray-300">
-                <td className="px-6 pr-0 py-2">
-                  <div className="w-[60px]">
-                    <Checkbox {...label} size="small" />
-                  </div>
-                </td>
-
-                <td className="px-0 py-2">
-                  <div className="flex items-center gap-4 w-[300px]">
-                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
-                      <Link to="/product/12345">
-                        <img
-                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
-                          alt=""
-                          className="w-full group-hover:scale-105 transition-all"
-                        ></img>
-                      </Link>
-                    </div>
-
-                    <div className="info w-[75%]">
-                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
-                        <Link to="/product/12345">
-                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
-                          set for Women
-                        </Link>
-                      </h3>
-
-                      <span className="text-[12px]">Books</span>
-                    </div>
-                  </div>
-                </td>
-
-                <td className="px-6 py-2">Electronics</td>
-
-                <td className="px-6 py-2">Women</td>
-
-                <td className="px-6 py-2">
-                  <div className="flex gap-1 flex-col">
-                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
-                      $58.00
-                    </span>
-                    <span className="price text-primary text-[14px] font-[600]">
-                      $45.00
-                    </span>
-                  </div>
-                </td>
-
-                <td className="px-6 py-2">
-                  <p className="text-[14px] w-[100px]">
-                    <span className="font-[600]">234</span> sale
-                  </p>
-                  <Progress value={40} type="warning" />
-                </td>
-
-                <td className="px-6 py-2">
-                  <div className="flex items-center gap-1">
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-
-              <tr className="border-b border-gray-200 dark:border-gray-300">
-                <td className="px-6 pr-0 py-2">
-                  <div className="w-[60px]">
-                    <Checkbox {...label} size="small" />
-                  </div>
-                </td>
-
-                <td className="px-0 py-2">
-                  <div className="flex items-center gap-4 w-[300px]">
-                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
-                      <Link to="/product/12345">
-                        <img
-                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
-                          alt=""
-                          className="w-full group-hover:scale-105 transition-all"
-                        ></img>
-                      </Link>
-                    </div>
-
-                    <div className="info w-[75%]">
-                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
-                        <Link to="/product/12345">
-                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
-                          set for Women
-                        </Link>
-                      </h3>
-
-                      <span className="text-[12px]">Books</span>
-                    </div>
-                  </div>
-                </td>
-
-                <td className="px-6 py-2">Electronics</td>
-
-                <td className="px-6 py-2">Women</td>
-
-                <td className="px-6 py-2">
-                  <div className="flex gap-1 flex-col">
-                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
-                      $58.00
-                    </span>
-                    <span className="price text-primary text-[14px] font-[600]">
-                      $45.00
-                    </span>
-                  </div>
-                </td>
-
-                <td className="px-6 py-2">
-                  <p className="text-[14px] w-[100px]">
-                    <span className="font-[600]">234</span> sale
-                  </p>
-                  <Progress value={40} type="warning" />
-                </td>
-
-                <td className="px-6 py-2">
-                  <div className="flex items-center gap-1">
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-
-              <tr className="border-b border-gray-200 dark:border-gray-300">
-                <td className="px-6 pr-0 py-2">
-                  <div className="w-[60px]">
-                    <Checkbox {...label} size="small" />
-                  </div>
-                </td>
-
-                <td className="px-0 py-2">
-                  <div className="flex items-center gap-4 w-[300px]">
-                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
-                      <Link to="/product/12345">
-                        <img
-                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
-                          alt=""
-                          className="w-full group-hover:scale-105 transition-all"
-                        ></img>
-                      </Link>
-                    </div>
-
-                    <div className="info w-[75%]">
-                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
-                        <Link to="/product/12345">
-                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
-                          set for Women
-                        </Link>
-                      </h3>
-
-                      <span className="text-[12px]">Books</span>
-                    </div>
-                  </div>
-                </td>
-
-                <td className="px-6 py-2">Electronics</td>
-
-                <td className="px-6 py-2">Women</td>
-
-                <td className="px-6 py-2">
-                  <div className="flex gap-1 flex-col">
-                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
-                      $58.00
-                    </span>
-                    <span className="price text-primary text-[14px] font-[600]">
-                      $45.00
-                    </span>
-                  </div>
-                </td>
-
-                <td className="px-6 py-2">
-                  <p className="text-[14px] w-[100px]">
-                    <span className="font-[600]">234</span> sale
-                  </p>
-                  <Progress value={40} type="warning" />
-                </td>
-
-                <td className="px-6 py-2">
-                  <div className="flex items-center gap-1">
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-
-              <tr className="border-b border-gray-200 dark:border-gray-300">
-                <td className="px-6 pr-0 py-2">
-                  <div className="w-[60px]">
-                    <Checkbox {...label} size="small" />
-                  </div>
-                </td>
-
-                <td className="px-0 py-2">
-                  <div className="flex items-center gap-4 w-[300px]">
-                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
-                      <Link to="/product/12345">
-                        <img
-                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
-                          alt=""
-                          className="w-full group-hover:scale-105 transition-all"
-                        ></img>
-                      </Link>
-                    </div>
-
-                    <div className="info w-[75%]">
-                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
-                        <Link to="/product/12345">
-                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
-                          set for Women
-                        </Link>
-                      </h3>
-
-                      <span className="text-[12px]">Books</span>
-                    </div>
-                  </div>
-                </td>
-
-                <td className="px-6 py-2">Electronics</td>
-
-                <td className="px-6 py-2">Women</td>
-
-                <td className="px-6 py-2">
-                  <div className="flex gap-1 flex-col">
-                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
-                      $58.00
-                    </span>
-                    <span className="price text-primary text-[14px] font-[600]">
-                      $45.00
-                    </span>
-                  </div>
-                </td>
-
-                <td className="px-6 py-2">
-                  <p className="text-[14px] w-[100px]">
-                    <span className="font-[600]">234</span> sale
-                  </p>
-                  <Progress value={40} type="warning" />
-                </td>
-
-                <td className="px-6 py-2">
-                  <div className="flex items-center gap-1">
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-
-                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
-                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div className="flex items-center justify-end pt-5 pb-5 px-4">
-          <Pagination count={10} color="primary" />
-        </div>
-      </div>
-
-      <div className="card my-4 shadow-md sm:rounded-lg bg-white">
-        <div className="flex items-center justify-between px-5 py-5">
-          <h2 className="text-[18px] font-[600]">
-            Products{" "}
-            <span className="font-[400] text-[14px]">(Material Ui Table)</span>
-          </h2>
-        </div>
-
-        <div className="flex items-center w-full pl-5 justify-between pr-5">
-          <div className="col w-[20%]">
-            <h4 className="font-[600] text-[13px] mb-2">Category By</h4>
+          <div className="col w-[15%]">
+            <h4 className="font-[600] text-[13px] mb-2">Sub Category By</h4>
             <Select
               className="w-full"
+              style={{ zoom: "80%" }}
               size="small"
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
@@ -1070,21 +581,31 @@ const Dashboard = () => {
             </Select>
           </div>
 
-          <div className="col w-[25%] ml-auto flex items-center gap-3">
-            <Button className="btn !bg-green-600 !text-white btn-sm">
-              Export
-            </Button>
-            <Button
-              className="btn-blue  !text-white btn-sm"
-              onClick={() =>
-                context.setIsOpenFullScreenPanel({
-                  open: true,
-                  model: "Add Product",
-                })
-              }
+          <div className="col w-[18%]">
+            <h4 className="font-[600] text-[13px] mb-2">
+              Third Level Category By
+            </h4>
+            <Select
+              className="w-full"
+              style={{ zoom: "80%" }}
+              size="small"
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={categoryFilterVal}
+              onChange={handleChangeCatFilter}
+              label="Category"
             >
-              Add Product
-            </Button>
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={10}>Men</MenuItem>
+              <MenuItem value={20}>Women</MenuItem>
+              <MenuItem value={30}>Kids</MenuItem>
+            </Select>
+          </div>
+
+          <div className="col w-[20%] ml-auto">
+            <SearchBox />
           </div>
         </div>
 
@@ -1233,6 +754,537 @@ const Dashboard = () => {
                     </Button>
 
                     <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <Checkbox {...label} size="small" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-4 w-[300px]">
+                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
+                      <Link to="/product/12345" data-discover="true">
+                        <img
+                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
+                          alt=""
+                          className="w-full group-hover:scale-105 transition-all"
+                        />
+                      </Link>
+                    </div>
+                    <div className="info w-[75%]">
+                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
+                        <a href="/product/12345" data-discover="true">
+                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
+                          set for Women
+                        </a>
+                      </h3>
+                      <span className="text-[12px]">Books</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Electronics
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Women
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex gap-1 flex-col">
+                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
+                      $58.00
+                    </span>
+                    <span className="price text-primary text-[14px] font-[600]">
+                      $58.00
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <p className="text-[14px] w-[100px]">
+                    <span className="font-[600]">234</span> sale
+                  </p>
+                  <Progress value={40} type="success" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-1">
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <Checkbox {...label} size="small" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-4 w-[300px]">
+                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
+                      <Link to="/product/12345" data-discover="true">
+                        <img
+                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
+                          alt=""
+                          className="w-full group-hover:scale-105 transition-all"
+                        />
+                      </Link>
+                    </div>
+                    <div className="info w-[75%]">
+                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
+                        <a href="/product/12345" data-discover="true">
+                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
+                          set for Women
+                        </a>
+                      </h3>
+                      <span className="text-[12px]">Books</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Electronics
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Women
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex gap-1 flex-col">
+                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
+                      $58.00
+                    </span>
+                    <span className="price text-primary text-[14px] font-[600]">
+                      $58.00
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <p className="text-[14px] w-[100px]">
+                    <span className="font-[600]">234</span> sale
+                  </p>
+                  <Progress value={40} type="success" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-1">
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <Checkbox {...label} size="small" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-4 w-[300px]">
+                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
+                      <Link to="/product/12345" data-discover="true">
+                        <img
+                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
+                          alt=""
+                          className="w-full group-hover:scale-105 transition-all"
+                        />
+                      </Link>
+                    </div>
+                    <div className="info w-[75%]">
+                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
+                        <a href="/product/12345" data-discover="true">
+                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
+                          set for Women
+                        </a>
+                      </h3>
+                      <span className="text-[12px]">Books</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Electronics
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Women
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex gap-1 flex-col">
+                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
+                      $58.00
+                    </span>
+                    <span className="price text-primary text-[14px] font-[600]">
+                      $58.00
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <p className="text-[14px] w-[100px]">
+                    <span className="font-[600]">234</span> sale
+                  </p>
+                  <Progress value={40} type="success" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-1">
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <Checkbox {...label} size="small" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-4 w-[300px]">
+                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
+                      <Link to="/product/12345" data-discover="true">
+                        <img
+                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
+                          alt=""
+                          className="w-full group-hover:scale-105 transition-all"
+                        />
+                      </Link>
+                    </div>
+                    <div className="info w-[75%]">
+                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
+                        <a href="/product/12345" data-discover="true">
+                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
+                          set for Women
+                        </a>
+                      </h3>
+                      <span className="text-[12px]">Books</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Electronics
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Women
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex gap-1 flex-col">
+                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
+                      $58.00
+                    </span>
+                    <span className="price text-primary text-[14px] font-[600]">
+                      $58.00
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <p className="text-[14px] w-[100px]">
+                    <span className="font-[600]">234</span> sale
+                  </p>
+                  <Progress value={40} type="success" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-1">
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <Checkbox {...label} size="small" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-4 w-[300px]">
+                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
+                      <Link to="/product/12345" data-discover="true">
+                        <img
+                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
+                          alt=""
+                          className="w-full group-hover:scale-105 transition-all"
+                        />
+                      </Link>
+                    </div>
+                    <div className="info w-[75%]">
+                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
+                        <a href="/product/12345" data-discover="true">
+                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
+                          set for Women
+                        </a>
+                      </h3>
+                      <span className="text-[12px]">Books</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Electronics
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Women
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex gap-1 flex-col">
+                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
+                      $58.00
+                    </span>
+                    <span className="price text-primary text-[14px] font-[600]">
+                      $58.00
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <p className="text-[14px] w-[100px]">
+                    <span className="font-[600]">234</span> sale
+                  </p>
+                  <Progress value={40} type="success" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-1">
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <Checkbox {...label} size="small" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-4 w-[300px]">
+                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
+                      <Link to="/product/12345" data-discover="true">
+                        <img
+                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
+                          alt=""
+                          className="w-full group-hover:scale-105 transition-all"
+                        />
+                      </Link>
+                    </div>
+                    <div className="info w-[75%]">
+                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
+                        <a href="/product/12345" data-discover="true">
+                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
+                          set for Women
+                        </a>
+                      </h3>
+                      <span className="text-[12px]">Books</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Electronics
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Women
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex gap-1 flex-col">
+                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
+                      $58.00
+                    </span>
+                    <span className="price text-primary text-[14px] font-[600]">
+                      $58.00
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <p className="text-[14px] w-[100px]">
+                    <span className="font-[600]">234</span> sale
+                  </p>
+                  <Progress value={40} type="success" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-1">
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <Checkbox {...label} size="small" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-4 w-[300px]">
+                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
+                      <Link to="/product/12345" data-discover="true">
+                        <img
+                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
+                          alt=""
+                          className="w-full group-hover:scale-105 transition-all"
+                        />
+                      </Link>
+                    </div>
+                    <div className="info w-[75%]">
+                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
+                        <a href="/product/12345" data-discover="true">
+                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
+                          set for Women
+                        </a>
+                      </h3>
+                      <span className="text-[12px]">Books</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Electronics
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Women
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex gap-1 flex-col">
+                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
+                      $58.00
+                    </span>
+                    <span className="price text-primary text-[14px] font-[600]">
+                      $58.00
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <p className="text-[14px] w-[100px]">
+                    <span className="font-[600]">234</span> sale
+                  </p>
+                  <Progress value={40} type="success" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-1">
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <Checkbox {...label} size="small" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-4 w-[300px]">
+                    <div className="img w-[65px] h-[65px] rounded-md overflow-hidden group">
+                      <Link to="/product/12345" data-discover="true">
+                        <img
+                          src="https://isomorphic-furyroad.s3.amazonaws.com/public/products/modern/7.webp"
+                          alt=""
+                          className="w-full group-hover:scale-105 transition-all"
+                        />
+                      </Link>
+                    </div>
+                    <div className="info w-[75%]">
+                      <h3 className="font-[600] text-[12px] leading-4 hover:text-primary">
+                        <a href="/product/12345" data-discover="true">
+                          VINED Women Embroidered Rayon Kurta Pant Set | Kurta
+                          set for Women
+                        </a>
+                      </h3>
+                      <span className="text-[12px]">Books</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Electronics
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  Women
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex gap-1 flex-col">
+                    <span className="oldPrice line-through leading-3 text-gray-500 text-[14px] font-[500]">
+                      $58.00
+                    </span>
+                    <span className="price text-primary text-[14px] font-[600]">
+                      $58.00
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <p className="text-[14px] w-[100px]">
+                    <span className="font-[600]">234</span> sale
+                  </p>
+                  <Progress value={40} type="success" />
+                </TableCell>
+                <TableCell style={{ minWidth: columns.minWidth }}>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]"
+                      onClick={() =>
+                        context.setIsOpenFullScreenPanel({
+                          open: true,
+                          model: "Edit Product",
+                        })
+                      }
+                    >
+                      <AiOutlineEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]">
+                      <FaRegEye className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                    </Button>
+
+                    <Button
+                      className="!w-[35px] !h-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.4)] !rounded-full hover:!bg-[#f1f1f1] !min-w-[35px]"
+                      onClick={() => deleteProduct()}
+                    >
                       <GoTrash className="text-[rgba(0,0,0,0.7)] text-[20px]" />
                     </Button>
                   </div>
