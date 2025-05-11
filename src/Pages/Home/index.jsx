@@ -5,7 +5,7 @@ import AdsBannerSliderV2 from "../../components/AdsBannerSliderV2";
 import HomeSlider from "../../components/HomeSlider";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ProductsSlider from "../../components/ProductsSlider";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -14,17 +14,57 @@ import { Navigation } from "swiper/modules";
 import BlogItem from "../../components/BlogItem";
 import HomeBannerV2 from "../../components/HomeSliderV2";
 import BannerBoxV2 from "../../components/BannerBoxV2";
+import { fetchDataFromApi } from "../../utils/api";
+import { MyContext } from "../../App";
 
 const Home = () => {
   const [value, setValue] = React.useState(0);
+  const [homeSlidesData, setHomeSlidesData] = useState([]);
+  const [popularProductsData, setPopularProductsData] = useState([]);
+  const [productsData, setAllProductsData] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  const context = useContext(MyContext);
+
+  useEffect(() => {
+    fetchDataFromApi("/api/homeSlides").then((res) => {
+      setHomeSlidesData(res?.data);
+    });
+
+    fetchDataFromApi("/api/product/getAllProducts").then((res) => {
+      setAllProductsData(res?.products);
+    });
+
+    fetchDataFromApi("/api/product/getAllFeaturedProducts").then((res) => {
+      setFeaturedProducts(res?.products);
+    });
+  }, []);
+
+  useEffect(() => {
+    fetchDataFromApi(
+      `/api/product/getAllProductsByCatId/${context?.catData[0]?._id}`
+    ).then((res) => {
+      if (res?.error === false) {
+        setPopularProductsData(res?.products);
+      }
+    });
+  }, [context?.catData]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const filterByCatId = (id) => {
+    fetchDataFromApi(`/api/product/getAllProductsByCatId/${id}`).then((res) => {
+      if (res?.error === false) {
+        setPopularProductsData(res?.products);
+      }
+    });
+  };
+
   return (
     <>
-      <HomeSlider />
+      {homeSlidesData?.length !== 0 && <HomeSlider data={homeSlidesData} />}
 
       <section className="py-6">
         <div className="container flex gap-5">
@@ -47,14 +87,16 @@ const Home = () => {
         </div>
       </section>
 
-      <HomeCatSlider />
+      {context?.catData?.length !== 0 && (
+        <HomeCatSlider data={context?.catData} />
+      )}
 
       <section className="bg-white py-8">
         <div className="container">
           <div className="flex items-center justify-between">
             <div className="leftSec">
               <h2 className="text-[20px] font-[600]">Ommabop mahsulotlar</h2>
-              <p className="text-[14px] font-[400]">
+              <p className="text-[14px] font-[400] mt-0 mb-0">
                 Mart oyining oxirigacha joriy takliflarni otkazib yubormang.
               </p>
             </div>
@@ -67,19 +109,23 @@ const Home = () => {
                 scrollButtons="auto"
                 aria-label="scrollable auto tabs example"
               >
-                <Tab label="Fashion" />
-                <Tab label="Elektronika" />
-                <Tab label="Sumkalar" />
-                <Tab label="Oyoq kiyimlar" />
-                <Tab label="Oziq-ovqat" />
-                <Tab label="Go'zallik" />
-                <Tab label="Salomatlik" />
-                <Tab label="Zargarlik buyumlari" />
+                {context?.catData?.length !== 0 &&
+                  context?.catData?.map((cat, index) => {
+                    return (
+                      <Tab
+                        key={index}
+                        label={cat?.name}
+                        onClick={() => filterByCatId(cat?._id)}
+                      />
+                    );
+                  })}
               </Tabs>
             </div>
           </div>
 
-          <ProductsSlider items={6} />
+          {popularProductsData?.length !== 0 && (
+            <ProductsSlider items={6} data={popularProductsData} />
+          )}
         </div>
       </section>
 
@@ -109,7 +155,9 @@ const Home = () => {
       <section className="py-5 pt-0 bg-white">
         <div className="container">
           <h2 className="text-[20px] font-[600]">Latest Products</h2>
-          <ProductsSlider items={6} />
+          {productsData?.length !== 0 && (
+            <ProductsSlider items={6} data={productsData} />
+          )}
 
           <AdsBannerSlider items={3} />
         </div>
@@ -118,7 +166,9 @@ const Home = () => {
       <section className="py-5 pt-0 bg-white">
         <div className="container">
           <h2 className="text-[20px] font-[600]">Featured Products</h2>
-          <ProductsSlider items={6} />
+          {featuredProducts?.length !== 0 && (
+            <ProductsSlider items={6} data={featuredProducts} />
+          )}
 
           <AdsBannerSlider items={3} />
         </div>

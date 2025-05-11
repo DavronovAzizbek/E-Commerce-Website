@@ -8,95 +8,71 @@ import { MdZoomOutMap } from "react-icons/md";
 import { useContext } from "react";
 import { MyContext } from "../../App";
 
-const ProductItem = ({
-  // eslint-disable-next-line react/prop-types
-  image1,
-  // eslint-disable-next-line react/prop-types
-  image2,
-  // eslint-disable-next-line react/prop-types
-  title,
-  // eslint-disable-next-line react/prop-types
-  category,
-  // eslint-disable-next-line react/prop-types
-  oldPrice,
-  // eslint-disable-next-line react/prop-types
-  price,
-  // eslint-disable-next-line react/prop-types
-  badge,
-}) => {
+const ProductItem = (props) => {
   const context = useContext(MyContext);
 
   return (
     <div className="productItem shadow-lg rounded-md overflow-hidden border-1 border-[rgba(0,0,0,0.1)] group">
       <div className="imgWrapper w-[100%] overflow-hidden rounded-md relative">
-        <Link to="/">
+        <Link to={`/product/${props?.item?._id}`}>
           <div className="img h-[220px] overflow-hidden">
-            <img src={image1} className="w-full" alt="Product Image 1" />
             <img
-              src={image2}
+              src={props?.item?.images[0]}
+              className="w-full"
+              alt="Product Image 1"
+            />
+            <img
+              src={props?.item?.images[1]}
               className="w-full transition-all duration-700 absolute top-0 left-0 opacity-0 group-hover:opacity-100 group-hover:scale-105"
               alt="Product Image 2"
             />
           </div>
         </Link>
-
-        {badge && (
-          <span
-            className={`discount flex items-center absolute top-[10px] left-[10px] z-50 rounded-lg p-1 text-[12px] font-[500] 
-    ${
-      badge === "NEW"
-        ? "bg-green-500 text-white opacity-0 invisible group-hover:opacity-100 group-hover:visible"
-        : ""
-    }
-    ${
-      badge === "-12%" || badge === "-8%"
-        ? "bg-red-500 text-white opacity-100 visible"
-        : "opacity-100 visible"
-    }
-  `}
-          >
-            {badge}
-          </span>
-        )}
+        <span className="discount flex items-center absolute top-[10px] left-[10px] z-50 rounded-lg p-1 text-[12px] font-[500]">
+          {props?.item?.discount}%
+        </span>
 
         <div className="actions absolute top-[-200px] right-[5px] z-50 flex items-center gap-2 flex-col w-[50px] transition-all duration-300 group-hover:top-[15px] opacity-0 group-hover:opacity-100">
           <Button
             className="!w-[35px] !h-[35px] !min-w-[35px] !rounded-full !bg-white text-black hover:!bg-primary hover:text-white group"
-            onClick={() => context.setOpenProductDetailsModal(true)}
+            onClick={() =>
+              context.handleOpenProductDetailsModal(true, props?.item)
+            }
           >
             <MdZoomOutMap className="text-[18px] !text-black group-hover:text-white hover:!text-white" />
           </Button>
-
           <Button className="!w-[35px] !h-[35px] !min-w-[35px] !rounded-full !bg-white text-black hover:!bg-primary hover:text-white group">
             <IoGitCompareOutline className="text-[18px] !text-black group-hover:text-white hover:!text-white" />
           </Button>
-
           <Button className="!w-[35px] !h-[35px] !min-w-[35px] !rounded-full !bg-white text-black hover:!bg-primary hover:text-white group">
             <FaRegHeart className="text-[18px] !text-black group-hover:text-white hover:!text-white" />
           </Button>
         </div>
       </div>
-
       <div className="info p-3 py-5">
-        <h6 className="text-[13px] !font-[400]">
-          <Link to="/" className="link transition-all">
-            {category}
-          </Link>
+        <h6 className="text-[13px] font-[400]">
+          <span className="link transition-all">{props?.item?.brand}</span>
         </h6>
         <h3 className="text-[13px] title mt-1 font-[500] mb-1 text-[#000]">
-          <Link to="/" className="link transition-all">
-            {title}
+          <Link
+            to={`/product/${props?.item?._id}`}
+            className="link transition-all"
+          >
+            {props?.item?.name}
           </Link>
         </h3>
-
-        <Rating name="size-small" defaultValue={4} size="small" readOnly />
-
+        <Rating
+          name="size-small"
+          defaultValue={props?.item?.rating}
+          size="small"
+          readOnly
+        />
         <div className="flex items-center gap-4">
           <span className="oldPrice line-through text-gray-500 text-[15px] font-[500]">
-            ${oldPrice}
+            ₹ {props?.item?.price}
           </span>
           <span className="price text-primary text-[15px] font-[600]">
-            ${price}
+            ₹ {props?.item?.oldPrice}
           </span>
         </div>
       </div>
