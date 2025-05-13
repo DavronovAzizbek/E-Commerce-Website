@@ -41,3 +41,15 @@ export const deleteData = async (url) => {
   const { res } = await axios.delete(apiUrl, +url, params);
   return res;
 };
+
+export const deleteMultipleData = async (url, data) => {
+  const params = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      "Content-Type": "application/json", // Agar kerak bo‘lsa, o‘zgartiring
+    },
+  };
+
+  const { res } = await axios.delete(apiUrl + url, data, params);
+  return res;
+};
