@@ -11,6 +11,9 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import { MyContext } from "../../App";
 import { deleteImages } from "../../utils/api";
 import CircularProgress from "@mui/material/CircularProgress";
+import Switch from "@mui/material/Switch";
+
+const label = { inputProps: { "aria-label": "Switch demo" } };
 
 const EditProduct = () => {
   const [formFields, setFormFields] = useState({
@@ -34,6 +37,9 @@ const EditProduct = () => {
     productRam: [],
     size: [],
     productWeight: [],
+    bannerTitleName: "",
+    bannerImages: [],
+    isDisplayOnHomeBanner: false,
   });
 
   const [productCat, setProductCat] = useState("");
@@ -47,6 +53,8 @@ const EditProduct = () => {
   const [productRamsData, setProductRamsData] = useState([]);
   const [productWeightData, setProductWeightData] = useState([]);
   const [productSizeData, setProductSizeData] = useState([]);
+  const [bannerPreviews, setBannerPreviews] = useState([]);
+  const [checkedSwitch, setCheckedSwitch] = useState(false);
 
   const context = useContext(MyContext);
 
@@ -122,6 +130,37 @@ const EditProduct = () => {
         formFields.images = imageArr;
       }, 100);
     });
+  };
+
+  const setBannerImagesFun = (previewsArr) => {
+    const imgArr = bannerPreviews;
+    for (let i = 0; i < previewsArr.length; i++) {
+      imgArr.push(previewsArr[i]);
+    }
+
+    setBannerPreviews([]);
+    setTimeout(() => {
+      setBannerPreviews(imgArr);
+      formFields.bannerImages = imgArr;
+    }, 10);
+  };
+
+  const removeBannerImg = (image, index) => {
+    var imageArr = [];
+    imageArr = bannerPreviews;
+    deleteImages(`/api/category/deleteImage?img=${image}`).then(() => {
+      imageArr.splice(index, 1);
+      setBannerPreviews([]);
+      setTimeout(() => {
+        setBannerPreviews(imageArr);
+        formFields.bannerImages = imageArr;
+      }, 100);
+    });
+  };
+
+  const handleChangeSwitch = (event) => {
+    setCheckedSwitch(event.target.checked);
+    formFields.isDisplayOnHomeBanner = event.target.checked;
   };
 
   const handleSubmit = (e) => {
@@ -461,6 +500,56 @@ const EditProduct = () => {
                 name="images"
                 url="/api/product/uploadImages"
                 setPreviewsFun={setPreviewsFun}
+              />
+            </div>
+          </div>
+
+          <div className="col w-full p-5 px-0">
+            <div className="shadow-mg bg-white p-4 w-full">
+              <div className="flex items-center gap-8">
+                <h3 className="font-[700] text-[18px] mb-3">Banner Images</h3>
+                <Switch
+                  {...label}
+                  onChange={handleChangeSwitch}
+                  checked={checkedSwitch}
+                />
+              </div>
+              <div className="grid grid-cols-7 gap-4">
+                {bannerPreviews?.length !== 0 &&
+                  bannerPreviews?.map((image, index) => {
+                    return (
+                      <div className="uploadBoxWrapper relative" key={index}>
+                        <span
+                          className="absolute w-[20px] h-[20px] rounded-full overflow-hidden bg-red-700 -top-[5px] -right-[5px] flex items-center justify-center z-50 cursor-pointer"
+                          onClick={() => removeBannerImg(image, index)}
+                        >
+                          <IoMdClose className="text-white text-[17px]" />
+                        </span>
+
+                        <div className="uploadBox p-0 rounded-md overflow-hidden border border-dashed border-[rgba(0,0,0,0.3)] h-[150px] w-[100%] bg-gray-100 cursor-pointer hover:bg-gray-200 flex items-center justify-center flex-col relative">
+                          <img src={image} alt="" className="w-100" />
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                <UploadBox
+                  multiple={true}
+                  name="bannerImages"
+                  url="/api/product/uploadBannerImages"
+                  setPreviewsFun={setBannerImagesFun}
+                />
+              </div>
+
+              <br />
+
+              <h3 className="font-[700] text-[18px] mb-3">Banner Title</h3>
+              <input
+                type="text"
+                className="w-full h-[40px] border border-[rgba(0,0,0,0.2)] focus:outline-none focus:border-[rgba(0,0,0,0.4)] rounded-sm p-3 text-sm "
+                name="bannerTitleName"
+                value={formFields.bannerTitleName}
+                onChange={onChangeInput}
               />
             </div>
           </div>

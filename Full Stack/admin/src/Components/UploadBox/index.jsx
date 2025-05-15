@@ -70,7 +70,7 @@ const UploadBox = (props) => {
             multiple={props.multiple !== undefined ? props.multiple : false}
             className="absolute top-0 left-0 w-full h-full z-50 opacity-0"
             onChange={(e) => onChangeFile(e, props?.url)}
-            name="images"
+            name={props?.name}
           />
         </>
       )}
