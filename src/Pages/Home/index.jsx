@@ -16,6 +16,7 @@ import HomeBannerV2 from "../../components/HomeSliderV2";
 import BannerBoxV2 from "../../components/BannerBoxV2";
 import { fetchDataFromApi } from "../../utils/api";
 import { MyContext } from "../../App";
+import ProductLoading from "../../components/ProductLoading";
 
 const Home = () => {
   const [value, setValue] = React.useState(0);
@@ -66,27 +67,6 @@ const Home = () => {
     <>
       {homeSlidesData?.length !== 0 && <HomeSlider data={homeSlidesData} />}
 
-      <section className="py-6">
-        <div className="container flex gap-5">
-          <div className="part1 w-full max-w-screen-lg">
-            <HomeBannerV2 />
-          </div>
-
-          <div className="part2 w-[30%] flex items-center gap-5 justify-between flex-col">
-            <BannerBoxV2
-              info="left"
-              image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/cms/sub-banner-1.jpg"
-              title="Samsung Gear VR Camera"
-            />
-            <BannerBoxV2
-              info="right"
-              image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/cms/sub-banner-2.jpg"
-              title="Marcel Dining Room Chair"
-            />
-          </div>
-        </div>
-      </section>
-
       {context?.catData?.length !== 0 && (
         <HomeCatSlider data={context?.catData} />
       )}
@@ -123,9 +103,32 @@ const Home = () => {
             </div>
           </div>
 
+          {popularProductsData?.length === 0 && <ProductLoading />}
+
           {popularProductsData?.length !== 0 && (
             <ProductsSlider items={6} data={popularProductsData} />
           )}
+        </div>
+      </section>
+
+      <section className="py-6">
+        <div className="container flex gap-5">
+          <div className="part1 w-full max-w-screen-lg">
+            {productsData?.length !== 0 && <HomeBannerV2 data={productsData} />}
+          </div>
+
+          <div className="part2 w-[30%] flex items-center gap-5 justify-between flex-col">
+            <BannerBoxV2
+              info="left"
+              image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/cms/sub-banner-1.jpg"
+              title="Samsung Gear VR Camera"
+            />
+            <BannerBoxV2
+              info="right"
+              image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/cms/sub-banner-2.jpg"
+              title="Marcel Dining Room Chair"
+            />
+          </div>
         </div>
       </section>
 
@@ -155,6 +158,9 @@ const Home = () => {
       <section className="py-5 pt-0 bg-white">
         <div className="container">
           <h2 className="text-[20px] font-[600]">Latest Products</h2>
+
+          {productsData?.length === 0 && <ProductLoading />}
+
           {productsData?.length !== 0 && (
             <ProductsSlider items={6} data={productsData} />
           )}
@@ -166,6 +172,9 @@ const Home = () => {
       <section className="py-5 pt-0 bg-white">
         <div className="container">
           <h2 className="text-[20px] font-[600]">Featured Products</h2>
+
+          {featuredProducts?.length === 0 && <ProductLoading />}
+
           {featuredProducts?.length !== 0 && (
             <ProductsSlider items={6} data={featuredProducts} />
           )}
