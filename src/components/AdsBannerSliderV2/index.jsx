@@ -16,29 +16,18 @@ const AdsBannerSlider = (props) => {
         modules={[Navigation]}
         className="smlBtn"
       >
-        <SwiperSlide>
-          <BannerBoxV2
-            info="left"
-            image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/cms/cms-banner-1.jpg"
-            link={"/"}
-          />
-        </SwiperSlide>
-
-        <SwiperSlide>
-          <BannerBoxV2
-            info="left"
-            image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/cms/cms-banner-2.jpg"
-            link={"/"}
-          />
-        </SwiperSlide>
-
-        <SwiperSlide>
-          <BannerBoxV2
-            info="left"
-            image="https://demos.codezeel.com/prestashop/PRS21/PRS210502/img/cms/cms-banner-3.jpg"
-            link={"/"}
-          />
-        </SwiperSlide>
+        {props?.data?.map((item, index) => {
+          return (
+            <SwiperSlide key={index}>
+              <BannerBoxV2
+                info={item?.alignInfo}
+                item={item}
+                image={item?.images[0]}
+                link={"/"}
+              />
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </div>
   );
