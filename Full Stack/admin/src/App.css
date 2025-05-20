@@ -189,3 +189,8 @@ input[type="email"]:disabled {
   font-size: 10px !important;
   color: #000;
 }
+
+.rsw-editor {
+  min-height: 200px !important;
+  background: #fff !important;
+}
