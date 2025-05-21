@@ -15,12 +15,23 @@ import Pagination from "@mui/material/Pagination";
 const ProductListing = () => {
   const [itemView, setItemView] = useState("grid");
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [productsData, setProductsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [selectedSortVal, setSelectedSortVal] = useState("Name, A to Z");
+
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSortBy = (name, order, products, value) => {
+    setSelectedSortVal(value);
   };
 
   return (
@@ -48,12 +59,19 @@ const ProductListing = () => {
 
       <div className="bg-white p-2 mt-4">
         <div className="container flex gap-3">
-          <div className="sidebarWrapper w-[20%] h-full bg-white">
-            <Sidebar />
+          <div className="sidebarWrapper w-[20%] bg-white">
+            <Sidebar
+              productsData={productsData}
+              setProductsData={setProductsData}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              page={page}
+              setTotalPages={setTotalPages}
+            />
           </div>
 
           <div className="rightContent w-[80%] py-3">
-            <div className="bg-[#f1f1f1] p-2 w-full mb-4 rounded-md flex items-center justify-between">
+            <div className="bg-[#f1f1f1] p-2 w-full mb-4 rounded-md flex items-center justify-between sticky top-[130px] z-[99]">
               <div className="col1 flex items-center itemViewActions">
                 <Button
                   className={`!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !text-[#000] ${
@@ -73,7 +91,11 @@ const ProductListing = () => {
                 </Button>
 
                 <span className="text-[14px] font-[500] pl-3 text-[rgba(0,0,0,0.7)]">
-                  There are 27 products.
+                  There are
+                  {productsData?.products?.length !== 0
+                    ? productsData?.products?.length
+                    : 0}{" "}
+                  products.
                 </span>
               </div>
 
@@ -90,7 +112,7 @@ const ProductListing = () => {
                   onClick={handleClick}
                   className="!bg-white !text-[12px] !text-[#000] !capitalize !border-2 !border-[#000]"
                 >
-                  Sales, highest to lowest
+                  {selectedSortVal}
                 </Button>
 
                 <Menu
@@ -103,37 +125,46 @@ const ProductListing = () => {
                   }}
                 >
                   <MenuItem
-                    onClick={handleClose}
-                    className="!text-[13px] !text-[#000] !capitalize"
-                  >
-                    Sales, highest to lowest
-                  </MenuItem>
-                  <MenuItem
-                    onClick={handleClose}
-                    className="!text-[13px] !text-[#000] !capitalize"
-                  >
-                    Relevance
-                  </MenuItem>
-                  <MenuItem
-                    onClick={handleClose}
+                    onClick={() =>
+                      handleSortBy("name", "asc", productsData, "Name, A to Z")
+                    }
                     className="!text-[13px] !text-[#000] !capitalize"
                   >
                     Name, A to Z
                   </MenuItem>
+
                   <MenuItem
-                    onClick={handleClose}
+                    onClick={() =>
+                      handleSortBy("name", "desc", productsData, "Name, Z to A")
+                    }
                     className="!text-[13px] !text-[#000] !capitalize"
                   >
                     Name, Z to A
                   </MenuItem>
+
                   <MenuItem
-                    onClick={handleClose}
+                    onClick={() =>
+                      handleSortBy(
+                        "price",
+                        "asc",
+                        productsData,
+                        "Price, low to high"
+                      )
+                    }
                     className="!text-[13px] !text-[#000] !capitalize"
                   >
                     Price, low to high
                   </MenuItem>
+
                   <MenuItem
-                    onClick={handleClose}
+                    onClick={() =>
+                      handleSortBy(
+                        "price",
+                        "desc",
+                        productsData,
+                        "Price, high to low"
+                      )
+                    }
                     className="!text-[13px] !text-[#000] !capitalize"
                   >
                     Price, high to low
@@ -145,174 +176,42 @@ const ProductListing = () => {
             <div
               className={`grid ${
                 itemView === "grid"
-                  ? "grid-cols-4 md:grid-cols-4"
+                  ? "grid-cols-5 md:grid-cols-5"
                   : "grid-cols-1 md:grid-cols-1"
               } gap-4`}
             >
               {itemView === "grid" ? (
                 <>
-                  <ProductItem
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/35-large_default/brown-bear-printed-sweater.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/32-medium_default/brown-bear-printed-sweater.jpg"
-                    category="Initech space"
-                    title="Apple Smart Watch / Midnight Aluminum"
-                    oldPrice="58.00"
-                    price="51.04"
-                    badge="-12%"
-                  />
-                  <ProductItem
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/49-large_default/today-is-a-good-day-framed-poster.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/53-medium_default/today-is-a-good-day-framed-poster.jpg"
-                    category="Pro Tech Gear"
-                    title="Convenient Bags For Students And Adults Too"
-                    oldPrice="100.00"
-                    price="94.00"
-                    badge="NEW"
-                  />
-                  <ProductItem
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/70-large_default/mug-today-is-a-good-day.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/71-medium_default/mug-today-is-a-good-day.jpg"
-                    category="Soylent Green"
-                    title="Mens Cotton Casual Short Sleeve T-Shirts"
-                    oldPrice="90.00"
-                    price="86.00"
-                    badge="NEW"
-                  />
-                  <ProductItem
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/133-large_default/customizable-mug.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/130-medium_default/customizable-mug.jpg"
-                    category="Soylent Green"
-                    title="Plastic Bamboo Dustpan & Brush Black"
-                    oldPrice="57.00"
-                    price="52.44"
-                    badge="-8%"
-                  />
-                  <ProductItem
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/104-large_default/brown-bear-vector-graphics.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/105-medium_default/brown-bear-vector-graphics.jpg"
-                    category="Looney Tunes"
-                    title="Beautiful And Affordable Bags For Women"
-                    oldPrice="92.00"
-                    price="82.00"
-                    badge="NEW"
-                  />
-                  <ProductItem
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/120-large_default/brown-bear-notebook.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/119-medium_default/brown-bear-notebook.jpg"
-                    category="The Simpsons"
-                    title="Smart Speaker & Google Assistant, Light Grey"
-                    oldPrice="60.00"
-                    price="54.00"
-                    badge="NEW"
-                  />
-                  <ProductItem
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/103-large_default/pack-mug-framed-poster.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/97-medium_default/pack-mug-framed-poster.jpg"
-                    category="Pro Tech Gear"
-                    title="GENELEC Compact two-way Active Speaker"
-                    oldPrice="58.00"
-                    price="54.00"
-                    badge="NEW"
-                  />
-                  <ProductItem
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/91-large_default/mountain-fox-vector-graphics.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/93-medium_default/mountain-fox-vector-graphics.jpg"
-                    category="Initech space"
-                    title="Pendant Light Lamps for Home Decor"
-                    oldPrice="82.00"
-                    price="76.00"
-                    badge="NEW"
-                  />
+                  {isLoading === true
+                    ? { itemView }
+                    : productsData?.products?.length !== 0 &&
+                      productsData?.products?.map((item, index) => {
+                        return <ProductItem key={index} item={item} />;
+                      })}
                 </>
               ) : (
                 <>
-                  <ProductItemListView
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/35-large_default/brown-bear-printed-sweater.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/32-medium_default/brown-bear-printed-sweater.jpg"
-                    category="Initech space"
-                    title="Apple Smart Watch / Midnight Aluminum"
-                    oldPrice="58.00"
-                    price="51.04"
-                    badge="-12%"
-                    text="The sublimation textile printing process provides an exceptional color rendering and a color, guaranteed overtime praesentium voluptatum deleniti atque corrupti quos dolores."
-                  />
-                  <ProductItemListView
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/49-large_default/today-is-a-good-day-framed-poster.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/53-medium_default/today-is-a-good-day-framed-poster.jpg"
-                    category="Pro Tech Gear"
-                    title="Convenient Bags For Students And Adults Too"
-                    oldPrice="100.00"
-                    price="94.00"
-                    badge="NEW"
-                    text="Established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less."
-                  />
-                  <ProductItemListView
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/70-large_default/mug-today-is-a-good-day.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/71-medium_default/mug-today-is-a-good-day.jpg"
-                    category="Soylent Green"
-                    title="Mens Cotton Casual Short Sleeve T-Shirts"
-                    oldPrice="90.00"
-                    price="86.00"
-                    badge="NEW"
-                    text="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi."
-                  />
-                  <ProductItemListView
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/133-large_default/customizable-mug.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/130-medium_default/customizable-mug.jpg"
-                    category="Soylent Green"
-                    title="Plastic Bamboo Dustpan & Brush Black"
-                    oldPrice="57.00"
-                    price="52.44"
-                    badge="-8%"
-                    text="Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their."
-                  />
-                  <ProductItemListView
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/104-large_default/brown-bear-vector-graphics.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/105-medium_default/brown-bear-vector-graphics.jpg"
-                    category="Looney Tunes"
-                    title="Beautiful And Affordable Bags For Women"
-                    oldPrice="92.00"
-                    price="82.00"
-                    badge="NEW"
-                    text="The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable that."
-                  />
-                  <ProductItemListView
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/120-large_default/brown-bear-notebook.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/119-medium_default/brown-bear-notebook.jpg"
-                    category="The Simpsons"
-                    title="Smart Speaker & Google Assistant, Light Grey"
-                    oldPrice="60.00"
-                    price="54.00"
-                    badge="NEW"
-                    text="The sublimation textile printing process provides an exceptional color rendering and a color, guaranteed overtime praesentium voluptatum deleniti atque corrupti quos dolores."
-                  />
-                  <ProductItemListView
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/103-large_default/pack-mug-framed-poster.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/97-medium_default/pack-mug-framed-poster.jpg"
-                    category="Pro Tech Gear"
-                    title="GENELEC Compact two-way Active Speaker"
-                    oldPrice="58.00"
-                    price="54.00"
-                    badge="NEW"
-                    text="Equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple."
-                  />
-                  <ProductItemListView
-                    image1="https://demos.codezeel.com/prestashop/PRS21/PRS210502/91-large_default/mountain-fox-vector-graphics.jpg"
-                    image2="https://demos.codezeel.com/prestashop/PRS21/PRS210502/93-medium_default/mountain-fox-vector-graphics.jpg"
-                    category="Initech space"
-                    title="Pendant Light Lamps for Home Decor"
-                    oldPrice="82.00"
-                    price="76.00"
-                    badge="NEW"
-                    text="We denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire that they cannot foresee."
-                  />
+                  {isLoading === true
+                    ? { itemView }
+                    : productsData?.products?.length !== 0 &&
+                      productsData?.products?.map((item, index) => {
+                        return <ProductItemListView key={index} item={item} />;
+                      })}
                 </>
               )}
             </div>
 
-            <div className="flex items-center justify-center mt-10">
-              <Pagination count={10} showFirstButton showLastButton />
-            </div>
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center mt-10">
+                <Pagination
+                  showFirstButton
+                  showLastButton
+                  count={totalPages}
+                  page={page}
+                  onChange={(e, value) => setPage(value)}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

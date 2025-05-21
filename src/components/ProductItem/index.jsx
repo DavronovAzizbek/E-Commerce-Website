@@ -7,6 +7,7 @@ import { IoGitCompareOutline } from "react-icons/io5";
 import { MdZoomOutMap } from "react-icons/md";
 import { useContext } from "react";
 import { MyContext } from "../../App";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 const ProductItem = (props) => {
   const context = useContext(MyContext);
@@ -49,7 +50,7 @@ const ProductItem = (props) => {
           </Button>
         </div>
       </div>
-      <div className="info p-3 py-5">
+      <div className="info p-3 py-5 relative pb-[50px] h-[190px]">
         <h6 className="text-[13px] font-[400]">
           <span className="link transition-all">{props?.item?.brand}</span>
         </h6>
@@ -58,7 +59,7 @@ const ProductItem = (props) => {
             to={`/product/${props?.item?._id}`}
             className="link transition-all"
           >
-            {props?.item?.name?.substr(0, 40) + "..."}
+            {props?.item?.name?.substr(0, 30) + "..."}
           </Link>
         </h3>
         <Rating
@@ -69,11 +70,20 @@ const ProductItem = (props) => {
         />
         <div className="flex items-center gap-4">
           <span className="oldPrice line-through text-gray-500 text-[15px] font-[500]">
-            ₹ {props?.item?.price}
-          </span>
-          <span className="price text-primary text-[15px] font-[600]">
             ₹ {props?.item?.oldPrice}
           </span>
+          <span className="price text-primary text-[15px] font-[600]">
+            ₹ {props?.item?.price}
+          </span>
+        </div>
+
+        <div className="!absolute bottom-[15px] left-0 pl-3 pr-3 w-full">
+          <Button
+            className="btn-org btn-border flex w-full btn-sm gap-2"
+            size="small"
+          >
+            <MdOutlineShoppingCart className="text-[18px]" /> Add to Cart
+          </Button>
         </div>
       </div>
     </div>
