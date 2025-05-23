@@ -247,21 +247,23 @@ const MyAccount = () => {
               <hr />
 
               <form className="mt-8" onSubmit={handleSubmitChangePassword}>
-                <div className="flex items-center gap-5">
-                  <div className="w-[50%]">
-                    <TextField
-                      label="Old Password"
-                      variant="outlined"
-                      size="small"
-                      className="w-full"
-                      name="oldPassword"
-                      value={changePassword.oldPassword}
-                      disabled={isLoading2 === true ? true : false}
-                      onChange={onChangeInput}
-                    />
-                  </div>
+                <div className="grid grid-cols-2 gap-5">
+                  {context?.userData?.signUpWithGoogle === false && (
+                    <div className="col">
+                      <TextField
+                        label="Old Password"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        name="oldPassword"
+                        value={changePassword.oldPassword}
+                        disabled={isLoading2 === true ? true : false}
+                        onChange={onChangeInput}
+                      />
+                    </div>
+                  )}
 
-                  <div className="w-[50%]">
+                  <div className="col">
                     <TextField
                       type="text"
                       label="New Password"
@@ -273,10 +275,8 @@ const MyAccount = () => {
                       onChange={onChangeInput}
                     />
                   </div>
-                </div>
 
-                <div className="flex items-center mt-4 gap-5">
-                  <div className="w-[50%]">
+                  <div className="col">
                     <TextField
                       label="Confirm Password"
                       variant="outlined"
@@ -292,11 +292,7 @@ const MyAccount = () => {
                 <br />
 
                 <div className="flex items-center gap-4">
-                  <Button
-                    type="submit"
-                    disabled={!valideValue2}
-                    className="btn-org btn-sm w-[200px]"
-                  >
+                  <Button type="submit" className="btn-org btn-sm w-[200px]">
                     {isLoading2 === true ? (
                       <CircularProgress color="inherit" />
                     ) : (

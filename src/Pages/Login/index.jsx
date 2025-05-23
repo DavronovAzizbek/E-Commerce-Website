@@ -8,6 +8,11 @@ import { FcGoogle } from "react-icons/fc";
 import { MyContext } from "../../App";
 import CircularProgress from "@mui/material/CircularProgress";
 import { postData } from "../../utils/api";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { firebaseApp } from "../../firebase";
+
+const auth = getAuth(firebaseApp);
+const googleProvider = new GoogleAuthProvider();
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -91,6 +96,33 @@ const Login = () => {
         }
       }
     );
+  };
+
+  const authWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+
+        const user = result.user;
+
+        const fields = {
+          name: user.providerData[0].displayName,
+          email: user.providerData[0].email,
+          password: null,
+          avatar: user.providerData[0].photoURL,
+          mobile: user.providerData[0].phoneNumber,
+          role: "USER",
+        };
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        const email = error.customData.email;
+
+        const credential = GoogleAuthProvider.credentialFromError(error);
+      });
   };
 
   return (
@@ -177,7 +209,10 @@ const Login = () => {
               Or continue with social account
             </p>
 
-            <Button className="flex gap-3 w-full !bg-[#f1f1f1] btn-lg !text-black">
+            <Button
+              className="flex gap-3 w-full !bg-[#f1f1f1] btn-lg !text-black"
+              onClick={authWithGoogle}
+            >
               <FcGoogle className="text-[20px]" />
               Login with Google
             </Button>
