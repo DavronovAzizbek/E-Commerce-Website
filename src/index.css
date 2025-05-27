@@ -405,3 +405,15 @@ button .MuiCircularProgress-root {
 header {
   box-shadow: 0px 1px 5px #0000001a;
 }
+
+.lazy-load-image-background img {
+  transition: all 0.1s ease-in-out !important;
+}
+
+.MuiFormControlLabel-root {
+  margin-right: 0px !important;
+}
+
+.MuiCircularProgress-root {
+  @apply !text-primary;
+}
