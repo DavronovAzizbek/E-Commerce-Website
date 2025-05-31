@@ -5,12 +5,77 @@ import Button from "@mui/material/Button";
 import { FaRegHeart } from "react-icons/fa";
 import { IoGitCompareOutline } from "react-icons/io5";
 import { MdZoomOutMap } from "react-icons/md";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { MyContext } from "../../App";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { useState } from "react";
+import { FaMinus } from "react-icons/fa6";
+import { FaPlus } from "react-icons/fa6";
+import { deleteData, editData } from "../../utils/api";
 
 const ProductItem = (props) => {
+  const [quantity, setQuantity] = useState(1);
+  const [isAdded, setIsAdded] = useState(false);
+  const [cartItem, setCartItem] = useState([]);
+
   const context = useContext(MyContext);
+
+  const addToCart = (product, userId, quantity) => {
+    context?.addToCart(product, userId, quantity);
+    setIsAdded(true);
+  };
+
+  useEffect(() => {
+    const item = context?.cartData?.filter((cartItem) =>
+      cartItem.productId.includes(props?.item?._id)
+    );
+
+    if (item?.length !== 0) {
+      setCartItem(item);
+      setIsAdded(true);
+    }
+  }, [context?.cartData]);
+
+  const minusQty = () => {
+    if (quantity !== 1 && quantity > 1) {
+      setQuantity(quantity - 1);
+    } else {
+      setQuantity(1);
+    }
+
+    if (quantity === 1) {
+      deleteData(`/api/cart/delete-cart-item/${cartItem[0]?._id}`).then(
+        (res) => {
+          setIsAdded(false);
+          context.alertBox("success", "Item Removed");
+        }
+      );
+    } else {
+      const obj = {
+        _id: cartItem[0]?._id,
+        qty: quantity,
+        subTotal: props?.item?.price * quantity,
+      };
+
+      editData(`/api/cart/update-qty`, obj).then((res) => {
+        console.log(res);
+      });
+    }
+  };
+
+  const addQty = () => {
+    setQuantity(quantity + 1);
+
+    const obj = {
+      _id: cartItem[0]?._id,
+      qty: quantity,
+      subTotal: props?.item?.price * quantity,
+    };
+
+    editData(`/api/cart/update-qty`, obj).then((res) => {
+      console.log(res);
+    });
+  };
 
   return (
     <div className="productItem shadow-lg rounded-md overflow-hidden border-1 border-[rgba(0,0,0,0.1)] group">
@@ -78,12 +143,33 @@ const ProductItem = (props) => {
         </div>
 
         <div className="!absolute bottom-[15px] left-0 pl-3 pr-3 w-full">
-          <Button
-            className="btn-org btn-border flex w-full btn-sm gap-2"
-            size="small"
-          >
-            <MdOutlineShoppingCart className="text-[18px]" /> Add to Cart
-          </Button>
+          {isAdded === false ? (
+            <Button
+              className="btn-org btn-border flex w-full btn-sm gap-2"
+              size="small"
+              onClick={() =>
+                addToCart(props?.item, context?.userData._id, quantity)
+              }
+            >
+              <MdOutlineShoppingCart className="text-[18px]" /> Add to Cart
+            </Button>
+          ) : (
+            <div className="flex items-center justify-between overflow-hidden rounded-full border border-[rgba(0,0,0,0.1)]">
+              <Button
+                className="!min-w-[35px] !w-[35px] !h-[30px] !bg-[#f1f1f1] !rounded-none"
+                onClick={minusQty}
+              >
+                <FaMinus className="text-[rgba(0,0,0,0.7)]" />
+              </Button>
+              <span>{quantity}</span>
+              <Button
+                className="!min-w-[35px] !w-[35px] !h-[30px] !bg-primary !rounded-none"
+                onClick={addQty}
+              >
+                <FaPlus className="text-white" />
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>

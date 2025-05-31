@@ -55,6 +55,7 @@ const Header = () => {
         context.setIsLogin(false);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        context.setUserData(null);
         history("/");
       }
     });
@@ -244,7 +245,10 @@ const Header = () => {
                     aria-label="cart"
                     onClick={() => context.setOpenCartPanel(true)}
                   >
-                    <StyleBadge badgeContent={4} color="secondary">
+                    <StyleBadge
+                      badgeContent={context?.cartData?.length}
+                      color="secondary"
+                    >
                       <MdOutlineShoppingCart />
                     </StyleBadge>
                   </IconButton>
