@@ -246,7 +246,11 @@ const Header = () => {
                     onClick={() => context.setOpenCartPanel(true)}
                   >
                     <StyleBadge
-                      badgeContent={context?.cartData?.length}
+                      badgeContent={
+                        context?.cartData?.length !== 0
+                          ? context?.cartData?.length
+                          : 0
+                      }
                       color="secondary"
                     >
                       <MdOutlineShoppingCart />

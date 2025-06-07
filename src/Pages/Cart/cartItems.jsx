@@ -42,8 +42,7 @@ const CartItems = (props) => {
       <div className="img w-[15%] rounded-md overflow-hidden">
         <Link to="/product/0987" className="group">
           <img
-            src="https://demos.codezeel.com/prestashop/PRS21/PRS210502/70-cart_default/mug-today-is-a-good-day.jpg"
-            alt=""
+            src={props?.item?.image}
             className="w-full group-hover:scale-105 transition-all"
           />
         </Link>
@@ -51,12 +50,17 @@ const CartItems = (props) => {
 
       <div className="info w-[85%] relative">
         <IoCloseSharp className="cursor-pointer absolute top-[0px] right-[0px] text-[22px] link transition-all" />
-        <span className="text-[13px]">Soylent Green</span>
+        <span className="text-[13px]">{props?.item?.brand}</span>
         <h3 className="text-[15px]">
-          <Link className="link">Mens Cotton Casual Short Sleeve T-Shirts</Link>
+          <Link className="link">{props?.item?.productTitle}</Link>
         </h3>
 
-        <Rating name="size-small" defaultValue={4} size="small" readOnly />
+        <Rating
+          name="size-small"
+          value={props?.item?.rating}
+          size="small"
+          readOnly
+        />
 
         <div className="flex items-center gap-4 mt-2">
           <div className="relative">
