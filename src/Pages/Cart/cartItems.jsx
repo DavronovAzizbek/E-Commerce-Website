@@ -5,6 +5,9 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { GoTriangleDown } from "react-icons/go";
 import Rating from "@mui/material/Rating";
+import { MyContext } from "../../App";
+import { useContext } from "react";
+import { deleteData, editData } from "../../utils/api";
 
 const CartItems = (props) => {
   const [sizeanchorEl, setSizeAnchorEl] = useState(null);
@@ -14,6 +17,8 @@ const CartItems = (props) => {
   const [qtyanchorEl, setQtyAnchorEl] = useState(null);
   const [selectedQty, setSelectedQty] = useState(props.qty);
   const openQty = Boolean(qtyanchorEl);
+
+  const context = useContext(MyContext);
 
   const handleClickSize = (event) => {
     setSizeAnchorEl(event.currentTarget);
@@ -34,7 +39,27 @@ const CartItems = (props) => {
     setQtyAnchorEl(null);
     if (value !== null) {
       setSelectedQty(value);
+
+      const cartObj = {
+        _id: props?.item?._id,
+        qty: value,
+        subTotal: props?.item?.price * value,
+      };
+
+      editData("/api/cart/update-qty", cartObj).then((res) => {
+        if (res?.data?.error === false) {
+          context.alertBox("success", res?.data?.message);
+          context?.getCartItems();
+        }
+      });
     }
+  };
+
+  const removeItem = (id) => {
+    deleteData(`/api/cart/delete-cart-item/${id}`).then((res) => {
+      context.alertBox("success", "Product removed from cart");
+      context?.getCartItems();
+    });
   };
 
   return (
@@ -49,7 +74,10 @@ const CartItems = (props) => {
       </div>
 
       <div className="info w-[85%] relative">
-        <IoCloseSharp className="cursor-pointer absolute top-[0px] right-[0px] text-[22px] link transition-all" />
+        <IoCloseSharp
+          className="cursor-pointer absolute top-[0px] right-[0px] text-[22px] link transition-all"
+          onClick={() => removeItem(props?.item?._id)}
+        />
         <span className="text-[13px]">{props?.item?.brand}</span>
         <h3 className="text-[15px]">
           <Link className="link">{props?.item?.productTitle}</Link>
@@ -103,29 +131,26 @@ const CartItems = (props) => {
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={() => handleCloseQty(1)}>1</MenuItem>
-              <MenuItem onClick={() => handleCloseQty(2)}>2</MenuItem>
-              <MenuItem onClick={() => handleCloseQty(3)}>3</MenuItem>
-              <MenuItem onClick={() => handleCloseQty(4)}>4</MenuItem>
-              <MenuItem onClick={() => handleCloseQty(5)}>5</MenuItem>
-              <MenuItem onClick={() => handleCloseQty(6)}>6</MenuItem>
-              <MenuItem onClick={() => handleCloseQty(7)}>7</MenuItem>
-              <MenuItem onClick={() => handleCloseQty(8)}>8</MenuItem>
-              <MenuItem onClick={() => handleCloseQty(9)}>9</MenuItem>
-              <MenuItem onClick={() => handleCloseQty(10)}>10</MenuItem>
+              {Array.from({ length: 15 }).map((_, index) => (
+                <MenuItem key={index} onClick={() => handleCloseQty(index + 1)}>
+                  {index + 1}
+                </MenuItem>
+              ))}
             </Menu>
           </div>
         </div>
 
         <div className="flex items-center gap-4 mt-2">
-          <span className="price text-[14px] font-[600]">$58.00</span>
+          <span className="price text-[14px] font-[600]">
+            &#x20b9; {props?.item?.price}
+          </span>
 
           <span className="oldPrice line-through text-gray-500 text-[14px] font-[500]">
-            $58.00
+            &#x20b9; {props?.item?.oldPrice}
           </span>
 
           <span className="price text-primary text-[14px] font-[600]">
-            55% OFF
+            {props?.item?.discount}% OFF
           </span>
         </div>
       </div>

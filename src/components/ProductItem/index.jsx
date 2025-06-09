@@ -12,6 +12,7 @@ import { useState } from "react";
 import { FaMinus } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
 import { deleteData, editData } from "../../utils/api";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const ProductItem = (props) => {
   const [quantity, setQuantity] = useState(1);
@@ -20,6 +21,7 @@ const ProductItem = (props) => {
   const [activeTab, setActiveTab] = useState(null);
   const [isShowTabs, setIsShowTabs] = useState(false);
   const [selectedTabName, setSelectedTabName] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const context = useContext(MyContext);
 
@@ -42,6 +44,8 @@ const ProductItem = (props) => {
       ram: props?.item?.productRam?.length !== 0 ? selectedTabName : "",
     };
 
+    setIsLoading(true);
+
     if (
       props?.item?.size?.length !== 0 ||
       props?.item?.productRam?.length !== 0 ||
@@ -49,15 +53,21 @@ const ProductItem = (props) => {
     ) {
       setIsShowTabs(true);
     } else {
-      context?.addToCart(productItem, userId, quantity);
       setIsAdded(true);
       setIsShowTabs(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+      context?.addToCart(productItem, userId, quantity);
     }
 
     if (activeTab !== null) {
       context?.addToCart(productItem, userId, quantity);
       setIsAdded(true);
       setIsShowTabs(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
     }
   };
 
@@ -253,21 +263,32 @@ const ProductItem = (props) => {
               <MdOutlineShoppingCart className="text-[18px]" /> Add to Cart
             </Button>
           ) : (
-            <div className="flex items-center justify-between overflow-hidden rounded-full border border-[rgba(0,0,0,0.1)]">
-              <Button
-                className="!min-w-[35px] !w-[35px] !h-[30px] !bg-[#f1f1f1] !rounded-none"
-                onClick={minusQty}
-              >
-                <FaMinus className="text-[rgba(0,0,0,0.7)]" />
-              </Button>
-              <span>{quantity}</span>
-              <Button
-                className="!min-w-[35px] !w-[35px] !h-[30px] !bg-primary !rounded-none"
-                onClick={addQty}
-              >
-                <FaPlus className="text-white" />
-              </Button>
-            </div>
+            (<>
+              {isLoading === true ? (
+                <Button
+                  className="btn-org btn-border flex w-full btn-sm gap-2"
+                  size="small"
+                >
+                  <CircularProgress />
+                </Button>
+              ) : (
+                <div className="flex items-center justify-between overflow-hidden rounded-full border border-[rgba(0,0,0,0.1)]">
+                  <Button
+                    className="!min-w-[35px] !w-[35px] !h-[30px] !bg-[#f1f1f1] !rounded-none"
+                    onClick={minusQty}
+                  >
+                    <FaMinus className="text-[rgba(0,0,0,0.7)]" />
+                  </Button>
+                  <span>{quantity}</span>
+                  <Button
+                    className="!min-w-[35px] !w-[35px] !h-[30px] !bg-primary !rounded-none"
+                    onClick={addQty}
+                  >
+                    <FaPlus className="text-white" />
+                  </Button>
+                </div>
+              )}
+            </>)()
           )}
         </div>
       </div>

@@ -100,7 +100,11 @@ const CartPanel = (props) => {
           <br />
 
           <div className="flex items-center justify-between w-full gap-5">
-            <Link to="/cart" className="w-[50%] d-block">
+            <Link
+              to="/cart"
+              className="w-[50%] d-block"
+              onClick={context.toggleCartPanel(false)}
+            >
               <Button className="btn-org btn-lg w-full">View Cart</Button>
             </Link>
             <Link to="/checkout" className="w-[50%] d-block">

@@ -270,7 +270,18 @@ const Footer = () => {
         {context?.cartData?.length !== 0 ? (
           <CartPanel data={context?.cartData} />
         ) : (
-          "Cart Empty"
+          <>
+            <div className="flex items-center justify-center flex-col pt-[100px] gap-5">
+              <img src="/empty-cart.png" className="w-[150px]" />
+              <h4>Your Cart is currently empty</h4>
+              <Button
+                className="btn-org btn-sm"
+                onClick={context.toggleCartPanel(false)}
+              >
+                Continue Shopping
+              </Button>
+            </div>
+          </>
         )}
       </Drawer>
     </>

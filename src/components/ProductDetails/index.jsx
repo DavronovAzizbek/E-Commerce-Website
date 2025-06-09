@@ -4,10 +4,76 @@ import { FaRegHeart } from "react-icons/fa";
 import { IoGitCompareOutline } from "react-icons/io5";
 import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { MyContext } from "../../App";
+import CircularProgress from "@mui/material/CircularProgress";
+import { postData } from "../../utils/api";
 
 const ProductDetailsComponent = (props) => {
   const [productActionIndex, setProductActionIndex] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [selectedTabName, setSelectedTabName] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [tabError, setTabError] = useState(false);
+
+  const context = useContext(MyContext);
+
+  const handleSelecteQty = (qty) => {
+    setQuantity(qty);
+  };
+
+  const handleClickActiveTab = (index, name) => {
+    setProductActionIndex(index);
+    setSelectedTabName(name);
+  };
+
+  const addToCart = (product, userId, quantity) => {
+    if (userId === undefined) {
+      alertBox("error", "You are not login please login first");
+      return false;
+    }
+
+    const productItem = {
+      _id: product?._id,
+      productTitle: product?.name,
+      image: product?.images[0],
+      rating: product?.rating,
+      price: product?.price,
+      oldPrice: product?.oldPrice,
+      discount: product?.discount,
+      quantity: quantity,
+      subTotal: parseInt(product?.price * quantity),
+      productId: product?._id,
+      countInStock: product?.countInStock,
+      brand: product?.brand,
+      size: props?.item?.size?.length !== 0 ? selectedTabName : "",
+      weight: props?.item?.productWeight?.length !== 0 ? selectedTabName : "",
+      ram: props?.item?.productRam?.length !== 0 ? selectedTabName : "",
+    };
+
+    if (selectedTabName !== null) {
+      setIsLoading(true);
+
+      postData("/api/cart/add", productItem).then((res) => {
+        if (res?.error === false) {
+          context?.alertBox("success", res?.message);
+
+          context?.getCartItems();
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
+        } else {
+          context?.alertBox("error", res?.message);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
+        }
+      });
+    } else {
+      setTabError(true);
+    }
+  };
+
   return (
     <>
       <h1 className="text-[24px] font-[600] mb-2">{props?.item?.name}</h1>
@@ -59,7 +125,7 @@ const ProductDetailsComponent = (props) => {
                       ? "!bg-primary !text-white"
                       : ""
                   }`}
-                  onClick={() => setProductActionIndex(index)}
+                  onClick={() => handleClickActiveTab(index, item)}
                 >
                   {item}
                 </Button>
@@ -81,8 +147,8 @@ const ProductDetailsComponent = (props) => {
                     productActionIndex === index
                       ? "!bg-primary !text-white"
                       : ""
-                  }`}
-                  onClick={() => setProductActionIndex(index)}
+                  } ${tabError === true && "error"}`}
+                  onClick={() => handleClickActiveTab(index, item)}
                 >
                   {item}
                 </Button>
@@ -105,7 +171,7 @@ const ProductDetailsComponent = (props) => {
                       ? "!bg-primary !text-white"
                       : ""
                   }`}
-                  onClick={() => setProductActionIndex(index)}
+                  onClick={() => handleClickActiveTab(index, item)}
                 >
                   {item}
                 </Button>
@@ -120,12 +186,23 @@ const ProductDetailsComponent = (props) => {
       </p>
       <div className="flex items-center  gap-4 py-4">
         <div className="qtyBoxWrapper w-[70px]">
-          <QtyBox />
+          <QtyBox handleSelecteQty={handleSelecteQty} />
         </div>
 
-        <Button className="btn-org flex gap-2">
-          <MdOutlineShoppingCart className="text-[22px]" />
-          Add to Cart
+        <Button
+          className="btn-org flex gap-2 !min-w-[150px]"
+          onClick={() =>
+            addToCart(props?.item, context?.userData?._id, quantity)
+          }
+        >
+          {isLoading === false ? (
+            <CircularProgress />
+          ) : (
+            <>
+              <MdOutlineShoppingCart className="text-[22px]" />
+              Add to Cart
+            </>
+          )}
         </Button>
       </div>
 
