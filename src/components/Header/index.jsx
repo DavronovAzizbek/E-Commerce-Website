@@ -56,6 +56,7 @@ const Header = () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         context.setUserData(null);
+        context?.setCartData([]);
         history("/");
       }
     });

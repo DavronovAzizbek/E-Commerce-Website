@@ -13,6 +13,7 @@ import { FaMinus } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
 import { deleteData, editData } from "../../utils/api";
 import CircularProgress from "@mui/material/CircularProgress";
+import { MdClose } from "react-icons/md";
 
 const ProductItem = (props) => {
   const [quantity, setQuantity] = useState(1);
@@ -156,6 +157,13 @@ const ProductItem = (props) => {
 
         {isShowTabs === true && (
           <div className="flex items-center justify-center absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.7)] z-[60] p-3 gap-2">
+            <Button
+              className="!absolute top-[10px] right-[10px] !min-w-[30px] !min-h-[30px] !w-[30px] !h-[30px] !rounded-full !bg-[rgba(255, 255, 255, 1)] text-black"
+              onClick={() => setIsShowTabs(false)}
+            >
+              <MdClose className="text-black z-[90] text-[25px]" />
+            </Button>
+
             {props?.item?.size?.length !== 0 &&
               props?.item?.size?.map((size, index) => {
                 return (

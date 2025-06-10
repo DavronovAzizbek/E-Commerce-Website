@@ -51,9 +51,34 @@ const ProductDetailsComponent = (props) => {
       ram: props?.item?.productRam?.length !== 0 ? selectedTabName : "",
     };
 
-    if (selectedTabName !== null) {
-      setIsLoading(true);
+    if (
+      props?.item?.size?.length !== 0 ||
+      props?.item?.productWeight?.length !== 0 ||
+      props?.item?.productRam?.length !== 0
+    ) {
+      if (selectedTabName !== null) {
+        setIsLoading(true);
 
+        postData("/api/cart/add", productItem).then((res) => {
+          if (res?.error === false) {
+            context?.alertBox("success", res?.message);
+
+            context?.getCartItems();
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 500);
+          } else {
+            context?.alertBox("error", res?.message);
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 500);
+          }
+        });
+      } else {
+        setTabError(true);
+      }
+    } else {
+      setIsLoading(true);
       postData("/api/cart/add", productItem).then((res) => {
         if (res?.error === false) {
           context?.alertBox("success", res?.message);
@@ -69,8 +94,6 @@ const ProductDetailsComponent = (props) => {
           }, 500);
         }
       });
-    } else {
-      setTabError(true);
     }
   };
 
@@ -124,7 +147,7 @@ const ProductDetailsComponent = (props) => {
                     productActionIndex === index
                       ? "!bg-primary !text-white"
                       : ""
-                  }`}
+                  } ${tabError === true && "error"}`}
                   onClick={() => handleClickActiveTab(index, item)}
                 >
                   {item}
@@ -170,7 +193,7 @@ const ProductDetailsComponent = (props) => {
                     productActionIndex === index
                       ? "!bg-primary !text-white"
                       : ""
-                  }`}
+                  } ${tabError === true && "error"}`}
                   onClick={() => handleClickActiveTab(index, item)}
                 >
                   {item}
