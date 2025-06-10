@@ -71,7 +71,7 @@ const AccountSidebar = () => {
   };
 
   return (
-    <div className="card bg-white shadow-md rounded-md sticky top-[10px]">
+    <div className="card bg-white shadow-md rounded-md sticky top-[160px]">
       <div className="w-full p-5 flex items-center justify-center flex-col">
         <div className="w-[110px] h-[110px] rounded-full overflow-hidden mb-4 relative group flex items-center justify-center bg-gray-200">
           {uploading === true ? (

@@ -57,6 +57,7 @@ const Header = () => {
         localStorage.removeItem("refreshToken");
         context.setUserData(null);
         context?.setCartData([]);
+        context?.setMyListData([]);
         history("/");
       }
     });
@@ -232,11 +233,20 @@ const Header = () => {
 
               <li>
                 <Tooltip title="Istaklar roʻyxati">
-                  <IconButton aria-label="cart">
-                    <StyleBadge badgeContent={4} color="secondary">
-                      <FaRegHeart />
-                    </StyleBadge>
-                  </IconButton>
+                  <Link to="/my-list">
+                    <IconButton aria-label="cart">
+                      <StyleBadge
+                        badgeContent={
+                          context?.myListData?.length !== 0
+                            ? context?.myListData?.length
+                            : 0
+                        }
+                        color="secondary"
+                      >
+                        <FaRegHeart />
+                      </StyleBadge>
+                    </IconButton>
+                  </Link>
                 </Tooltip>
               </li>
 

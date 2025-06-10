@@ -11,13 +11,15 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import { useState } from "react";
 import { FaMinus } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
-import { deleteData, editData } from "../../utils/api";
+import { deleteData, editData, postData } from "../../utils/api";
 import CircularProgress from "@mui/material/CircularProgress";
 import { MdClose } from "react-icons/md";
+import { IoMdHeart } from "react-icons/io";
 
 const ProductItem = (props) => {
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
+  const [isAddedInMyList, setIsAddedInMyList] = useState(false);
   const [cartItem, setCartItem] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
   const [isShowTabs, setIsShowTabs] = useState(false);
@@ -82,12 +84,22 @@ const ProductItem = (props) => {
       cartItem.productId.includes(props?.item?._id)
     );
 
+    const myListItem = context?.myListData?.filter((item) =>
+      item.productId.includes(props?.item?._id)
+    );
+
     if (item?.length !== 0) {
       setCartItem(item);
       setIsAdded(true);
       setQuantity(item[0]?.quantity);
     } else {
       setQuantity(1);
+    }
+
+    if (myListItem?.length !== 0) {
+      setIsAddedInMyList(true);
+    } else {
+      setIsAddedInMyList(false);
     }
   }, [context?.cartData]);
 
@@ -135,6 +147,35 @@ const ProductItem = (props) => {
       context.alertBox("success", res?.data?.message);
       context?.getCartItems();
     });
+  };
+
+  const handleAddToMyList = (item) => {
+    if (context?.userData === null) {
+      context?.alertBox("error", "You are not login please login first");
+      return false;
+    } else {
+      const obj = {
+        productId: item?._id,
+        userId: context?.userData?._id,
+        productTitle: item?.name,
+        image: item?.images[0],
+        rating: item?.rating,
+        price: item?.price,
+        oldPrice: item?.oldPrice,
+        brand: item?.brand,
+        discount: item?.discount,
+      };
+
+      postData("/api/myList/add", obj).then((res) => {
+        if (res?.error === false) {
+          context?.alertBox("success", res?.message);
+          setIsAddedInMyList(true);
+          context?.getMyListData();
+        } else {
+          context?.alertBox("error", res?.message);
+        }
+      });
+    }
   };
 
   return (
@@ -227,8 +268,15 @@ const ProductItem = (props) => {
           <Button className="!w-[35px] !h-[35px] !min-w-[35px] !rounded-full !bg-white text-black hover:!bg-primary hover:text-white group">
             <IoGitCompareOutline className="text-[18px] !text-black group-hover:text-white hover:!text-white" />
           </Button>
-          <Button className="!w-[35px] !h-[35px] !min-w-[35px] !rounded-full !bg-white text-black hover:!bg-primary hover:text-white group">
-            <FaRegHeart className="text-[18px] !text-black group-hover:text-white hover:!text-white" />
+          <Button
+            className={`!w-[35px] !h-[35px] !min-w-[35px] !rounded-full !bg-white text-black hover:!bg-primary hover:text-white group`}
+            onClick={() => handleAddToMyList(props?.item)}
+          >
+            {isAddedInMyList === true ? (
+              <IoMdHeart className="text-[18px] !text-primary group-hover:text-white hover:!text-white" />
+            ) : (
+              <FaRegHeart className="text-[18px] !text-black group-hover:text-white hover:!text-white" />
+            )}
           </Button>
         </div>
       </div>
@@ -252,10 +300,10 @@ const ProductItem = (props) => {
         />
         <div className="flex items-center gap-4">
           <span className="oldPrice line-through text-gray-500 text-[15px] font-[500]">
-            ₹ {props?.item?.oldPrice}
+            &#x20b9; {props?.item?.oldPrice}
           </span>
           <span className="price text-primary text-[15px] font-[600]">
-            ₹ {props?.item?.price}
+            &#x20b9; {props?.item?.price}
           </span>
         </div>
 
