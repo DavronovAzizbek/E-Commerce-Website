@@ -289,6 +289,22 @@ const Footer = () => {
         )}
       </Drawer>
 
+      {/* Address Panel */}
+      <Drawer
+        open={context.openAddressPanel}
+        onClose={context.toggleAddressPanel(false)}
+        anchor={"right"}
+        className="cartPanel"
+      >
+        <div className="flex items-center justify-between py-3 px-4 gap-3 border-b border-[rgba(0,0,0,0.1)] overflow-hidden">
+          <h4>Add Delivery Address</h4>
+          <IoCloseSharp
+            className="text-[20px] cursor-pointer"
+            onClick={context.toggleAddressPanel(false)}
+          />
+        </div>
+      </Drawer>
+
       <Dialog
         open={context?.openProductDetailsModal.open}
         fullWidth={context?.fullWidth}

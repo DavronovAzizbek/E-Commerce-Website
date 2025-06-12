@@ -86,8 +86,8 @@ h6 {
   padding: 5px 20px !important;
 }
 
-.link:hover {
-  color: #ff5252;
+.link:hover .Mui-checked {
+  color: #ff5252 !important;
 }
 
 .MuiBadge-badge {
