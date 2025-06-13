@@ -4,46 +4,23 @@ import { MyContext } from "../../App";
 import { deleteData, fetchDataFromApi } from "../../utils/api";
 import AddressBox from "./addressBox";
 
-const label = { inputProps: { "aria-label": "Radio demo" } };
-
 const Address = () => {
   const context = useContext(MyContext);
-  const [open, setOpen] = useState(false);
-  const [phone, setPhone] = useState("");
-  const [isOpenModel, setisOpenModel] = useState(false);
   const [address, setAddress] = useState([]);
-  const [addressType, setAddressType] = useState("");
-  const [mode, setMode] = useState("add");
-  const [addressId, setAddressId] = useState("");
-
-  const [formFields, setFormsFields] = useState({
-    address_line1: "",
-    city: "",
-    state: "",
-    pincode: "",
-    country: "",
-    mobile: "",
-    userId: "",
-    addressType: "",
-    landmark: "",
-  });
 
   useEffect(() => {
     if (context?.userData?._id !== "" && context?.userData?._id !== undefined) {
-      fetchDataFromApi(
-        `/api/address/get?userId=${context?.userData?._id}`
-      ).then((res) => {
-        setAddress(res.data);
-      });
+      setAddress(context?.userData?.address_details);
     }
   }, [context?.userData]);
 
   const removeAddress = (id) => {
-    deleteData(`/api/address/${id}`).then((res) => {
+    deleteData(`/api/address/${id}`).then(() => {
       fetchDataFromApi(
         `/api/address/get?userId=${context?.userData?._id}`
       ).then((res) => {
         setAddress(res.data);
+        context?.getUserDetails();
       });
     });
   };
@@ -65,7 +42,10 @@ const Address = () => {
 
               <div
                 className="flex items-center justify-center p-5 rounded-md border border-dashed border-[rgba(0,0,0,0.2)] bg-[#f1faff] hover:bg-[#e7f3f9] cursor-pointer"
-                onClick={() => context?.toggleAddressPanel(true)}
+                onClick={() => {
+                  context?.setOpenAddressPanel(true);
+                  context?.setAddressMode("add");
+                }}
               >
                 <span className="text-[14px] font-[500]">Add Address</span>
               </div>

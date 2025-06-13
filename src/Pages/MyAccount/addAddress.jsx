@@ -6,12 +6,15 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { MyContext } from "../../App";
-import { editData, fetchDataFromApi } from "../../utils/api";
+import { editData, fetchDataFromApi, postData } from "../../utils/api";
+import Radio from "@mui/material/Radio";
+import CircularProgress from "@mui/material/CircularProgress";
+import { PhoneInput } from "react-international-phone";
 
 const AddAddress = () => {
   const [phone, setPhone] = useState("");
   const [addressType, setAddressType] = useState("");
-  const [mode, setMode] = useState("add");
+
   const [isLoading, setIsLoading] = useState(false);
 
   const context = useContext(MyContext);
@@ -55,10 +58,14 @@ const AddAddress = () => {
     }));
   };
 
+  useEffect(() => {
+    if (context?.addressMode === "edit") {
+      fetchAddress(context?.addressId);
+    }
+  }, [context?.addressMode]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    setIsLoading(true);
 
     if (formFields.address_line1 === "") {
       context.alertBox("error", "Please enter Address Line 1");
@@ -100,36 +107,33 @@ const AddAddress = () => {
       return false;
     }
 
-    if (mode === "add") {
+    if (context?.addressMode === "add") {
+      setIsLoading(true);
       postData(`/api/address/add`, formFields, { withCredentials: true }).then(
         (res) => {
           if (res?.error !== true) {
             context.alertBox("success", res?.message);
             setTimeout(() => {
+              context.toggleAddressPanel(false);
               setIsLoading(false);
-              setisOpenModel(false);
             }, 500);
 
-            fetchDataFromApi(
-              `/api/address/get?userId=${context?.userData?._id}`
-            ).then((res) => {
-              setAddress(res.data);
+            context.getUserDetails();
 
-              setFormsFields({
-                address_line1: "",
-                city: "",
-                state: "",
-                pincode: "",
-                country: "",
-                mobile: "",
-                userId: "",
-                addressType: "",
-                landmark: "",
-              });
-
-              setAddressType("");
-              setPhone("");
+            setFormsFields({
+              address_line1: "",
+              city: "",
+              state: "",
+              pincode: "",
+              country: "",
+              mobile: "",
+              userId: "",
+              addressType: "",
+              landmark: "",
             });
+
+            setAddressType("");
+            setPhone("");
           } else {
             context.alertBox("error", res?.message);
             setIsLoading(false);
@@ -138,19 +142,19 @@ const AddAddress = () => {
       );
     }
 
-    if (mode === "edit") {
+    if (context?.addressMode === "edit") {
       setIsLoading(true);
-      editData(`/api/address/${addressId}`, formFields, {
+      editData(`/api/address/${context?.addressId}`, formFields, {
         withCredentials: true,
-      }).then((res) => {
+      }).then(() => {
         fetchDataFromApi(
           `/api/address/get?userId=${context?.userData?._id}`
         ).then((res) => {
           setTimeout(() => {
             setIsLoading(false);
-            setisOpenModel(false);
+            context.setOpenAddressPanel(false);
           }, 500);
-          setAddress(res.data);
+          context?.getUserDetails(res.data);
 
           setFormsFields({
             address_line1: "",
@@ -170,13 +174,8 @@ const AddAddress = () => {
       });
     }
   };
-    
-  const editAddress = (id) => {
-    setMode("edit");
-    setisOpenModel(true);
 
-    setAddressId(id);
-
+  const fetchAddress = (id) => {
     fetchDataFromApi(`/api/address/${id}`).then((res) => {
       setFormsFields({
         address_line1: res?.address?.address_line1,
@@ -197,99 +196,91 @@ const AddAddress = () => {
   };
 
   return (
-    <form className="p-8 py-3 pb-8" onSubmit={handleSubmit}>
-      <div className="flex items-center gap-5  pb-5">
-        <div className="col w-[100%]">
-          <TextField
-            className="w-full"
-            label="Address Line 1"
-            variant="outlined"
-            size="small"
-            name="address_line1"
-            onChange={onChangeInput}
-            value={formFields.address_line1}
-          />
-        </div>
+    <form className="p-8 py-3 pb-8 px-4" onSubmit={handleSubmit}>
+      <div className="col w-[100%] mb-4">
+        <TextField
+          className="w-full"
+          label="Address Line 1"
+          variant="outlined"
+          size="small"
+          name="address_line1"
+          onChange={onChangeInput}
+          value={formFields.address_line1}
+        />
       </div>
 
-      <div className="flex items-center gap-5  pb-5">
-        <div className="col w-[50%]">
-          <TextField
-            className="w-full"
-            label="City"
-            variant="outlined"
-            size="small"
-            name="city"
-            onChange={onChangeInput}
-            value={formFields.city}
-          />
-        </div>
-
-        <div className="col w-[50%]">
-          <TextField
-            className="w-full"
-            label="State"
-            variant="outlined"
-            size="small"
-            name="state"
-            onChange={onChangeInput}
-            value={formFields.state}
-          />
-        </div>
+      <div className="col w-[100%]">
+        <TextField
+          className="w-full"
+          label="City"
+          variant="outlined"
+          size="small"
+          name="city"
+          onChange={onChangeInput}
+          value={formFields.city}
+        />
       </div>
 
-      <div className="flex items-center gap-5  pb-5">
-        <div className="col w-[50%]">
-          <TextField
-            className="w-full"
-            label="Pincode"
-            variant="outlined"
-            size="small"
-            name="pincode"
-            onChange={onChangeInput}
-            value={formFields.pincode}
-          />
-        </div>
-
-        <div className="col w-[50%]">
-          <TextField
-            className="w-full"
-            label="Country"
-            variant="outlined"
-            size="small"
-            name="country"
-            onChange={onChangeInput}
-            value={formFields.country}
-          />
-        </div>
+      <div className="col w-[100%]">
+        <TextField
+          className="w-full"
+          label="State"
+          variant="outlined"
+          size="small"
+          name="state"
+          onChange={onChangeInput}
+          value={formFields.state}
+        />
       </div>
 
-      <div className="flex items-center gap-5  pb-5">
-        <div className="col w-[50%]">
-          <PhoneInput
-            defaultCountry="in"
-            value={phone}
-            onChange={(phone) => {
-              setPhone(phone);
-              setFormsFields((prevState) => ({
-                ...prevState,
-                mobile: phone,
-              }));
-            }}
-          />
-        </div>
+      <div className="col w-[100%]">
+        <TextField
+          className="w-full"
+          label="Pincode"
+          variant="outlined"
+          size="small"
+          name="pincode"
+          onChange={onChangeInput}
+          value={formFields.pincode}
+        />
+      </div>
 
-        <div className="col w-[50%]">
-          <TextField
-            className="w-full"
-            label="Landmark"
-            variant="outlined"
-            size="small"
-            name="landmark"
-            onChange={onChangeInput}
-            value={formFields.landmark}
-          />
-        </div>
+      <div className="col w-[100%]">
+        <TextField
+          className="w-full"
+          label="Country"
+          variant="outlined"
+          size="small"
+          name="country"
+          onChange={onChangeInput}
+          value={formFields.country}
+        />
+      </div>
+
+      <div className="col w-[100%]">
+        <PhoneInput
+          defaultCountry="in"
+          value={phone}
+          onChange={(phone) => {
+            setPhone(phone);
+            setFormsFields((prevState) => ({
+              ...prevState,
+              mobile: phone,
+            }));
+          }}
+        />
+      </div>
+
+      <div className="col w-[100%]">
+        <TextField
+          className="w-full"
+          label="Landmark"
+          variant="outlined"
+          size="small"
+          name="landmark"
+          onChange={onChangeInput}
+          value={formFields.landmark}
+        />
       </div>
 
       <div className="flex items-center gap-5  pb-5">
@@ -321,12 +312,6 @@ const AddAddress = () => {
           className="btn-org btn-lg w-full flex gap-2 items-center"
         >
           {isLoading === true ? <CircularProgress color="inherit" /> : "Save"}
-        </Button>
-        <Button
-          className="btn-org btn-border btn-lg w-full flex gap-2 items-center"
-          onClick={handleClose}
-        >
-          Cancel
         </Button>
       </div>
     </form>

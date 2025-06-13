@@ -25,9 +25,11 @@ const AddressBox = (props) => {
     props.removeAddress(id);
   };
 
-    const editAddress = (id) => {
+  const editAddress = (id) => {
     setAnchorEl(null);
-    props.editAddress(id);
+    context?.setOpenAddressPanel(true);
+    context?.setAddressMode("edit");
+    context?.setAddressId(id);
   };
 
   return (

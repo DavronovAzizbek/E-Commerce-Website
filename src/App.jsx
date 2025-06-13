@@ -35,6 +35,8 @@ function App() {
 
   const [openCartPanel, setOpenCartPanel] = useState(false);
   const [openAddressPanel, setOpenAddressPanel] = useState(false);
+  const [addressMode, setAddressMode] = useState("add");
+  const [addressId, setAddressId] = useState("");
 
   const handleOpenProductDetailsModal = (status, item) => {
     setOpenProductDetailsModal({
@@ -55,6 +57,9 @@ function App() {
   };
 
   const toggleAddressPanel = (newOpen) => () => {
+    if (newOpen == false) {
+      setAddressMode("add");
+    }
     setOpenAddressPanel(newOpen);
   };
 
@@ -64,26 +69,31 @@ function App() {
     if (token !== undefined && token !== null && token !== "") {
       setIsLogin(true);
 
-      fetchDataFromApi(`/api/user/user-details`).then((res) => {
-        setUserData(res.data);
-        if (res?.response?.data?.error === true) {
-          if (res?.response?.data?.message === "You have not login") {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-
-            alertBox("error", "Your session is closed please login again");
-
-            setIsLogin(false);
-          }
-        }
-      });
-
       getCartItems();
       getMyListData();
+      getUserDetails();
     } else {
       setIsLogin(false);
     }
   }, [isLogin]);
+
+  const getUserDetails = () => {
+    fetchDataFromApi(`/api/user/user-details`).then((res) => {
+      setUserData(res.data);
+      if (res?.response?.data?.error === true) {
+        if (res?.response?.data?.message === "You have not login") {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+
+          alertBox("error", "Your session is closed please login again");
+
+          window.location.href = "/login";
+
+          setIsLogin(false);
+        }
+      }
+    });
+  };
 
   useEffect(() => {
     fetchDataFromApi("/api/category").then((res) => {
@@ -177,6 +187,11 @@ function App() {
     myListData,
     setMyListData,
     getMyListData,
+    getUserDetails,
+    setAddressMode,
+    addressMode,
+    setAddressId,
+    addressId,
   };
 
   return (

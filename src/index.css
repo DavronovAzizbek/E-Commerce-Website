@@ -326,8 +326,16 @@ input[type="number"]::-webkit-outer-spin-button {
   padding: 0px !important;
 }
 
+.productsSlider .swiper .blogSection .swiper {
+  overflow: inherit !important;
+}
+
 .cartPanel .MuiPaper-root {
   width: 400px;
+  overflow: hidden;
+}
+.addressPanel .MuiPaper-root {
+  width: 500px;
   overflow: hidden;
 }
 
@@ -426,4 +434,8 @@ header {
 
 .MuiButtonBase-root.MuiMenuItem-root.MuiMenuItem-gutters.selected {
   @apply !text-primary;
+}
+
+.react-international-phone-country-selector-dropdown {
+  z-index: 100 !important;
 }

@@ -20,7 +20,10 @@ const CartPanel = (props) => {
       <div className="scroll w-full max-h-[300px] overflow-y-scroll overflow-x-hidden py-3 px-4">
         {props?.data?.map((item, index) => {
           return (
-            <div className="cartItem w-full flex items-center gap-4 border-b border-[rgba(0,0,0,0.1)] pb-4">
+            <div
+              className="cartItem w-full flex items-center gap-4 border-b border-[rgba(0,0,0,0.1)] pb-4"
+              key={index}
+            >
               <div className="img w-[25%] overflow-hidden h-[80px] rounded-md">
                 <Link to={`/product/${item?._id}`} className="block group">
                   <img
@@ -37,7 +40,7 @@ const CartPanel = (props) => {
                     to={`/product/${item?._id}`}
                     className="link transition-all"
                   >
-                    {item?.productTitle?.substr(0, 40) + "..."}
+                    {item?.productTitle?.substr(0, 20) + "..."}
                   </Link>
                 </h4>
                 <p className="flex items-center gap-5 mt-2 mb-2">
@@ -45,7 +48,11 @@ const CartPanel = (props) => {
                     Qty : <span>{item?.quantity}</span>
                   </span>
                   <span className="text-primary font-bold">
-                    Price : &#x20b9; {item?.price}
+                    Price :
+                    {item?.price?.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "INR",
+                    })}
                   </span>
                 </p>
 
@@ -107,7 +114,11 @@ const CartPanel = (props) => {
             >
               <Button className="btn-org btn-lg w-full">View Cart</Button>
             </Link>
-            <Link to="/checkout" className="w-[50%] d-block">
+            <Link
+              to="/checkout"
+              className="w-[50%] d-block"
+              onClick={context.toggleCartPanel(false)}
+            >
               <Button className="btn-org btn-lg w-full">Checkout</Button>
             </Link>
           </div>
