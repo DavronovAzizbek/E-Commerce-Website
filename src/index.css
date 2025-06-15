@@ -448,3 +448,7 @@ header {
 .react-international-phone-country-selector-dropdown {
   z-index: 100 !important;
 }
+
+#paypal-button-container {
+  width: 100% !important;
+}

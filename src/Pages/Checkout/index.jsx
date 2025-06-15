@@ -4,11 +4,16 @@ import { useContext, useEffect, useState } from "react";
 import { MyContext } from "../../App";
 import { FaPlus } from "react-icons/fa6";
 import Radio from "@mui/material/Radio";
-import { deleteData, fetchDataFromApi, postData } from "../../utils/api";
+import { deleteData, postData } from "../../utils/api";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const VITE_APP_RAZORPAY_KEY_ID = import.meta.env.VITE_APP_RAZORPAY_KEY_ID;
 const VITE_APP_RAZORPAY_KEY_SECRET = import.meta.env
   .VITE_APP_RAZORPAY_KEY_SECRET;
+
+const VITE_APP_PAYPAL_CLIENT_ID = import.meta.env.VITE_APP_PAYPAL_CLIENT_ID;
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const Checkout = () => {
   const context = useContext(MyContext);
@@ -17,13 +22,12 @@ const Checkout = () => {
   const [selectedAddress, setSelectedAddress] = useState("");
   const [totalAmount, setTotalAmount] = useState();
 
+  const history = useNavigate();
+
   useEffect(() => {
+    window.scrollTo(0, 0);
     setUserData(context?.userData);
     setSelectedAddress(context?.userData?.address_details[0]?._id);
-
-    fetchDataFromApi(`/api/order/order-list`).then((res) => {
-      console.log(res);
-    });
   }, [context?.userData, userData]);
 
   useEffect(() => {
@@ -46,6 +50,103 @@ const Checkout = () => {
     //     : 0
     // );
   }, [context.cartData]);
+
+  useEffect(() => {
+    // Load the PayPal JavaScript SDK
+    const script = document.createElement("script");
+    script.src = `https://www.paypal.com/sdk/js?client-id=${VITE_APP_PAYPAL_CLIENT_ID}&disable-funding=card`;
+    script.async = true;
+    script.onload = () => {
+      window.paypal
+        .Button({
+          createOrder: async () => {
+            const resp = await fetch(
+              "https://v6.exchangerate-api.com/v6/8f85eea95dae9336b9ea3ce9/latest/INR"
+            );
+
+            const respData = await resp.json();
+            var convertedAmount = 0;
+
+            if (respData.result === "success") {
+              const usdToInrRate = respData.conversion_rates.USD;
+              convertedAmount = (totalAmount * usdToInrRate).toFixed(2);
+            }
+
+            const headers = {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              "Content-Type": "application/json",
+            };
+
+            const data = {
+              userId: context?.userData?._id,
+              totalAmount: convertedAmount,
+            };
+
+            const response = await axios.get(
+              VITE_API_URL +
+                `/api/order/create-order-paypal?userId=${data?.userId}&totalAmount=${data?.totalAmount}`,
+              { headers }
+            );
+
+            return response?.data?.id;
+          },
+          onApprove: async (data) => {
+            onApprovePayment(data);
+          },
+          onError: (err) => {
+            history("/order/failed");
+            console.error("PayPal Checkout onError:", err);
+          },
+        })
+        .render("#paypal-button-container");
+    };
+    document.body.appendChild(script);
+  }, [context?.cartData, context?.userData, selectedAddress]);
+
+  const onApprovePayment = async (data) => {
+    const user = context?.userData;
+
+    const info = {
+      userId: user?._id,
+      products: context?.cartData,
+      payment_status: "COMPLETE",
+      delivery_address: selectedAddress,
+      totalAmount: totalAmount,
+      date: new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      }),
+    };
+
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include your API key in the Authorization header
+      "Content-Type": "application/json", // Adjust the content type as needed
+    };
+
+    const response = await axios
+      .post(
+        VITE_API_URL + "/api/order/capture-order-paypal",
+        {
+          ...info,
+          paymentId: data.orderID,
+        },
+        { headers }
+      )
+      .then((res) => {
+        context.alertBox("success", res?.data?.message);
+        history("/order/success");
+        deleteData(`/api/cart/emptyCart/${context?.userData?._id}`).then(
+          (res) => {
+            context?.getCartItems();
+          }
+        );
+      });
+
+    if (response.data.success) {
+      context.alertBox("success", "Order completed and saved to database!");
+    }
+  };
 
   const editAddress = (id) => {
     context?.setOpenAddressPanel(true);
@@ -96,8 +197,9 @@ const Checkout = () => {
             deleteData(`/api/cart/emptyCart/${user?._id}`).then(() => {
               context?.getCartItems();
             });
-            history("/");
+            history("/order/success");
           } else {
+            history("/order/failed");
             context.alertBox("error", res?.message);
           }
         });
@@ -130,14 +232,15 @@ const Checkout = () => {
 
     postData(`/api/order/create`, payLoad).then((res) => {
       context.alertBox("success", res?.message);
+
       if (res?.error === false) {
         deleteData(`/api/cart/emptyCart/${user?._id}`).then(() => {
           context?.getCartItems();
         });
-        history("/");
       } else {
         context.alertBox("error", res?.message);
       }
+      history("/order/success");
     });
   };
 
@@ -284,6 +387,8 @@ const Checkout = () => {
                 >
                   <BsFillBagCheckFill className="text-[20px]" /> Checkout
                 </Button>
+
+                <div id="paypal-button-container"></div>
 
                 <Button
                   type="button"
