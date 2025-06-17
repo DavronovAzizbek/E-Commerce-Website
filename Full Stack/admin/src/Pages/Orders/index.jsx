@@ -8,11 +8,19 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useContext } from "react";
 import { MyContext } from "../../App";
+import {
+  editData,
+  fetchDataFromApi,
+} from "../../../../my-project/src/utils/api";
 
 const Orders = () => {
   const [isOpenOrderdProduct, setIsOpenOrderdProduct] = useState(null);
   const [orders, setOrders] = useState([]);
   const [orderStatus, setOrderStatus] = useState("");
+  const [pageOrder, setPageOrder] = useState(1);
+  const [totalOrdersData, setTotalOrdersData] = useState([]);
+  const [ordersData, setOrdersData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const context = useContext(MyContext);
 
@@ -47,12 +55,59 @@ const Orders = () => {
     });
   }, [orderStatus]);
 
+  useEffect(() => {
+    fetchDataFromApi(`/api/order/order-list?page=${pageOrder}&limit=5`).then(
+      (res) => {
+        if (res?.error === false) {
+          setOrders(res);
+          setOrdersData(res?.data);
+        }
+      }
+    );
+    fetchDataFromApi(`/api/order/order-list`).then((res) => {
+      if (res?.error === false) {
+        setOrders(res);
+        setTotalOrdersData(res?.data);
+      }
+    });
+  }, [pageOrder]);
+
+  useEffect(() => {
+    if (searchQuery !== "") {
+      const filteredOrders = totalOrdersData?.data?.filter(
+        (order) =>
+          order._id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          order?.userId?.name
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          order?.userId?.email
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          order?.createdAt.includes(searchQuery)
+      );
+      setOrdersData(filteredOrders);
+    } else {
+      fetchDataFromApi(`/api/order/order-list?page=${pageOrder}&limit=5`).then(
+        (res) => {
+          if (res?.error === false) {
+            setOrders(res);
+            setOrdersData(res?.data);
+          }
+        }
+      );
+    }
+  }, [searchQuery]);
+
   return (
     <div className="card my-4 shadow-md sm:rounded-lg bg-white">
       <div className="flex items-center justify-between px-5 py-5">
         <h2 className="text-[18px] font-[600]">Recent Orders</h2>
-        <div className="w-[40%]">
-          <SearchBox />
+        <div className="w-[25%]">
+          <SearchBox
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            setPageOrder={setPageOrder}
+          />
         </div>
       </div>
 
@@ -99,8 +154,8 @@ const Orders = () => {
             </tr>
           </thead>
           <tbody>
-            {orders?.length !== 0 &&
-              orders?.map((order, index) => {
+            {ordersData?.data?.length !== 0 &&
+              ordersData?.data?.map((order, index) => {
                 return (
                   <>
                     <tr className="bg-white border-b dark:bg-white dark:border-gray-200">
@@ -142,7 +197,9 @@ const Orders = () => {
                             " " +
                             order?.delivery_address?.state +
                             " " +
-                            order?.delivery_address?.country}
+                            order?.delivery_address?.country +
+                            " " +
+                            order?.delivery_address?.mobile}
                         </span>
                       </td>
                       <td className="px-6 py-4 font-[500]">
@@ -160,23 +217,7 @@ const Orders = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 font-[500]">
-                        <Select
-                          labelId="demo-simple-select-helper-label"
-                          id="demo-simple-select-helper"
-                          value={
-                            order?.order_status !== null
-                              ? order?.order_status
-                              : orderStatus
-                          }
-                          label="Status"
-                          size="small"
-                          className="w-full"
-                          onChange={(e) => handleChange(e, order?._id)}
-                        >
-                          <MenuItem value={"pending"}>Pending</MenuItem>
-                          <MenuItem value={"confirm"}>Confirm</MenuItem>
-                          <MenuItem value={"delivered"}>Delivered</MenuItem>
-                        </Select>
+                        <Badge status={order?.order_status} />
                       </td>
                       <td className="px-6 py-4 font-[500] whitespace-nowrap">
                         {order?.createdAt?.split("T")[0]}

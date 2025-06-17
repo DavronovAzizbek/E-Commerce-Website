@@ -52,83 +52,17 @@ const Dashboard = () => {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [pageOrder, setPageOrder] = useState(1);
+  const [totalOrdersData, setTotalOrdersData] = useState([]);
+  const [ordersData, setOrdersData] = useState([]);
   const [orders, setOrders] = useState([]);
-
+  const [productData, setProductData] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [allReviews, setAllReviews] = useState({});
   const [categoryFilterVal, setcategoryFilterVal] = useState("");
-  const [chart1Data] = useState([
-    {
-      name: "JAN",
-      TotalSales: 4000,
-      TotalUsers: 2400,
-      amt: 2400,
-    },
-    {
-      name: "FEB",
-      TotalSales: 3000,
-      TotalUsers: 1398,
-      amt: 2210,
-    },
-    {
-      name: "MARCH",
-      TotalSales: 2000,
-      TotalUsers: 9800,
-      amt: 2290,
-    },
-    {
-      name: "APRIL",
-      TotalSales: 2780,
-      TotalUsers: 3908,
-      amt: 2000,
-    },
-    {
-      name: "MAY",
-      TotalSales: 1890,
-      TotalUsers: 4800,
-      amt: 2181,
-    },
-    {
-      name: "JUNE",
-      TotalSales: 2390,
-      TotalUsers: 3800,
-      amt: 2500,
-    },
-    {
-      name: "JULY",
-      TotalSales: 3490,
-      TotalUsers: 4300,
-      amt: 2100,
-    },
-    {
-      name: "AUG",
-      TotalSales: 3490,
-      TotalUsers: 2400,
-      amt: 2100,
-    },
-    {
-      name: "SEP",
-      TotalSales: 3490,
-      TotalUsers: 4900,
-      amt: 2100,
-    },
-    {
-      name: "OCT",
-      TotalSales: 3490,
-      TotalUsers: 6520,
-      amt: 2100,
-    },
-    {
-      name: "NOV",
-      TotalSales: 3490,
-      TotalUsers: 2300,
-      amt: 2100,
-    },
-    {
-      name: "DEC",
-      TotalSales: 3490,
-      TotalUsers: 1300,
-      amt: 2100,
-    },
-  ]);
+  const [chartData, setChartData] = useState([]);
+  const [year, setYear] = useState(new Date().getFullYear());
 
   const context = useContext(MyContext);
 
@@ -140,13 +74,68 @@ const Dashboard = () => {
     }
   };
 
-   useEffect(() => {
-      fetchDataFromApi("/api/order/order-list").then((res) => {
+  useEffect(() => {
+    fetchDataFromApi(`/api/order/order-list?page=${pageOrder}&limit=5`).then(
+      (res) => {
         if (res?.error === false) {
-          setOrders(res?.data);
+          setOrders(res);
+          setOrdersData(res?.data);
         }
-      });
-    }, []);
+      }
+    );
+    fetchDataFromApi(`/api/order/order-list`).then((res) => {
+      if (res?.error === false) {
+        setTotalOrdersData(res);
+      }
+    });
+    fetchDataFromApi(`/api/order/count`).then((res) => {
+      if (res?.error === false) {
+        setOrdersCount(res?.count);
+      }
+    });
+  }, [pageOrder]);
+
+  useEffect(() => {
+    if (searchQuery !== "") {
+      const filteredOrders = totalOrdersData?.data?.filter(
+        (order) =>
+          order._id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          order?.userId?.name
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          order?.userId?.email
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          order?.createdAt.includes(searchQuery)
+      );
+      setOrdersData(filteredOrders);
+    } else {
+      fetchDataFromApi(`/api/order/order-list?page=${pageOrder}&limit=5`).then(
+        (res) => {
+          if (res?.error === false) {
+            setOrders(res);
+            setOrdersData(res?.data);
+          }
+        }
+      );
+    }
+  }, [searchQuery]);
+
+  useEffect(() => {
+    getTotalSalesByYear();
+
+    fetchDataFromApi("/api/user/getAllUsers").then((res) => {
+      if (res?.error === false) {
+        setUsers(res?.users);
+      }
+    });
+
+    fetchDataFromApi("/api/user/getAllReviews").then((res) => {
+      if (res?.error === false) {
+        setAllReviews(res?.reviews);
+      }
+    });
+  }, []);
 
   const handleChangeCatFilter = (event) => {
     setcategoryFilterVal(event.target.value);
@@ -167,7 +156,49 @@ const Dashboard = () => {
     });
   };
 
-  
+  const getTotalUsersByYear = () => {
+    fetchDataFromApi(`/api/order/users`).then((res) => {
+      const users = [];
+      res?.TotalUsers?.length !== 0 &&
+        res?.TotalUsers?.map((item) => {
+          users.push({
+            name: item?.name,
+            TotalUsers: parseInt(item?.TotalUsers),
+          });
+        });
+
+      const uniqueArr = users.filter(
+        (obj, index, self) =>
+          index === self.findIndex((t) => t.name === obj.name)
+      );
+      setChartData(uniqueArr);
+    });
+  };
+
+  const getTotalSalesByYear = () => {
+    fetchDataFromApi("/api/order/sales").then((res) => {
+      const sales = [];
+      if (res?.monthlySales?.length > 0) {
+        res.monthlySales.forEach((item) => {
+          sales.push({
+            name: item?.name,
+            TotalSales: parseInt(item.TotalSales),
+          });
+        });
+      }
+
+      const uniqueArr = sales.filter(
+        (obj, index, self) =>
+          index === self.findIndex((t) => t.name === obj.name)
+      );
+      setChartData(uniqueArr);
+    });
+  };
+
+  const handleChangeYear = (event) => {
+    getTotalSalesByYear(event.target.value);
+    setYear(event.target.value);
+  };
 
   return (
     <>
@@ -207,6 +238,13 @@ const Dashboard = () => {
       <div className="card my-4 shadow-md sm:rounded-lg bg-white">
         <div className="flex items-center justify-between px-5 py-5">
           <h2 className="text-[18px] font-[600]">Recent Orders</h2>
+          <div className="w-[25%]">
+            <SearchBox
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              setPageOrder={setPageOrder}
+            />
+          </div>
         </div>
 
         <div className="relative overflow-x-auto mt-5">
@@ -252,8 +290,8 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {orders?.length !== 0 &&
-                orders?.map((order, index) => {
+              {ordersData?.data?.length !== 0 &&
+                ordersData?.data?.map((order, index) => {
                   return (
                     <>
                       <tr className="bg-white border-b dark:bg-white dark:border-gray-200">
@@ -295,7 +333,9 @@ const Dashboard = () => {
                               " " +
                               order?.delivery_address?.state +
                               " " +
-                              order?.delivery_address?.country}
+                              order?.delivery_address?.country +
+                              " " +
+                              order?.delivery_address?.mobile}
                           </span>
                         </td>
                         <td className="px-6 py-4 font-[500]">
@@ -432,6 +472,18 @@ const Dashboard = () => {
           </table>
         </div>
       </div>
+
+      {productData?.length !== 0 &&
+        users?.length !== 0 &&
+        allReviews?.length !== 0 && (
+          <DashboardBoxes
+            orders={ordersCount}
+            products={productData?.length}
+            users={users?.length}
+            reviews={allReviews?.length}
+            category={context?.catData?.length}
+          />
+        )}
 
       <div className="card my-4 pt-5 shadow-md sm:rounded-lg bg-white">
         <div className="flex items-center w-full px-5 justify-between gap-4">
@@ -1206,46 +1258,67 @@ const Dashboard = () => {
         </div>
 
         <div className="flex items-center gap-5 px-5 py-5 pt-1">
-          <span className="flex items-center gap-1 text-[15px]">
-            <span className="block w-[8px] h-[8px] rounded-full bg-green-600"></span>
+          <span
+            className="flex items-center gap-1 text-[15px] cursor-pointer"
+            onClick={getTotalUsersByYear}
+          >
+            <span className="block w-[8px] h-[8px] rounded-full bg-primary"></span>
             Total Users
           </span>
 
-          <span className="flex items-center gap-1 text-[15px]">
-            <span className="block w-[8px] h-[8px] rounded-full bg-primary"></span>
+          <span
+            className="flex items-center gap-1 text-[15px] cursor-pointer"
+            onClick={getTotalSalesByYear}
+          >
+            <span className="block w-[8px] h-[8px] rounded-full bg-green-600"></span>
             Total Sales
           </span>
         </div>
-        <LineChart
-          width={1000}
-          height={500}
-          data={chart1Data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke="none" />
-          <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-          <YAxis tick={{ fontSize: 12 }} />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="TotalSales"
-            stroke="#8884d8"
-            strokeWidth={3}
-            activeDot={{ r: 8 }}
-          />
-          <Line
-            type="monotone"
-            dataKey="TotalUsers"
-            stroke="#82ca9d"
-            strokeWidth={3}
-          />
-        </LineChart>
+        {chartData?.length !== 0 && (
+          <BarChart
+            width={1000}
+            height={500}
+            data={chartData}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <XAxis
+              dataKey="name"
+              scale="point"
+              padding={{ left: 10, right: 10 }}
+              tick={{ fontSize: 12 }}
+              label={{ position: "insideBottom", fontSize: 14 }}
+              style={{ fill: context?.theme === "dark" ? "white" : "#000" }}
+            />
+            <YAxis
+              tick={{ fontSize: 12 }}
+              label={{ position: "insideBottom", fontSize: 14 }}
+              style={{ fill: context.theme === "dark" ? "white" : "#000" }}
+            />
+
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "#071739",
+                color: "white",
+              }} // Set tooltip background and text color
+              labelStyle={{ color: "yellow" }} // Label text color
+              itemStyle={{ color: "cyan" }} // Set color for individual items in the tooltip
+              cursor={{ fill: "white" }} // Customize the tooltip cursor background on hover
+            />
+            <Legend />
+            <CartesianGrid
+              strokeDasharray="3 3"
+              horizontal={false}
+              vertical={false}
+            />
+            <Bar dataKey="TotalSales" stackId="a" fill="#16a34a" />
+            <Bar dataKey="TotalUsers" stackId="b" fill="#8858f7" />
+          </BarChart>
+        )}
       </div>
     </>
   );
