@@ -11,6 +11,7 @@ import "react-range-slider-input/dist/style.css";
 import Rating from "@mui/material/Rating";
 import { MyContext } from "../../App";
 import { useLocation } from "react-router-dom";
+import { postData } from "../../utils/api";
 
 const Sidebar = (props) => {
   const [isOpenCategoryFilter, setIsOpenCategoryFilter] = useState(true);
@@ -33,6 +34,8 @@ const Sidebar = (props) => {
   const location = useLocation();
 
   const handleCheckboxChange = (field, value) => {
+    context?.setSearchData([]);
+
     const currentValues = filters[field] || [];
     const updatedValues = currentValues?.includes(value)
       ? currentValues.filter((item) => item !== value)
@@ -64,6 +67,7 @@ const Sidebar = (props) => {
       filters.subCatId = [];
       filters.thirdsubCatId = [];
       filters.rating = [];
+      context?.setSearchData([]);
     }
 
     if (url.includes("subCatId")) {
@@ -74,6 +78,7 @@ const Sidebar = (props) => {
       filters.catId = [];
       filters.thirdsubCatId = [];
       filters.rating = [];
+      context?.setSearchData([]);
     }
 
     if (url.includes("thirdLavelCatId")) {
@@ -84,6 +89,7 @@ const Sidebar = (props) => {
       filters.catId = [];
       filters.thirdsubCatId = thirdcatArr;
       filters.rating = [];
+      context?.setSearchData([]);
     }
 
     filters.page = 1;
@@ -95,6 +101,20 @@ const Sidebar = (props) => {
 
   const filtersData = () => {
     props.setIsLoading(true);
+
+    if (context?.searchData?.products?.length > 0) {
+      props.setProductsData(context?.searchData);
+      props.setIsLoading(false);
+      props.setTotalPages(context?.searchData?.totalPages);
+      window.scrollTo(0, 0);
+    } else {
+      postData(`/api/product/filters`, filters).then((res) => {
+        props.setProductsData(res);
+        props.setIsLoading(false);
+        props.setTotalPages(res?.totalPages);
+        window.scrollTo(0, 0);
+      });
+    }
   };
 
   useEffect(() => {

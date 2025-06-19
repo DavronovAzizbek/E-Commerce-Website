@@ -452,3 +452,13 @@ header {
 #paypal-button-container {
   width: 100% !important;
 }
+
+table td {
+  padding: 8px 17px !important;
+  font-size: 13px !important;
+}
+
+.searchBox .MuiCircularProgress-root {
+  width: 20px !important;
+  height: 20px !important;
+}

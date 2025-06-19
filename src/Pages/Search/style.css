@@ -1,0 +1,22 @@
+.product-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.product-image:hover {
+  transform: scale(1.05);
+}
+
+.rightContent {
+  overflow-x: hidden;
+}
+
+.link {
+  transition: color 0.3s;
+}
+
+.link:hover {
+  color: #007bff;
+}
